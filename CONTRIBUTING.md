@@ -30,7 +30,7 @@ If you encounter a bug or have a suggestion for improvement, please open an issu
 
 ## Contact
 
-If you have any questions or need assistance, you can reach out to us at your_email@example.com.
+If you have any questions or need assistance, you can reach out to us at vinicius.fferraz2@ufrpe.br.
 
 Thank you for your contributions to the Rent Right Mobile App project!
 
