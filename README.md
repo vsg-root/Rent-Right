@@ -15,7 +15,7 @@ Rent Right is a powerful, open-source mobile app that utilizes artificial intell
 
 ## About the Project
 
-Craigslist, the world's largest platform for privately sold housing options, offers a wealth of data on housing listings. Rent Right Mobile App is an open-source project that leverages this data to provide predictive rental price information for regions across the United States. Our mobile app aims to empower property owners, renters, and real estate professionals with accurate and up-to-date information to guide their rental decisions.
+Rent Right Mobile App is an open-source project that leverages this data to provide predictive rental price information for regions across the United States. Our mobile app aims to empower property owners, renters, and real estate professionals with accurate and up-to-date information to guide their rental decisions.
 
 ## Features
 
