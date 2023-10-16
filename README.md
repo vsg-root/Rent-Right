@@ -1,7 +1,7 @@
 # Rent Right Mobile App
 
 <p align="center">
-  <img src="assets/Logo_Rent_new_Git.png" alt="Rent Right Logo">
+  <img src="assets/Logo_RentRight(1x2).png" alt="Rent Right Logo">
 </p>
 
 Rent Right is a powerful, open-source mobile app that utilizes artificial intelligence to predict rental prices for homes and apartments across the United States. Our goal is to provide valuable insights to both property owners and renters, helping them make informed decisions in the ever-changing real estate market.
