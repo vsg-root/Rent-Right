@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import folium
-
+from sklearn.cluster import KMeans
 
 st.set_page_config(
     page_title = 'Dasboard Rent Right',
@@ -39,21 +39,21 @@ dados = pd.read_csv('dataset\housing.csv')
 st.markdown(
     '<h3>Query by filters</h3>',
     unsafe_allow_html=True)
-coluna_selecionada = st.selectbox("Selecione a coluna para ordenar:", dados.columns)
-ordem_ordenacao = st.radio("Selecione a ordem de ordenação:", ("Crescente", "Decrescente"))
+coluna_selecionada = st.selectbox("Select column to sort:", dados.columns)
+ordem_ordenacao = st.radio("Select the sort order:", ("Growing", "Descending"))
 
 
-ascending = True if ordem_ordenacao == "Crescente" else False
+ascending = True if ordem_ordenacao == "Growing" else False
 
 
 dados_ordenados = dados.sort_values(by=coluna_selecionada, ascending=ascending)
 
-numero_mostrado = st.radio('Quantidade a ser mostrada: ', ('10', '20', '50', '100'))
+numero_mostrado = st.radio('Quantity to be shown: ', ('10', '20', '50', '100'))
 dados_ordenados = dados_ordenados.dropna()
 dados_ordenados = dados_ordenados.head(int(numero_mostrado))
 
 
-st.write(f"Primeiros {numero_mostrado} registros ordenados de forma {ordem_ordenacao.lower()}: ")
+st.write(f"First {numero_mostrado} records sorted in {ordem_ordenacao.lower()} order: ")
 
 # tabela
 st.markdown(
@@ -84,3 +84,9 @@ m.save(mapa_html)
 
 
 st.components.v1.html(open(mapa_html).read(), width=700, height=500)
+
+
+
+
+
+
