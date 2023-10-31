@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SigninPage extends StatefulWidget {
+  const SigninPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SigninPage> createState() => _SigninPage();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SigninPage extends State<SigninPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +19,16 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Divider(),
+              TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                style: new TextStyle(color: Colors.white, fontSize: 20),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  labelStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+              Divider(),
               Divider(),
               TextFormField(
                 keyboardType: TextInputType.text,
@@ -34,7 +44,17 @@ class _LoginPageState extends State<LoginPage> {
                 keyboardType: TextInputType.text,
                 style: new TextStyle(color: Colors.white, fontSize: 20),
                 decoration: InputDecoration(
-                  labelText: 'password',
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+              Divider(),
+              TextFormField(
+                obscureText: true,
+                keyboardType: TextInputType.text,
+                style: new TextStyle(color: Colors.white, fontSize: 20),
+                decoration: InputDecoration(
+                  labelText: 'Corfirm password',
                   labelStyle: TextStyle(color: Colors.white),
                 ),
               ),
@@ -44,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: ElevatedButton(
                     onPressed: () => {},
                     child: Text(
-                      'Enter',
+                      'Register',
                       style: TextStyle(color: Colors.deepPurple),
                     ),
                   ))

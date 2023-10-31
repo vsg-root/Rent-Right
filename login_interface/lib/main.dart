@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_interface/SigninPageWidget.dart';
 import 'LoginPageWidget.dart';
 
 void main() => runApp(Myapp());
@@ -9,7 +10,7 @@ class Myapp extends StatelessWidget {
     return MaterialApp(
       title: 'Rent-Right',
       theme: ThemeData(primarySwatch: Colors.grey),
-      home: LoginPage(),
+      home: SigninPage(),
     );
   }
 }
