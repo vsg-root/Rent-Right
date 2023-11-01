@@ -10,7 +10,7 @@ class Myapp extends StatelessWidget {
     return MaterialApp(
       title: 'Rent-Right',
       theme: ThemeData(primarySwatch: Colors.grey),
-      home: SigninPage(),
+      home: LoginPage(),
     );
   }
 }

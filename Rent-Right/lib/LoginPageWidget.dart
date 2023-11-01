@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_interface/SigninPageWidget.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -45,6 +46,20 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () => {},
                     child: Text(
                       'Enter',
+                      style: TextStyle(color: Colors.deepPurple),
+                    ),
+                  )),
+                   Divider(),
+              ButtonTheme(
+                  height: 60,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SigninPage()));
+                    },
+                    child: Text(
+                      'Register',
                       style: TextStyle(color: Colors.deepPurple),
                     ),
                   ))
