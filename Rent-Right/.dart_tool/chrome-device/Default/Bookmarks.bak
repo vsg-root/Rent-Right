@@ -1,0 +1,70 @@
+{
+   "checksum": "2c653503236e12db57e38e8b7a89dfc3",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "13343270248567283",
+            "date_last_used": "0",
+            "guid": "1c181b5a-c409-4ea9-a1c2-badd278e497a",
+            "id": "9",
+            "name": "Lenovo Support",
+            "show_icon": false,
+            "source": "oem_preload",
+            "type": "url",
+            "url": "https://support.lenovo.com/"
+         }, {
+            "date_added": "13343270248567017",
+            "date_last_used": "0",
+            "guid": "718913be-6825-465e-895a-4b8ef62fa67c",
+            "id": "8",
+            "name": "Lenovo",
+            "show_icon": false,
+            "source": "oem_preload",
+            "type": "url",
+            "url": "https://www.lenovo.com/"
+         }, {
+            "date_added": "13343270248560096",
+            "date_last_used": "0",
+            "guid": "a3b05564-2c9b-4bf1-b4f1-844a63d92979",
+            "id": "7",
+            "name": "McAfee",
+            "show_icon": false,
+            "source": "oem_preload",
+            "type": "url",
+            "url": "https://www.mcafee.com/consumer/v/browserfav/lenovo.html"
+         } ],
+         "date_added": "13343270248076536",
+         "date_last_used": "0",
+         "date_modified": "13343321229307596",
+         "guid": "0bc5d13f-2cba-5d74-951f-3f233fe6c908",
+         "id": "1",
+         "name": "Barra de favoritos",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "other": {
+         "children": [  ],
+         "date_added": "13343270248076538",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "82b081ec-3dd3-529c-8475-ab6c344590dd",
+         "id": "2",
+         "name": "Outros favoritos",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13343270248076540",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "4cf2e351-0e85-532b-bb37-df045d8f8d0f",
+         "id": "3",
+         "name": "Favoritos do celular",
+         "source": "unknown",
+         "type": "folder"
+      }
+   },
+   "sync_metadata": "CjEKDgiIgQISCOXxGIuLAQAAEgAgASoYMHRWTCtmRFBKcno2eGFIMHFESUlNZz09oAYMEokBCAMShAEKHG5qZ0R1ODhlQ3J2WHA4NnBEN2ZIR2NxRnA4OD0SJGM3ZmEzYmRjLTNiNzYtNTNkNy04MDY0LTgyZGZhNzQyMjNjORgAIAAoADDMrOrjjS442PbuuOwvQNj27rjsL0oceXpOQjAxY241NEE3Y1JVMHVUKy9QZ21UdFVvPVoAZQAAAAASiQEIAhKEAQocWWNTVG9udkVTUHdxQ3M0TDJjclZodjY4TDk4PRIkMTMzYWJiOGQtOTQxNi01Nzk4LTljMDUtZDY3MGRkNGVhNDVkGAAgACgAMMis6uONLjjr9e647C9A6/XuuOwvShxvUFZraHdCUmJWNjVLQ1dSMitJT05IV29PdTg9WgBlAAAAABKJAQgBEoQBChx5eEovNmZ2a2VjcjdrcDVFUXpCNHRXTHBkYkU9EiRmYWRjMTMwYy1mODQwLTU4MTgtOGM1OS1hNDdhZTA2OWUyYTAYACAAKAAwx6zq440uOMz17rjsL0DM9e647C9KHGFSQ1dMZ2hGOWI1SW5xS0lEdnVKL2p2UWtGYz1aAGUAAAAAMAA4AA==",
+   "version": 1
+}

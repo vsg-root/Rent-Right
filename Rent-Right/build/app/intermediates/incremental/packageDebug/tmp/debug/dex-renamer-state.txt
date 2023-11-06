@@ -1,0 +1,4 @@
+#Tue Oct 31 21:12:20 BRT 2023
+base.0=C\:\\Users\\heito\\OneDrive\\Documentos\\estudos\\faculdade\\terceiro-periodo\\Rent-Right\\login_interface\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
