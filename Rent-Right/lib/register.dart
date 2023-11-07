@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:login_interface/SigninPageWidget.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPage();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPage extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +19,16 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Divider(),
+              TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                style: new TextStyle(color: Colors.white, fontSize: 20),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  labelStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+              Divider(),
               Divider(),
               TextFormField(
                 keyboardType: TextInputType.text,
@@ -35,7 +44,17 @@ class _LoginPageState extends State<LoginPage> {
                 keyboardType: TextInputType.text,
                 style: new TextStyle(color: Colors.white, fontSize: 20),
                 decoration: InputDecoration(
-                  labelText: 'password',
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: Colors.white),
+                ),
+              ),
+              Divider(),
+              TextFormField(
+                obscureText: true,
+                keyboardType: TextInputType.text,
+                style: new TextStyle(color: Colors.white, fontSize: 20),
+                decoration: InputDecoration(
+                  labelText: 'Corfirm password',
                   labelStyle: TextStyle(color: Colors.white),
                 ),
               ),
@@ -44,20 +63,6 @@ class _LoginPageState extends State<LoginPage> {
                   height: 60,
                   child: ElevatedButton(
                     onPressed: () => {},
-                    child: Text(
-                      'Enter',
-                      style: TextStyle(color: Colors.deepPurple),
-                    ),
-                  )),
-                   Divider(),
-              ButtonTheme(
-                  height: 60,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SigninPage()));
-                    },
                     child: Text(
                       'Register',
                       style: TextStyle(color: Colors.deepPurple),
