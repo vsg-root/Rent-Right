@@ -129,8 +129,8 @@ class _LoginPageState extends State<LoginPage> {
                                                     }
                                                     return null;
                                                   },
-                                                  keyboardType: TextInputType
-                                                      .emailAddress,
+                                                  keyboardType:
+                                                      TextInputType.text,
                                                   style: const TextStyle(
                                                       color: Color.fromARGB(
                                                           192, 0, 0, 0),
@@ -216,7 +216,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   decoration:
                                                       const InputDecoration(
                                                     border: InputBorder.none,
-                                                    hintText: 'Senha',
+                                                    hintText: 'Password',
                                                     hintStyle: TextStyle(
                                                         color: Color.fromARGB(
                                                             192, 0, 0, 0),

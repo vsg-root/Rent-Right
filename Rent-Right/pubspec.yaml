@@ -66,6 +66,7 @@ flutter:
     - assets/img/user.svg
     - assets/img/pswd.svg
     - assets/img/signup.svg
+    - assets/img/email.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
