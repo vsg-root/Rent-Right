@@ -55,6 +55,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: Form(
                             key: _formKey,
                             child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 const SizedBox(height: 50),
                                 _buildInputField(
