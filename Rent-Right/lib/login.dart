@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'register.dart';
+import 'retrieve.dart';
+import 'home.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -44,7 +47,6 @@ class _LoginPageState extends State<LoginPage> {
                             minHeight: 362,
                           ),
                           padding: const EdgeInsets.symmetric(
-                            vertical: 55,
                             horizontal: 20,
                           ),
                           clipBehavior: Clip.antiAlias,
@@ -72,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
+                                const SizedBox(height: 50),
                                 _buildInputField(
                                   'Username',
                                   'assets/img/user.svg',
@@ -98,7 +101,12 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 const SizedBox(height: 20),
                                 _buildTextButton('Forgot your password?', () {
-                                  // Add logic for "Forgot your password?" here
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const RetrievePage()),
+                                  );
                                 }),
                                 const SizedBox(height: 20),
                                 _buildElevatedButton('Login', () {
@@ -106,7 +114,11 @@ class _LoginPageState extends State<LoginPage> {
                                 }),
                                 const SizedBox(height: 20),
                                 _buildElevatedButton('Sign Up', () {
-                                  _submitForm();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => RegisterPage()),
+                                  );
                                 }),
                               ],
                             ),
@@ -116,42 +128,40 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   // WHITE FRAME IMG
-                  Container(
-                    width: 105,
-                    height: 105,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: const BoxDecoration(),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 2.50,
-                          top: 2.50,
-                          child: Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF0E2433),
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 2.50,
-                          top: 2.50,
-                          child: SvgPicture.asset(
-                            'assets/img/login.svg',
-                            width: 100.0,
-                            height: 100.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _buildWhiteFrameImage()
                 ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildWhiteFrameImage() {
+    return Container(
+      width: 105,
+      height: 105,
+      child: Stack(
+        children: [
+          Align(
+            alignment: AlignmentDirectional.center,
+            child: Container(
+              width: 100,
+              height: 100,
+              decoration: const BoxDecoration(
+                  color: Color(0xFF0E2433), shape: BoxShape.circle),
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              'assets/img/login.svg',
+              width: 100,
+              height: 100,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -283,6 +293,10 @@ class _LoginPageState extends State<LoginPage> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Welcome!'),

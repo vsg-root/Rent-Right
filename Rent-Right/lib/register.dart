@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -102,7 +103,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                   obscureText: true,
                                 ),
                                 const SizedBox(height: 20),
-                                _buildElevatedButton('Login', _submitForm),
+                                _buildElevatedButton(
+                                    'Login', () => Navigator.pop(context)),
                                 const SizedBox(height: 20),
                                 _buildElevatedButton('Sign Up', _submitForm),
                               ],
@@ -251,9 +253,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Welcome!'),
+          content: Text('Account created successfully!'),
         ),
       );
     }

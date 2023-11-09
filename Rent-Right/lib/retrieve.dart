@@ -79,10 +79,11 @@ class _RetrievePage extends State<RetrievePage> {
                                 ),
                                 const SizedBox(height: 50),
                                 _buildElevatedButton('Retrieve Password', () {
-                                  _handleFormSubmission(context);
+                                  _submitForm(context);
                                 }),
                                 const SizedBox(height: 20),
-                                _buildElevatedButton('Back', () {}),
+                                _buildElevatedButton(
+                                    'Back', () => Navigator.pop(context)),
                               ],
                             ),
                           ),
@@ -216,7 +217,7 @@ class _RetrievePage extends State<RetrievePage> {
     );
   }
 
-  void _handleFormSubmission(BuildContext context) {
+  void _submitForm(BuildContext context) {
     if (_emailController.text.isEmpty && _usernameController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -225,6 +226,8 @@ class _RetrievePage extends State<RetrievePage> {
         ),
       );
     } else {
+      Navigator.pop(context);
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('A password redefinition email has been sent to you!'),

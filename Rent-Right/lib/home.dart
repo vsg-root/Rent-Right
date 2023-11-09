@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'login.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -127,9 +128,9 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-              _buildOption('Pesquisar', 'assets/img/dollar-coin.svg'),
+              _buildOption('Pesquisar', 'assets/img/dollar-coin.svg', () {}),
               const SizedBox(width: 32),
-              _buildOption('Recomendações', 'assets/img/eyeball.svg'),
+              _buildOption('Recomendações', 'assets/img/eyeball.svg', () {}),
             ])),
         const SizedBox(height: 32),
         Expanded(
@@ -138,15 +139,16 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-              _buildOption('Configurações', 'assets/img/cog.svg'),
+              _buildOption('Configurações', 'assets/img/cog.svg', () {}),
               const SizedBox(width: 32),
-              _buildOption('Sair', 'assets/img/logout.svg'),
+              _buildOption('Sair', 'assets/img/logout.svg',
+                  () => Navigator.pop(context)),
             ])),
       ],
     );
   }
 
-  Widget _buildOption(String btnText, String svgAsset) {
+  Widget _buildOption(String btnText, String svgAsset, void Function() onTap) {
     return Expanded(
         child: Container(
       height: double.infinity,
@@ -156,7 +158,7 @@ class _HomePageState extends State<HomePage> {
         color: Color(0xFFD9D9D9),
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
