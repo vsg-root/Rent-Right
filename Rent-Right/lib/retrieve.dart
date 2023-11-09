@@ -16,7 +16,7 @@ class _RetrivePage extends State<RetrivePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0XFF213644),
+        backgroundColor: const Color(0XFF213644),
         body: Container(
           // MAIN FRAME
           padding: const EdgeInsets.only(
