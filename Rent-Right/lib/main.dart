@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'register.dart';
 import 'login.dart';
+import 'retrieve.dart';
 
 void main() => runApp(Myapp());
 
@@ -10,7 +11,7 @@ class Myapp extends StatelessWidget {
     return MaterialApp(
       title: 'Rent-Right',
       theme: ThemeData(primarySwatch: Colors.grey),
-      home: RegisterPage(),
+      home: RetrivePage(),
     );
   }
 }

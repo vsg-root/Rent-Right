@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class RetrivePage extends StatefulWidget {
+  const RetrivePage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPage();
+  State<RetrivePage> createState() => _RetrivePage();
 }
 
-class _RegisterPage extends State<RegisterPage> {
+class _RetrivePage extends State<RetrivePage> {
   final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0XFF213644),
+        backgroundColor: Color(0XFF213644),
         body: Container(
           // MAIN FRAME
           padding: const EdgeInsets.only(
-            top: 50,
+            top: 125,
             left: 50,
             right: 50,
-            bottom: 50,
+            bottom: 125,
           ),
           clipBehavior: Clip.antiAlias,
           decoration: const BoxDecoration(color: Color(0xFF213644)),
@@ -116,19 +118,13 @@ class _RegisterPage extends State<RegisterPage> {
                                                               .center,
                                                       child: SvgPicture.asset(
                                                         'assets/img/email.svg',
-                                                        width: 30.98,
-                                                        height: 31.0,
+                                                        width: 100.0,
+                                                        height: 100.0,
                                                       ))),
                                               const SizedBox(width: 10),
                                               Expanded(
                                                 child: TextFormField(
-                                                  validator: (value) {
-                                                    if (value == null ||
-                                                        value.isEmpty) {
-                                                      return 'Please enter a email';
-                                                    }
-                                                    return null;
-                                                  },
+                                                  controller: _emailController,
                                                   keyboardType: TextInputType
                                                       .emailAddress,
                                                   style: const TextStyle(
@@ -194,13 +190,8 @@ class _RegisterPage extends State<RegisterPage> {
                                               const SizedBox(width: 10),
                                               Expanded(
                                                 child: TextFormField(
-                                                  validator: (value) {
-                                                    if (value == null ||
-                                                        value.isEmpty) {
-                                                      return 'Please enter a username';
-                                                    }
-                                                    return null;
-                                                  },
+                                                  controller:
+                                                      _usernameController,
                                                   keyboardType:
                                                       TextInputType.text,
                                                   style: const TextStyle(
@@ -226,158 +217,7 @@ class _RegisterPage extends State<RegisterPage> {
                                             ],
                                           ),
                                         ),
-                                        const SizedBox(height: 20),
-                                        Container(
-                                          width: double.infinity,
-                                          height: 50,
-                                          clipBehavior: Clip.antiAlias,
-                                          decoration: const BoxDecoration(
-                                              color: Color(0xFFD9D9D9)),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                  width: 50,
-                                                  height: double.infinity,
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    top: 10,
-                                                    left: 10,
-                                                    right: 10,
-                                                    bottom: 10,
-                                                  ),
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                          color: Color(
-                                                              0xFF0E2433)),
-                                                  child: Align(
-                                                      alignment:
-                                                          AlignmentDirectional
-                                                              .center,
-                                                      child: SvgPicture.asset(
-                                                        'assets/img/pswd.svg',
-                                                        width: 22.03,
-                                                        height: 30.0,
-                                                      ))),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: TextFormField(
-                                                  validator: (value) {
-                                                    if (value == null ||
-                                                        value.isEmpty) {
-                                                      return 'Please enter a password';
-                                                    }
-                                                    return null;
-                                                  },
-                                                  keyboardType: TextInputType
-                                                      .visiblePassword,
-                                                  obscureText: true,
-                                                  enableSuggestions: false,
-                                                  autocorrect: false,
-                                                  style: const TextStyle(
-                                                      color: Color.fromARGB(
-                                                          192, 0, 0, 0),
-                                                      fontSize: 16,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w200),
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    border: InputBorder.none,
-                                                    hintText: 'Senha',
-                                                    hintStyle: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            192, 0, 0, 0),
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w200),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(height: 20),
-                                        Container(
-                                          width: double.infinity,
-                                          height: 50,
-                                          clipBehavior: Clip.antiAlias,
-                                          decoration: const BoxDecoration(
-                                              color: Color(0xFFD9D9D9)),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                  width: 50,
-                                                  height: double.infinity,
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    top: 10,
-                                                    left: 10,
-                                                    right: 10,
-                                                    bottom: 10,
-                                                  ),
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                          color: Color(
-                                                              0xFF0E2433)),
-                                                  child: Align(
-                                                      alignment:
-                                                          AlignmentDirectional
-                                                              .center,
-                                                      child: SvgPicture.asset(
-                                                        'assets/img/pswd.svg',
-                                                        width: 22.03,
-                                                        height: 30.0,
-                                                      ))),
-                                              const SizedBox(width: 10),
-                                              Expanded(
-                                                child: TextFormField(
-                                                  validator: (value) {
-                                                    if (value == null ||
-                                                        value.isEmpty) {
-                                                      return 'Please confirm your password';
-                                                    }
-                                                    return null;
-                                                  },
-                                                  keyboardType: TextInputType
-                                                      .visiblePassword,
-                                                  obscureText: true,
-                                                  enableSuggestions: false,
-                                                  autocorrect: false,
-                                                  style: const TextStyle(
-                                                      color: Color.fromARGB(
-                                                          192, 0, 0, 0),
-                                                      fontSize: 16,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w200),
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    border: InputBorder.none,
-                                                    hintText:
-                                                        'Confirm Password',
-                                                    hintStyle: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            192, 0, 0, 0),
-                                                        fontFamily: 'Inter',
-                                                        fontWeight:
-                                                            FontWeight.w200),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(height: 20),
+                                        const SizedBox(height: 50),
                                         SizedBox(
                                           width: double.infinity,
                                           height: 50,
@@ -404,21 +244,30 @@ class _RegisterPage extends State<RegisterPage> {
                                                 ),
                                               ),
                                               onPressed: () {
-                                                // Validate returns true if the form is valid, or false otherwise.
-                                                if (_formKey.currentState!
-                                                    .validate()) {
-                                                  // If the form is valid, display a snackbar. In the real world,
-                                                  // you'd often call a server or save the information in a database.
+                                                if (_usernameController
+                                                        .text.isEmpty &&
+                                                    _emailController
+                                                        .text.isEmpty) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(
                                                     const SnackBar(
-                                                        content:
-                                                            Text('Welcome!')),
+                                                        backgroundColor:
+                                                            Color.fromARGB(255,
+                                                                255, 54, 54),
+                                                        content: Text(
+                                                            'Please fill at least one of the fields!')),
+                                                  );
+                                                } else {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                        content: Text(
+                                                            'An password redefinition email has been sent to you!')),
                                                   );
                                                 }
                                               },
                                               child: const Text(
-                                                'Login',
+                                                'Retrive Password',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   color: Colors.white,
@@ -455,22 +304,9 @@ class _RegisterPage extends State<RegisterPage> {
                                                   },
                                                 ),
                                               ),
-                                              onPressed: () {
-                                                // Validate returns true if the form is valid, or false otherwise.
-                                                if (_formKey.currentState!
-                                                    .validate()) {
-                                                  // If the form is valid, display a snackbar. In the real world,
-                                                  // you'd often call a server or save the information in a database.
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    const SnackBar(
-                                                        content:
-                                                            Text('Welcome!')),
-                                                  );
-                                                }
-                                              },
+                                              onPressed: () {},
                                               child: const Text(
-                                                'Sign Up',
+                                                'Back',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   color: Colors.white,
@@ -510,13 +346,13 @@ class _RegisterPage extends State<RegisterPage> {
                           Align(
                               alignment: AlignmentDirectional.center,
                               child: SvgPicture.asset(
-                                'assets/img/signup.svg',
-                                width: 62.0,
-                                height: 45.16,
+                                'assets/img/retrieve.svg',
+                                width: 49.21,
+                                height: 41.64,
                               ))
                         ],
                       ),
-                    ),
+                    )
                   ],
                 ),
               )
