@@ -9,7 +9,7 @@ from xgboost import plot_importance
 
 
 st.set_page_config(
-    page_title = 'Dasboard Rent Right',
+    page_title = 'Dashboard Rent Right',
     layout = 'wide',
     menu_items = {
         'About': '''Esse projeto foi desenvolvido pelos alunos Alexandre, Heitor, Pedro, Vinivius Ferraz, Vinicius Santos e Vinicius Gomes.'''
@@ -97,7 +97,7 @@ For reference, the following table describes the columns within the "USA Housing
 ''')   
     
 st.markdown('''## Viewing dataset columns''')
-dataset = pd.read_csv('dataset\housing.csv')
+dataset = pd.read_parquet("C:\Dev\Rent-Right\dataset\housing.parquet")
 st.write(dataset.head())
 
 del_columns = ['laundry_options', 'parking_options', 'id', 'url', 'image_url', 'region_url', 'description']
