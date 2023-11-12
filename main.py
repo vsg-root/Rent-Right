@@ -9,7 +9,7 @@ def main():
     st.sidebar.title("Navegação")
     choice = st.sidebar.selectbox("Escolha a Página", ["Home", "Análise Descritiva", "Visualizações", "Clusterização", "Previsão de Preço"])
 
-    df = load_data("C:\Dev\Rent-Right\dataset\housing.parquet")  # Atualize este caminho
+    df = load_data("dataset\housing.parquet")  # Caminho atualizado
 
     if choice == "Home":
         st.subheader("Home")

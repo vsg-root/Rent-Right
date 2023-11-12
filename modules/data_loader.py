@@ -5,8 +5,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 
 def load_data(filepath):
-    df = pd.read_parquet("C:\Dev\Rent-Right\dataset\housing.parquet")
-
+    df = pd.read_parquet("dataset\housing.parquet")
     
     categorical_cols = ['type', 'laundry_options', 'parking_options', 'state']  # ajuste conforme necessário
 
