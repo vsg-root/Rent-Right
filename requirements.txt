@@ -1,4 +1,3 @@
-gitaltair==5.1.2
 attrs==23.1.0
 blinker==1.6.3
 cachetools==5.3.1
