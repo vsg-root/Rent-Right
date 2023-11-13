@@ -211,10 +211,10 @@ class _LoginPageState extends State<LoginPage> {
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w200,
               ),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Username',
-                hintStyle: TextStyle(
+                hintText: hintText,
+                hintStyle: const TextStyle(
                   color: Color.fromARGB(192, 0, 0, 0),
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w200,
