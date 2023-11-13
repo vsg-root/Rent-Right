@@ -1,6 +1,5 @@
 import streamlit as st
 from modules.data_loader import load_data
-import streamlit as st
 import seaborn as sns
 import matplotlib.pyplot as plt
 
