@@ -2,3 +2,4 @@ env/
 dataset/housing.csv
 dataset/housing.parquet
 mapa_temp.html
+virtenv/
