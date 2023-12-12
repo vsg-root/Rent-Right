@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:login_interface/screens/user.dart';
 import 'register.dart';
 import 'retrieve.dart';
 import 'home.dart'; 
@@ -117,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => RegisterPage()),
+                                        builder: (context) => UserPage()),
                                   );
                                 }),
                               ],
