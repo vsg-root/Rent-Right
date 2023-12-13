@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:login_interface/models/user.dart';
 import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -8,6 +9,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  
   final _formKey = GlobalKey<FormState>();
 
   @override
