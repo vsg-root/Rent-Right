@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:login_interface/screens/user.dart';
 import 'login.dart';
 
 class HomePage extends StatefulWidget {
@@ -104,7 +105,10 @@ class _HomePageState extends State<HomePage> {
                   backgroundColor: MaterialStateProperty.all(
                       const Color.fromARGB(0, 255, 255, 255)),
                 ),
-                onPressed: () {},
+                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UserPage())),
                 icon: SvgPicture.asset(
                   'assets/img/user.svg',
                   width: 100,
