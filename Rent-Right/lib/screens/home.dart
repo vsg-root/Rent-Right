@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:login_interface/screens/user.dart';
+
 import 'login.dart';
 
 class HomePage extends StatefulWidget {
@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => UserPage())),
+                                        builder: (context) => LoginPage())),
                 icon: SvgPicture.asset(
                   'assets/img/user.svg',
                   width: 100,

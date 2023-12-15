@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:login_interface/screens/user.dart';
 import 'register.dart';
 import 'retrieve.dart';
 import 'home.dart'; 
@@ -18,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0XFF213644),
       body: Container(
         padding: const EdgeInsets.symmetric(
@@ -85,8 +85,11 @@ class _LoginPageState extends State<LoginPage> {
                                       return 'Please enter a username';
                                     }
                                     return null;
+                                    
                                   },
+                                
                                 ),
+                                
                                 const SizedBox(height: 20),
                                 _buildInputField(
                                   'Password',
@@ -99,7 +102,9 @@ class _LoginPageState extends State<LoginPage> {
                                     return null;
                                   },
                                   obscureText: true,
-                                ),
+                                  
+                                 
+  ),
                                 const SizedBox(height: 20),
                                 _buildTextButton('Forgot your password?', () {
                                   Navigator.push(
