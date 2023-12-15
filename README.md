@@ -40,6 +40,6 @@ We welcome contributions from the community to improve Rent Right Mobile App. If
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-For any questions or inquiries, please contact [vinicius.fferraz2@ufrpe.br](vinicius.fferraz2@ufrpe.br).
+For any questions or inquiries, please contact [heitor.leonny@ufrpe.br](heitor.leonny@ufrpe.br).
 
 Thank you for your interest in Rent Right Mobile App, a powerful, open-source tool for informed rental decisions on the go!
