@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'screens/login.dart';
+import 'package:login_interface/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(const Myapp());
+void main() async{
+
+  runApp(const Myapp());
+}
 
 class Myapp extends StatelessWidget {
   const Myapp({super.key});

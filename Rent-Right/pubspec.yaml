@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  firebase_core: ^2.24.2
+  cloud_firestore: ^4.13.6
   flutter_native_splash: 2.2.16
   flutter_launcher_icons: ^0.9.1
 

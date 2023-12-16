@@ -1,18 +1,26 @@
+import 'dart:ffi';
+
 class User{
+  String _id;
   String _userName;
   String _email;
   String _password;
   String _urlImage;
 
    User({
+    required String id,
     required String userName,
     required String email,
     required String password,
     required String urlImage,
-  })  : _userName = userName,
+  })  : _id = id, 
+        _userName = userName,
         _email = email,
         _password = password,
         _urlImage = urlImage;
+
+
+  String getId() => _id;
 
   String getUserName() => _userName;
   
@@ -36,12 +44,5 @@ class User{
 } 
 
 
-void main(List<String> args) {
-  User user = new User(userName: "userName", email: "email", password: "password", urlImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPQzg2-modiBeSBIckt_NcpipPPGQfZA_dbQ&usqp=CAU");
-  print(user.getUserName());
-  print(user.getEmail());
-  print(user._getPassword());
-  print(user.getUrlImage());
-}
 
 
