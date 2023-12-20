@@ -44,37 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCST4dOKf7D6txHQAVVgzBwp-oQG9eUp-Y',
-    appId: '1:1090851955881:web:03ddacc9309bd2a1ceb5b8',
-    messagingSenderId: '1090851955881',
-    projectId: 'rentright-890b5',
-    authDomain: 'rentright-890b5.firebaseapp.com',
-    storageBucket: 'rentright-890b5.appspot.com',
+    apiKey: 'AIzaSyBH9JB525dmFGh_E3GBWB7fdmPlWmFSBFk',
+    appId: '1:66507924301:web:35c3507ae9bddc07fb0d04',
+    messagingSenderId: '66507924301',
+    projectId: 'rent-right-4a1fb',
+    authDomain: 'rent-right-4a1fb.firebaseapp.com',
+    storageBucket: 'rent-right-4a1fb.appspot.com',
+    measurementId: 'G-BB1TTC1DZC',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC-QUsNsSG2WGPmN21Ow8oWh_Il1o9_p3k',
-    appId: '1:1090851955881:android:b6cd87de958bca74ceb5b8',
-    messagingSenderId: '1090851955881',
-    projectId: 'rentright-890b5',
-    storageBucket: 'rentright-890b5.appspot.com',
+    apiKey: 'AIzaSyAVzxnL3pLzFUgRzciNmA3-bcio44Xu-Ik',
+    appId: '1:66507924301:android:6c14ae31cc231073fb0d04',
+    messagingSenderId: '66507924301',
+    projectId: 'rent-right-4a1fb',
+    storageBucket: 'rent-right-4a1fb.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCV5yhPibukAOIV38Wv5IS2Uf9O2Cu1Zqk',
-    appId: '1:1090851955881:ios:0c7405bdea0162c6ceb5b8',
-    messagingSenderId: '1090851955881',
-    projectId: 'rentright-890b5',
-    storageBucket: 'rentright-890b5.appspot.com',
+    apiKey: 'AIzaSyDlr985Kl6zAKCYx71cP7rmgVhc3Nvueeo',
+    appId: '1:66507924301:ios:c4e4523fc899c788fb0d04',
+    messagingSenderId: '66507924301',
+    projectId: 'rent-right-4a1fb',
+    storageBucket: 'rent-right-4a1fb.appspot.com',
     iosBundleId: 'com.example.loginInterface',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCV5yhPibukAOIV38Wv5IS2Uf9O2Cu1Zqk',
-    appId: '1:1090851955881:ios:3bf7dd6ad1ea468bceb5b8',
-    messagingSenderId: '1090851955881',
-    projectId: 'rentright-890b5',
-    storageBucket: 'rentright-890b5.appspot.com',
+    apiKey: 'AIzaSyDlr985Kl6zAKCYx71cP7rmgVhc3Nvueeo',
+    appId: '1:66507924301:ios:e644f81e734ddd48fb0d04',
+    messagingSenderId: '66507924301',
+    projectId: 'rent-right-4a1fb',
+    storageBucket: 'rent-right-4a1fb.appspot.com',
     iosBundleId: 'com.example.loginInterface.RunnerTests',
   );
 }

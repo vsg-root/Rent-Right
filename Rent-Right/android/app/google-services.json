@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1090851955881",
-    "project_id": "rentright-890b5",
-    "storage_bucket": "rentright-890b5.appspot.com"
+    "project_number": "66507924301",
+    "project_id": "rent-right-4a1fb",
+    "storage_bucket": "rent-right-4a1fb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1090851955881:android:b6cd87de958bca74ceb5b8",
+        "mobilesdk_app_id": "1:66507924301:android:6c14ae31cc231073fb0d04",
         "android_client_info": {
           "package_name": "com.example.login_interface"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC-QUsNsSG2WGPmN21Ow8oWh_Il1o9_p3k"
+          "current_key": "AIzaSyAVzxnL3pLzFUgRzciNmA3-bcio44Xu-Ik"
         }
       ],
       "services": {
