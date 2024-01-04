@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'register.dart';
 import 'retrieve.dart';
-import 'home.dart'; 
+import 'home.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,8 +14,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -69,65 +74,67 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ],
                           ),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                const SizedBox(height: 50),
-                                _buildInputField(
-                                  'Username',
-                                  'assets/img/user.svg',
-                                  TextInputType.text,
-                                  (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter a username';
-                                    }
-                                    return null;
-                                    
-                                  },
-                                
-                                ),
-                                
-                                const SizedBox(height: 20),
-                                _buildInputField(
-                                  'Password',
-                                  'assets/img/pswd.svg',
-                                  TextInputType.visiblePassword,
-                                  (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter a password';
-                                    }
-                                    return null;
-                                  },
-                                  obscureText: true,
-                                  
-                                 
-  ),
-                                const SizedBox(height: 20),
-                                _buildTextButton('Forgot your password?', () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const RetrievePage()),
-                                  );
-                                }),
-                                const SizedBox(height: 20),
-                                _buildElevatedButton('Login', () {
-                                  _submitForm();
-                                }),
-                                const SizedBox(height: 20),
-                                _buildElevatedButton('Sign Up', () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => RegisterPage()),
-                                  );
-                                }),
-                              ],
+                          child: SingleChildScrollView(
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  const SizedBox(height: 50),
+                                  _buildInputField(
+                                    _usernameController,
+                                    'Email',
+                                    'assets/img/email.svg',
+                                    TextInputType.emailAddress,
+                                    (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter a username';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  const SizedBox(height: 20),
+                                  _buildInputField(
+                                    _passwordController,
+                                    'Password',
+                                    'assets/img/pswd.svg',
+                                    TextInputType.visiblePassword,
+                                    (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter a password';
+                                      }
+                                      
+                                      return null;
+                                    },
+
+
+                                    obscureText: true,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  _buildTextButton('Forgot your password?', () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const RetrievePage()),
+                                    );
+                                  }),
+                                  const SizedBox(height: 20),
+                                  _buildElevatedButton('Login', () {
+                                    _submitForm(context);
+                                  }),
+                                  const SizedBox(height: 20),
+                                  _buildElevatedButton('Sign Up', () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => RegisterPage()),
+                                    );
+                                  }),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -146,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildWhiteFrameImage() {
-    return Container(
+    return SizedBox(
       width: 105,
       height: 105,
       child: Stack(
@@ -173,15 +180,19 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildInputField(String hintText, String svgAsset,
-      TextInputType inputType, String? Function(String?) validator,
+  Widget _buildInputField(
+      TextEditingController controller,
+      String hintText,
+      String svgAsset,
+      TextInputType inputType,
+      String? Function(String?) validator,
       {bool obscureText = false}) {
     return Container(
       width: double.infinity,
       height: 50,
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: const Color(0xFFD9D9D9),
+      decoration: const BoxDecoration(
+        color: Color(0xFFD9D9D9),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -193,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
             height: double.infinity,
             padding: const EdgeInsets.all(10),
             decoration: const BoxDecoration(
-              color: const Color(0xFF0E2433),
+              color: Color(0xFF0E2433),
             ),
             child: Align(
               alignment: AlignmentDirectional.center,
@@ -207,6 +218,7 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(width: 10),
           Expanded(
             child: TextFormField(
+              controller: controller,
               validator: validator,
               keyboardType: inputType,
               obscureText: obscureText,
@@ -237,7 +249,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildTextButton(String buttonText, void Function() onPressed) {
     return Container(
       width: double.infinity,
-      height: 25,
+      height: 50,
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(),
       child: Row(
@@ -298,17 +310,31 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _submitForm() {
+  Future<void> _submitForm(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Welcome!'),
-        ),
-      );
+      try {
+        await _auth.signInWithEmailAndPassword(
+          email: _usernameController.text,
+          password: _passwordController.text,
+        );
+
+        // ignore: use_build_context_synchronously
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Welcome!'),
+          ),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Wrong username or password!'),
+        ));
+      }
     }
   }
 }

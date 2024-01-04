@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'login.dart';
+import 'profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -58,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                   left: 0,
                   top: 0,
                   child: Text(
-                    'Bem-vindo',
+                    'Welcome',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 29.29,
@@ -71,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                   left: 0,
                   top: 73,
                   child: Text(
-                    'Como podemos te ajudar hoje?',
+                    'How can we help you today?',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12.20,
@@ -105,10 +107,8 @@ class _HomePageState extends State<HomePage> {
                   backgroundColor: MaterialStateProperty.all(
                       const Color.fromARGB(0, 255, 255, 255)),
                 ),
-                onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginPage())),
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfilePage())),
                 icon: SvgPicture.asset(
                   'assets/img/user.svg',
                   width: 100,
@@ -132,9 +132,9 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-              _buildOption('Pesquisar', 'assets/img/dollar-coin.svg', () {}),
+              _buildOption('Search', 'assets/img/dollar-coin.svg', () {}),
               const SizedBox(width: 32),
-              _buildOption('Recomendações', 'assets/img/eyeball.svg', () {}),
+              _buildOption('Suggestions', 'assets/img/eyeball.svg', () {}),
             ])),
         const SizedBox(height: 32),
         Expanded(
@@ -143,13 +143,23 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-              _buildOption('Configurações', 'assets/img/cog.svg', () {}),
+              _buildOption('Settings', 'assets/img/cog.svg', () {}),
               const SizedBox(width: 32),
-              _buildOption('Sair', 'assets/img/logout.svg',
-                  () => Navigator.pop(context)),
+              _buildOption(
+                  'Exit', 'assets/img/logout.svg', () => _logoutUser()),
             ])),
       ],
     );
+  }
+
+  void _logoutUser() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context); // Retorna para a tela anterior após o logout
+    } catch (e) {
+      print('Erro ao fazer logout: $e');
+    }
   }
 
   Widget _buildOption(String btnText, String svgAsset, void Function() onTap) {

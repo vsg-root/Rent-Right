@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:login_interface/models/user.dart';
+import 'package:login_interface/models/Account.dart';
+import 'package:login_interface/services/userService.dart';
 import 'login.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -9,8 +10,13 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  
   final _formKey = GlobalKey<FormState>();
+  final _userService = UserService(); // Instância do UserService
+
+  String _email = '';
+  String _username = '';
+  String _password = '';
+  String _confirmPassword = '';
 
   @override
   Widget build(BuildContext context) {
@@ -57,59 +63,60 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           child: Form(
                             key: _formKey,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                const SizedBox(height: 50),
-                                _buildInputField(
-                                  'assets/img/email.svg',
-                                  'Email',
-                                  TextInputType.emailAddress,
-                                  (value) {
-                                    return _validateNotEmpty(
-                                        value, 'Please enter an email');
-                                  },
-                                ),
-                                const SizedBox(height: 20),
-                                _buildInputField(
-                                  'assets/img/user.svg',
-                                  'Username',
-                                  TextInputType.text,
-                                  (value) {
-                                    return _validateNotEmpty(
-                                        value, 'Please enter a username');
-                                  },
-                                ),
-                                const SizedBox(height: 20),
-                                _buildInputField(
-                                  'assets/img/pswd.svg',
-                                  'Password',
-                                  TextInputType.visiblePassword,
-                                  (value) {
-                                    return _validateNotEmpty(
-                                        value, 'Please enter a password');
-                                  },
-                                  obscureText: true,
-                                ),
-                                const SizedBox(height: 20),
-                                _buildInputField(
-                                  'assets/img/pswd.svg',
-                                  'Confirm Password',
-                                  TextInputType.visiblePassword,
-                                  (value) {
-                                    return _validateNotEmpty(
-                                        value, 'Please confirm your password');
-                                  },
-                                  obscureText: true,
-                                ),
-                                const SizedBox(height: 20),
-                                _buildElevatedButton(
-                                    'Login', () => Navigator.pop(context)),
-                                const SizedBox(height: 20),
-                                _buildElevatedButton('Sign Up', _submitForm),
-                              ],
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  const SizedBox(height: 50),
+                                  _buildInputField(
+                                    'assets/img/email.svg',
+                                    'Email',
+                                    TextInputType.emailAddress,
+                                    (value) {
+                                      return _validateNotEmpty(
+                                          value, 'Please enter an email');
+                                    },
+                                  ),
+                                  const SizedBox(height: 20),
+                                  _buildInputField(
+                                    'assets/img/user.svg',
+                                    'Username',
+                                    TextInputType.text,
+                                    (value) {
+                                      return _validateNotEmpty(
+                                          value, 'Please enter a username');
+                                    },
+                                  ),
+                                  const SizedBox(height: 20),
+                                  _buildInputField(
+                                    'assets/img/pswd.svg',
+                                    'Password',
+                                    TextInputType.visiblePassword,
+                                    (value) {
+                                      return _validateNotEmpty(
+                                          value, 'Please enter a password');
+                                    },
+                                    obscureText: true,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  _buildInputField(
+                                    'assets/img/pswd.svg',
+                                    'Confirm Password',
+                                    TextInputType.visiblePassword,
+                                    (value) {
+                                      return _validateNotEmpty(
+                                          value, 'Please confirm your password');
+                                    },
+                                    obscureText: true,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  _buildElevatedButton('Sign Up', _submitForm),
+                                  const SizedBox(height: 20),
+                                  _buildElevatedButton('Login', () => Navigator.pop(context)),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -156,6 +163,20 @@ class _RegisterPageState extends State<RegisterPage> {
           const SizedBox(width: 10),
           Expanded(
             child: TextFormField(
+              onChanged: (value) {
+                setState(() {
+                  // Atualiza o valor do campo correspondente conforme o usuário digita
+                  if (hintText == 'Email') {
+                    _email = value;
+                  } else if (hintText == 'Username') {
+                    _username = value;
+                  } else if (hintText == 'Password') {
+                    _password = value;
+                  } else if (hintText == 'Confirm Password') {
+                    _confirmPassword = value;
+                  }
+                });
+              },
               validator: validator,
               keyboardType: keyboardType,
               obscureText: obscureText,
@@ -253,14 +274,44 @@ class _RegisterPageState extends State<RegisterPage> {
     return null;
   }
 
-  void _submitForm() {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Account created successfully!'),
-        ),
+      if (_password != _confirmPassword) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Passwords do not match!'),
+          ),
+        );
+        return;
+      }
+
+      print(_email);
+      print(_username);
+      print(_password);
+
+      Account newUser = Account(
+        email: _email.trim(),
+        userName: _username,
+        urlImage:
+            'https://www.pngfind.com/pngs/m/664-6644794_png-file-windows-10-person-icon-transparent-png.png',
+        pswd: _password,
       );
+
+      try {
+        await _userService.addUser(newUser);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Account created successfully!'),
+          ),
+        );
+        Navigator.pop(context);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error creating account: $e'),
+          ),
+        );
+      }
     }
   }
 }

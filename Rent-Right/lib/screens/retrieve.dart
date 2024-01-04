@@ -57,34 +57,36 @@ class _RetrievePage extends State<RetrievePage> {
                               ),
                             ],
                           ),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                _buildInputField(
-                                  'assets/img/email.svg',
-                                  'Email',
-                                  TextInputType.emailAddress,
-                                  _emailController,
-                                ),
-                                const SizedBox(height: 20),
-                                _buildInputField(
-                                  'assets/img/user.svg',
-                                  'Username',
-                                  TextInputType.text,
-                                  _usernameController,
-                                ),
-                                const SizedBox(height: 50),
-                                _buildElevatedButton('Retrieve Password', () {
-                                  _submitForm(context);
-                                }),
-                                const SizedBox(height: 20),
-                                _buildElevatedButton(
-                                    'Back', () => Navigator.pop(context)),
-                              ],
+                          child: SingleChildScrollView(
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  _buildInputField(
+                                    'assets/img/email.svg',
+                                    'Email',
+                                    TextInputType.emailAddress,
+                                    _emailController,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  _buildInputField(
+                                    'assets/img/user.svg',
+                                    'Username',
+                                    TextInputType.text,
+                                    _usernameController,
+                                  ),
+                                  const SizedBox(height: 50),
+                                  _buildElevatedButton('Retrieve Password', () {
+                                    _submitForm(context);
+                                  }),
+                                  const SizedBox(height: 20),
+                                  _buildElevatedButton(
+                                      'Back', () => Navigator.pop(context)),
+                                ],
+                              ),
                             ),
                           ),
                         ),
