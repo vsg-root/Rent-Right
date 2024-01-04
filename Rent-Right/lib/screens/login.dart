@@ -72,68 +72,6 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ],
                           ),
-<<<<<<< Updated upstream
-                          child: SingleChildScrollView(
-                            child: Form(
-                              key: _formKey,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  const SizedBox(height: 50),
-                                  _buildInputField(
-                                    _usernameController,
-                                    'Email',
-                                    'assets/img/email.svg',
-                                    TextInputType.emailAddress,
-                                    (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter a username';
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  _buildInputField(
-                                    _passwordController,
-                                    'Password',
-                                    'assets/img/pswd.svg',
-                                    TextInputType.visiblePassword,
-                                    (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter a password';
-                                      }
-                                      
-                                      return null;
-                                    },
-
-
-                                    obscureText: true,
-                                  ),
-                                  const SizedBox(height: 20),
-                                  _buildTextButton('Forgot your password?', () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const RetrievePage()),
-                                    );
-                                  }),
-                                  const SizedBox(height: 20),
-                                  _buildElevatedButton('Login', () {
-                                    _submitForm(context);
-                                  }),
-                                  const SizedBox(height: 20),
-                                  _buildElevatedButton('Sign Up', () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => RegisterPage()),
-                                    );
-                                  }),
-                                ],
-=======
                           child: Form(
                             key: _formKey,
                             child: Center(
@@ -195,7 +133,6 @@ class _LoginPageState extends State<LoginPage> {
                                     }),
                                   ],
                                 ),
->>>>>>> Stashed changes
                               ),
                             ),
                           ),
