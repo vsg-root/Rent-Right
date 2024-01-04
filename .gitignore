@@ -1,5 +1,7 @@
-env/
-dataset/housing.csv
-dataset/housing.parquet
-mapa_temp.html
-virtenv/
+*.pyc
+__pycache__
+.history
+*.html
+venv
+dataset
+test
