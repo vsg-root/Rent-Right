@@ -21,7 +21,6 @@ class _RetrievePage extends State<RetrievePage> {
         padding: const EdgeInsets.symmetric(vertical: 110, horizontal: 50),
         decoration: const BoxDecoration(color: Color(0xFF213644)),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
@@ -57,6 +56,7 @@ class _RetrievePage extends State<RetrievePage> {
                               ),
                             ],
                           ),
+<<<<<<< Updated upstream
                           child: SingleChildScrollView(
                             child: Form(
                               key: _formKey,
@@ -86,6 +86,39 @@ class _RetrievePage extends State<RetrievePage> {
                                   _buildElevatedButton(
                                       'Back', () => Navigator.pop(context)),
                                 ],
+=======
+                          child: Center(
+                            child: SingleChildScrollView(
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    _buildInputField(
+                                      'assets/img/email.svg',
+                                      'Email',
+                                      TextInputType.emailAddress,
+                                      _emailController,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    _buildInputField(
+                                      'assets/img/user.svg',
+                                      'Username',
+                                      TextInputType.text,
+                                      _usernameController,
+                                    ),
+                                    const SizedBox(height: 50),
+                                    _buildElevatedButton('Retrieve Password',
+                                        () {
+                                      _submitForm(context);
+                                    }),
+                                    const SizedBox(height: 20),
+                                    _buildElevatedButton(
+                                        'Back', () => Navigator.pop(context)),
+                                  ],
+                                ),
+>>>>>>> Stashed changes
                               ),
                             ),
                           ),

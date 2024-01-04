@@ -21,14 +21,18 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF213644),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: const Color(0XFF213644),
       body: Container(
-        padding: const EdgeInsets.all(50),
-        decoration: const BoxDecoration(
-          color: Color(0xFF213644),
+        padding: const EdgeInsets.symmetric(
+          vertical: 50,
+          horizontal: 50,
         ),
+        clipBehavior: Clip.antiAlias,
+        decoration: const BoxDecoration(color: Color(0xFF213644)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: Stack(
@@ -36,6 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const SizedBox(height: 50),
                       Expanded(
@@ -44,13 +49,17 @@ class _RegisterPageState extends State<RegisterPage> {
                             minWidth: 275,
                             minHeight: 362,
                           ),
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                          ),
+                          clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
                               begin: Alignment(0.50, -0.87),
                               end: Alignment(-0.5, 0.87),
                               colors: [Color(0xBFBEBEBE), Color(0xFCD9D9D9)],
                             ),
+                            shape: BoxShape.rectangle,
                             borderRadius: BorderRadius.circular(24),
                             boxShadow: const [
                               BoxShadow(
@@ -63,6 +72,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           child: Form(
                             key: _formKey,
+<<<<<<< Updated upstream
                             child: SingleChildScrollView(
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -116,6 +126,64 @@ class _RegisterPageState extends State<RegisterPage> {
                                   const SizedBox(height: 20),
                                   _buildElevatedButton('Login', () => Navigator.pop(context)),
                                 ],
+=======
+                            child: Center(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    const SizedBox(height: 50),
+                                    _buildInputField(
+                                      'assets/img/email.svg',
+                                      'Email',
+                                      TextInputType.emailAddress,
+                                      (value) {
+                                        return _validateNotEmpty(
+                                            value, 'Please enter an email');
+                                      },
+                                    ),
+                                    const SizedBox(height: 20),
+                                    _buildInputField(
+                                      'assets/img/user.svg',
+                                      'Username',
+                                      TextInputType.text,
+                                      (value) {
+                                        return _validateNotEmpty(
+                                            value, 'Please enter a username');
+                                      },
+                                    ),
+                                    const SizedBox(height: 20),
+                                    _buildInputField(
+                                      'assets/img/pswd.svg',
+                                      'Password',
+                                      TextInputType.visiblePassword,
+                                      (value) {
+                                        return _validateNotEmpty(
+                                            value, 'Please enter a password');
+                                      },
+                                      obscureText: true,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    _buildInputField(
+                                      'assets/img/pswd.svg',
+                                      'Confirm Password',
+                                      TextInputType.visiblePassword,
+                                      (value) {
+                                        return _validateNotEmpty(value,
+                                            'Please confirm your password');
+                                      },
+                                      obscureText: true,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    _buildElevatedButton(
+                                        'Sign Up', _submitForm),
+                                    const SizedBox(height: 20),
+                                    _buildElevatedButton(
+                                        'Login', () => Navigator.pop(context)),
+                                  ],
+                                ),
+>>>>>>> Stashed changes
                               ),
                             ),
                           ),
@@ -123,7 +191,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ],
                   ),
-                  _buildWhiteFrameImage(),
+                  // WHITE FRAME IMG
+                  _buildWhiteFrameImage()
                 ],
               ),
             ),

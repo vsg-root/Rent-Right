@@ -27,13 +27,12 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: const Color(0XFF213644),
       body: Container(
         padding: const EdgeInsets.symmetric(
-          vertical: 100,
+          vertical: 50,
           horizontal: 50,
         ),
         clipBehavior: Clip.antiAlias,
         decoration: const BoxDecoration(color: Color(0xFF213644)),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -42,7 +41,6 @@ class _LoginPageState extends State<LoginPage> {
                 alignment: AlignmentDirectional.topCenter,
                 children: [
                   Column(
-                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -74,6 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ],
                           ),
+<<<<<<< Updated upstream
                           child: SingleChildScrollView(
                             child: Form(
                               key: _formKey,
@@ -134,6 +133,69 @@ class _LoginPageState extends State<LoginPage> {
                                     );
                                   }),
                                 ],
+=======
+                          child: Form(
+                            key: _formKey,
+                            child: Center(
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    const SizedBox(height: 50),
+                                    _buildInputField(
+                                      _usernameController,
+                                      'Email',
+                                      'assets/img/email.svg',
+                                      TextInputType.emailAddress,
+                                      (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a username';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    const SizedBox(height: 20),
+                                    _buildInputField(
+                                      _passwordController,
+                                      'Password',
+                                      'assets/img/pswd.svg',
+                                      TextInputType.visiblePassword,
+                                      (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter a password';
+                                        }
+
+                                        return null;
+                                      },
+                                      obscureText: true,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    _buildTextButton('Forgot your password?',
+                                        () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const RetrievePage()),
+                                      );
+                                    }),
+                                    const SizedBox(height: 20),
+                                    _buildElevatedButton('Login', () {
+                                      _submitForm(context);
+                                    }),
+                                    const SizedBox(height: 20),
+                                    _buildElevatedButton('Sign Up', () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RegisterPage()),
+                                      );
+                                    }),
+                                  ],
+                                ),
+>>>>>>> Stashed changes
                               ),
                             ),
                           ),
@@ -195,7 +257,6 @@ class _LoginPageState extends State<LoginPage> {
         color: Color(0xFFD9D9D9),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -253,7 +314,6 @@ class _LoginPageState extends State<LoginPage> {
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
