@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'login.dart';
+import 'search.dart';
 import 'profile.dart';
 
 class HomePage extends StatefulWidget {
@@ -132,7 +132,12 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-              _buildOption('Search', 'assets/img/dollar-coin.svg', () {}),
+              _buildOption('Search', 'assets/img/dollar-coin.svg', () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SearchPage()),
+                );
+              }),
               const SizedBox(width: 32),
               _buildOption('Suggestions', 'assets/img/eyeball.svg', () {}),
             ])),
