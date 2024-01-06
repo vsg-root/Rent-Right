@@ -96,6 +96,16 @@ flutter:
     - assets/img/dollar-coin.svg
     - assets/img/edit.svg
     - assets/img/home-page.svg
+    - assets/img/magnifying-glass.svg
+    - assets/img/arrow-expand.svg
+    - assets/img/bed.svg
+    - assets/img/shower.svg
+    - assets/img/cat.svg
+    - assets/img/bone.svg
+    - assets/img/smoking.svg
+    - assets/img/car.svg
+    - assets/img/wheelchair.svg
+    - assets/img/furniture.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
