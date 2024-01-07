@@ -2,8 +2,12 @@ import streamlit as st
 import xgboost
 import numpy as np
 import pickle
-from utils import title
 import pandas as pd
+import tensorflow as tf
+from utils import title
+import joblib
+from tensorflow.keras.models import load_model
+
 
 df = pd.read_csv('model\model_input_data.csv')
 old_UI = False
@@ -84,7 +88,18 @@ def price_prediction(analysis_df):
         
     if st.button("Gerar previsão!"):
         prediction = model.predict([user_inputs])
-        st.write(f'''<h5>Previsão de preço: ${prediction[0]:.2f} </h5>''', unsafe_allow_html= True)
+
+        
+        tensor_model = load_model('model/NN_model_mae_203.h5')
+        prediction_tensor = tensor_model.predict([user_inputs])
+
+        print(f"predição 1: {prediction}")
+        print(f"data_1: {user_inputs}")
+        print(f"predição Tensor: {prediction_tensor}")
+
+        st.write(f'''<h5>Previsão de preço 1: ${prediction[0]:.2f} </h5>''', unsafe_allow_html= True)
+        st.write(f'''<h5>Previsão de preço (mae_203.h5): ${prediction_tensor[0][0]:.2f} </h5>''', unsafe_allow_html= True)
+        
 
     if old_UI:
         if st.button("Gerar previsão! (Old)"):
