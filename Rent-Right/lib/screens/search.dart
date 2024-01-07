@@ -3,21 +3,27 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:login_interface/models/predefinedSearch.dart';
 import 'package:login_interface/components/CustomCheckbox.dart';
+import 'package:login_interface/services/searchService.dart';
+import '../models/Range.dart';
+import 'results.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  final String? id;
+  final PredefinedSearch? search;
+  const SearchPage({Key? key, this.id, this.search}) : super(key: key);
 
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  State<SearchPage> createState() => _SearchPageState(id: id, search: search);
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final TextEditingController _regionController = TextEditingController();
-
-  BuildingType? _buildType = BuildingType.house;
-  RangeValues _sizeValues = const RangeValues(0, 1000);
-  RangeValues _nBeroomsValues = const RangeValues(0, 10);
-  RangeValues _nBathroomsValues = const RangeValues(0, 10);
+  final SearchService searchService = SearchService();
+  String _id;
+  PredefinedSearch? _search;
+  BuildingType? _buildType;
+  RangeValues _sizeValues = RangeValues(0, 10);
+  RangeValues _nBedroomsValues = RangeValues(0, 10);
+  RangeValues _nBathroomsValues = RangeValues(0, 10);
 
   bool _allowCatsValue = false;
   bool _allowDogsValue = false;
@@ -25,6 +31,39 @@ class _SearchPageState extends State<SearchPage> {
   bool _hasElectricVehicleChargeValue = false;
   bool _hasWheelchairAccessValue = false;
   bool _comesFurnishedValue = false;
+
+  final TextEditingController _regionController = TextEditingController();
+
+  _SearchPageState({String? id, PredefinedSearch? search})
+      : _id = id ?? "",
+        _search = search {
+    _buildType = _id.isNotEmpty ? search!.type : BuildingType.house;
+    _sizeValues = _id.isNotEmpty
+        ? RangeValues(search!.size.start, search.size.end)
+        : const RangeValues(0, 1000);
+    _nBedroomsValues = _id.isNotEmpty
+        ? RangeValues(search!.nBedrooms.start, search.nBedrooms.end)
+        : const RangeValues(0, 10);
+    _nBathroomsValues = _id.isNotEmpty
+        ? RangeValues(search!.nBathrooms.start, search.nBathrooms.end)
+        : const RangeValues(0, 10);
+    _allowCatsValue =
+        _id.isNotEmpty ? search!.permissions["cats"] ?? false : false;
+    _allowDogsValue =
+        _id.isNotEmpty ? search!.permissions["dogs"] ?? false : false;
+    _allowSmokingValue =
+        _id.isNotEmpty ? search!.permissions["smoking"] ?? false : false;
+    _hasElectricVehicleChargeValue = _id.isNotEmpty
+        ? search!.accommodations["electric-vehicle-charge"] ?? false
+        : false;
+    _hasWheelchairAccessValue = _id.isNotEmpty
+        ? search!.accommodations["wheelchair-access"] ?? false
+        : false;
+    _comesFurnishedValue = _id.isNotEmpty
+        ? search!.accommodations["comes-furnished"] ?? false
+        : false;
+    _regionController.text = _id.isNotEmpty ? search!.region : "";
+  }
 
   final _formKey = GlobalKey<FormState>();
   final frameDeco = BoxDecoration(
@@ -83,7 +122,7 @@ class _SearchPageState extends State<SearchPage> {
                           TextInputType.text,
                           (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter a username';
+                              return 'Please enter a region';
                             }
                             return null;
                           },
@@ -181,10 +220,10 @@ class _SearchPageState extends State<SearchPage> {
                             1000,
                             'ft²',
                           ),
-                          _buildSliderWidget(_nBeroomsValues,
+                          _buildSliderWidget(_nBedroomsValues,
                               (RangeValues values) {
                             setState(() {
-                              _nBeroomsValues = values;
+                              _nBedroomsValues = values;
                             });
                           }, 'Bedrooms', 105, 'assets/img/bed.svg', 0, 10, ''),
                           _buildSliderWidget(_nBathroomsValues,
@@ -206,6 +245,7 @@ class _SearchPageState extends State<SearchPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               _buildCheckBox(
+                                _allowCatsValue,
                                 'assets/img/cat.svg',
                                 (bool? value) {
                                   setState(() {
@@ -215,6 +255,7 @@ class _SearchPageState extends State<SearchPage> {
                               ),
                               SizedBox(width: 50),
                               _buildCheckBox(
+                                _allowDogsValue,
                                 'assets/img/bone.svg',
                                 (bool? value) {
                                   setState(() {
@@ -224,6 +265,7 @@ class _SearchPageState extends State<SearchPage> {
                               ),
                               SizedBox(width: 50),
                               _buildCheckBox(
+                                _allowSmokingValue,
                                 'assets/img/smoking.svg',
                                 (bool? value) {
                                   setState(() {
@@ -239,6 +281,7 @@ class _SearchPageState extends State<SearchPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               _buildCheckBox(
+                                _hasWheelchairAccessValue,
                                 'assets/img/wheelchair.svg',
                                 (bool? value) {
                                   setState(() {
@@ -248,6 +291,7 @@ class _SearchPageState extends State<SearchPage> {
                               ),
                               SizedBox(width: 50),
                               _buildCheckBox(
+                                _hasElectricVehicleChargeValue,
                                 'assets/img/car.svg',
                                 (bool? value) {
                                   setState(() {
@@ -257,6 +301,7 @@ class _SearchPageState extends State<SearchPage> {
                               ),
                               SizedBox(width: 50),
                               _buildCheckBox(
+                                _comesFurnishedValue,
                                 'assets/img/furniture.svg',
                                 (bool? value) {
                                   setState(() {
@@ -270,7 +315,74 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                     ],
                   )),
-              _buildElevatedButton("Simulate", () {})
+              Column(
+                children: [
+                  Visibility(
+                    visible: _id.isNotEmpty,
+                    child: _buildElevatedButton("Update", () {
+                      PredefinedSearch search = PredefinedSearch(
+                        region: _regionController.text,
+                        type: _buildType ?? BuildingType.other,
+                        size: Range(
+                            start: _sizeValues.start, end: _sizeValues.end),
+                        nBedrooms: Range(
+                            start: _nBedroomsValues.start,
+                            end: _nBedroomsValues.end),
+                        nBathrooms: Range(
+                            start: _nBathroomsValues.start,
+                            end: _nBathroomsValues.end),
+                        allowCats: _allowCatsValue,
+                        allowDogs: _allowDogsValue,
+                        allowSmoking: _allowSmokingValue,
+                        hasElectricVehicleCharge:
+                            _hasElectricVehicleChargeValue,
+                        hasWheelchairAccess: _hasWheelchairAccessValue,
+                        comesFurnished: _comesFurnishedValue,
+                      );
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return NameModalUpdate(
+                              search: search,
+                              searchService: searchService,
+                              id: _id);
+                        },
+                      );
+                    }),
+                  ),
+                  SizedBox(height: 10),
+                  _buildElevatedButton("Simulate", () {
+                    PredefinedSearch search = PredefinedSearch(
+                      region: _regionController.text,
+                      type: _buildType ?? BuildingType.other,
+                      size:
+                          Range(start: _sizeValues.start, end: _sizeValues.end),
+                      nBedrooms: Range(
+                          start: _nBedroomsValues.start,
+                          end: _nBedroomsValues.end),
+                      nBathrooms: Range(
+                          start: _nBathroomsValues.start,
+                          end: _nBathroomsValues.end),
+                      allowCats: _allowCatsValue,
+                      allowDogs: _allowDogsValue,
+                      allowSmoking: _allowSmokingValue,
+                      hasElectricVehicleCharge: _hasElectricVehicleChargeValue,
+                      hasWheelchairAccess: _hasWheelchairAccessValue,
+                      comesFurnished: _comesFurnishedValue,
+                    );
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ResultsPage(
+                                result: search,
+                                isSaved: _id.isNotEmpty,
+                                id: _id,
+                              )),
+                    );
+                  }),
+                ],
+              )
             ],
           ),
         ),
@@ -278,13 +390,14 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget _buildCheckBox(String assetPath, void Function(bool?) onChanged) {
+  Widget _buildCheckBox(
+      bool value, String assetPath, void Function(bool?) onChanged) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        CustomCheckbox(size: 24, onChanged: onChanged),
+        CustomCheckbox(value: value, size: 24, onChanged: onChanged),
         SizedBox(width: 5),
         SvgPicture.asset(
           assetPath,
@@ -355,8 +468,8 @@ class _SearchPageState extends State<SearchPage> {
                 max: max,
                 divisions: (max.round() - min.round()),
                 labels: RangeLabels(
-                  '${initValues.start.round()}${unit.length > 0 ? (" " + unit) : ""}',
-                  '${initValues.end.round()}${unit.length > 0 ? (" " + unit) : ""}',
+                  '${initValues.start.round()}${unit.isNotEmpty ? " $unit" : ""}',
+                  '${initValues.end.round()}${unit.isNotEmpty ? " $unit" : ""}',
                 ),
                 onChanged: (RangeValues values) {
                   onChanged(values);
@@ -461,6 +574,62 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class NameModalUpdate extends StatelessWidget {
+  var name = '';
+
+  PredefinedSearch _search;
+  SearchService _searchService;
+  String _id;
+
+  NameModalUpdate(
+      {required PredefinedSearch search,
+      required SearchService searchService,
+      required String id})
+      : _search = search,
+        _searchService = searchService,
+        _id = id;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Give your search a new name'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          TextFormField(
+            decoration: const InputDecoration(labelText: ''),
+            obscureText: false,
+            onChanged: (value) {
+              name = value;
+            },
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: const Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        ElevatedButton(
+          child: Text('Confirm'),
+          onPressed: () async {
+            _search.name = name;
+
+            _searchService.updateSearch(_id, _search);
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('Search updated successfully.'),
+            ));
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
     );
   }
 }

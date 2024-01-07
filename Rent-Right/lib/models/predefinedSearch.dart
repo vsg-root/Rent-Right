@@ -1,23 +1,23 @@
 import 'Range.dart';
 
-enum BuildingType { house, apartment, other }
+enum BuildingType {
+  house,
+  apartment,
+  other,
+}
 
 class PredefinedSearch {
-  String _name;
+  String? _name;
   String _region;
   BuildingType _type;
   Range _size;
   Range _nBedrooms;
   Range _nBathrooms;
-  bool _allowCats;
-  bool _allowDogs;
-  bool _allowSmoking;
-  bool _hasWheelchairAccess;
-  bool _hasElectricVehicleCharge;
-  bool _comesFurnished;
+  Map<String, bool> permissions = {};
+  Map<String, bool> accommodations = {};
 
   PredefinedSearch({
-    required String name,
+    String? name,
     required String region,
     required BuildingType type,
     required Range size,
@@ -34,16 +34,18 @@ class PredefinedSearch {
         _type = type,
         _size = size,
         _nBedrooms = nBedrooms,
-        _nBathrooms = nBathrooms,
-        _allowCats = allowCats ?? true,
-        _allowDogs = allowDogs ?? true,
-        _allowSmoking = allowSmoking ?? true,
-        _hasWheelchairAccess = hasWheelchairAccess ?? true,
-        _hasElectricVehicleCharge = hasElectricVehicleCharge ?? true,
-        _comesFurnished = comesFurnished ?? true;
+        _nBathrooms = nBathrooms {
+    permissions['cats'] = allowCats ?? false;
+    permissions['dogs'] = allowDogs ?? false;
+    permissions['smoking'] = allowSmoking ?? false;
+    accommodations['wheelchair-access'] = hasWheelchairAccess ?? false;
+    accommodations['electric-vehicle-charge'] =
+        hasElectricVehicleCharge ?? false;
+    accommodations['comes-furnished'] = comesFurnished ?? false;
+  }
 
-  String get name => _name;
-  set name(String value) {
+  String? get name => _name;
+  set name(String? value) {
     _name = value;
   }
 
@@ -72,33 +74,23 @@ class PredefinedSearch {
     _nBathrooms = value;
   }
 
-  bool get allowCats => _allowCats;
-  set allowCats(bool value) {
-    _allowCats = value;
+  Map<String, bool> getPermissions() {
+    return permissions;
   }
 
-  bool get allowDogs => _allowDogs;
-  set allowDogs(bool value) {
-    _allowDogs = value;
+  void setPermission(String key, bool value) {
+    if (permissions.containsKey(key)) {
+      permissions[key] = value;
+    }
   }
 
-  bool get allowSmoking => _allowSmoking;
-  set allowSmoking(bool value) {
-    _allowSmoking = value;
+  Map<String, bool> getAccommodations() {
+    return accommodations;
   }
 
-  bool get hasWheelchairAccess => _hasWheelchairAccess;
-  set hasWheelchairAccess(bool value) {
-    _hasWheelchairAccess = value;
-  }
-
-  bool get hasElectricVehicleCharge => _hasElectricVehicleCharge;
-  set hasElectricVehicleCharge(bool value) {
-    _hasElectricVehicleCharge = value;
-  }
-
-  bool get comesFurnished => _comesFurnished;
-  set comesFurnished(bool value) {
-    _comesFurnished = value;
+  void setAccommodation(String key, bool value) {
+    if (accommodations.containsKey(key)) {
+      accommodations[key] = value;
+    }
   }
 }

@@ -18,6 +18,7 @@ class UserService {
     await _firestore.collection('users').doc(userId).set({
       'username': acc.getUsername(),
       'profile_image': acc.getUrlImage(),
+      'searches': acc.getSearches(),
     });
   }
 
@@ -31,8 +32,11 @@ class UserService {
         await currentUser.updatePassword(acc.getPswd()!);
       }
 
-      await _firestore.collection('users').doc(userId).update(
-          {'username': acc.getUsername(), 'profile_image': acc.getUrlImage()});
+      await _firestore.collection('users').doc(userId).update({
+        'username': acc.getUsername(),
+        'profile_image': acc.getUrlImage(),
+        'searches': acc.getSearches()
+      });
     } else {
       throw 'User not found';
     }
@@ -61,7 +65,8 @@ class UserService {
           id: selectedUser.uid,
           email: selectedUser.email,
           userName: data['username'],
-          urlImage: data['profile_image']);
+          urlImage: data['profile_image'],
+          predefSearchs: data['searches']);
     } else {
       throw 'User not found.';
     }
@@ -78,7 +83,8 @@ class UserService {
           id: user.uid,
           email: user.email,
           userName: data['username'],
-          urlImage: data['profile_image']);
+          urlImage: data['profile_image'],
+          predefSearchs: data['searches']);
     } else {
       throw 'User not found.';
     }

@@ -3,26 +3,20 @@ class Range {
   double _max;
 
   Range({
-    required start,
-    required end,
+    required double start,
+    required double end,
   })  : _min = start,
         _max = end >= start
             ? end
-            : {throw 'Invalid Parameter: end must be bigger than the start'};
+            : throw 'Invalid Parameter: end must be bigger than the start';
 
-  double getStart() {
-    return _min;
-  }
-
-  double getEnd() {
-    return _max;
-  }
-
-  void setStart(double value) {
+  double get start => _min;
+  set start(double value) {
     _min = value;
   }
 
-  void setEnd(double value) {
+  double get end => _max;
+  set end(double value) {
     _max = value;
   }
 

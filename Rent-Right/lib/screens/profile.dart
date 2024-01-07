@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:login_interface/models/Account.dart';
+import 'package:login_interface/screens/search.dart';
+import 'package:login_interface/services/searchService.dart';
 import 'package:login_interface/services/userService.dart';
-// ignore: depend_on_referenced_packages
+import 'package:login_interface/models/predefinedSearch.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'editProfile.dart';
@@ -16,6 +18,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final _userService = UserService();
+  final _searchService = SearchService();
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
     backgroundColor: Colors.white,
     foregroundColor: Colors.white,
@@ -35,14 +38,31 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
         clipBehavior: Clip.antiAlias,
         decoration: const BoxDecoration(color: Color(0xFF213644)),
-        child: Column(
-          children: [
-            buildTitle(),
-            const SizedBox(height: 54),
-            buildUserInfo(),
-            const SizedBox(height: 54),
-            buildFooter(),
-          ],
+        child: FutureBuilder<Account?>(
+          future: _userService.getCurrentUser(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else if (snapshot.hasError || snapshot.data == null) {
+              return Text(
+                  'Error: ${snapshot.error ?? "No user data available"}');
+            } else {
+              final imageUrl = snapshot.data!.getUrlImage();
+              final userName = snapshot.data!.getUsername();
+              final email = snapshot.data!.getEmail() ?? 'email';
+              final searches = snapshot.data!.getSearches();
+
+              return Column(
+                children: [
+                  buildTitle(),
+                  const SizedBox(height: 54),
+                  buildUserInfo(imageUrl, userName, email, searches),
+                  const SizedBox(height: 54),
+                  buildFooter(),
+                ],
+              );
+            }
+          },
         ),
       ),
     );
@@ -75,19 +95,44 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget buildUserInfo() {
+  Widget buildUserInfo(
+      String imageUrl, String userName, String email, List searches) {
     return Expanded(
       child: Column(
         children: [
-          buildUserProfile(),
+          buildUserProfile(imageUrl, userName, email),
           const SizedBox(height: 58),
-          buildPredefinedSearches(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                'Predefined Searches:',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w400,
+                  height: 0,
+                ),
+              ),
+              Spacer(),
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SearchPage()));
+                  },
+                  icon: Icon(color: Colors.white, Icons.add_circle_outline))
+            ],
+          ),
+          buildPredefinedSearches(searches),
         ],
       ),
     );
   }
 
-  Widget buildUserProfile() {
+  Widget buildUserProfile(String imageUrl, userName, email) {
     return Container(
       width: double.infinity,
       height: 110,
@@ -109,63 +154,47 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          FutureBuilder<Account?>(
-            future: _userService.getCurrentUser(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError || snapshot.data == null) {
-                return Text(
-                    'Error: ${snapshot.error ?? "No user data available"}');
-              } else {
-                final imageUrl = snapshot.data!.getUrlImage();
-                final userName = snapshot.data!.getUsername();
-                final email = snapshot.data!.getEmail() ?? 'email';
-
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(imageUrl),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(imageUrl),
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 11),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    userName,
+                    style: const TextStyle(
+                      color: Color(0xFF31546B),
+                      fontSize: 24,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w300,
+                      height: 0,
                     ),
-                    const SizedBox(width: 11),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          userName,
-                          style: const TextStyle(
-                            color: Color(0xFF31546B),
-                            fontSize: 24,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w300,
-                            height: 0,
-                          ),
-                        ),
-                        Text(
-                          email,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 13.83,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w200,
-                            height: 0,
-                          ),
-                        ),
-                      ],
+                  ),
+                  Text(
+                    email,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 13.83,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w200,
+                      height: 0,
                     ),
-                  ],
-                );
-              }
-            },
+                  ),
+                ],
+              ),
+            ],
           ),
           SizedBox(
             width: 29,
@@ -197,7 +226,14 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Color.fromARGB(255, 0, 0, 0)));
   }
 
-  Widget buildPredefinedSearchItem(String researchName) {
+  Widget _addBtn(void Function() onTap, double iconSize) {
+    return IconButton(
+        iconSize: iconSize,
+        onPressed: onTap,
+        icon: const Icon(Icons.add, color: Color.fromARGB(255, 0, 0, 0)));
+  }
+
+  Widget buildPredefinedSearchItem(String id, PredefinedSearch search) {
     return Container(
         width: 250,
         height: 60,
@@ -221,8 +257,12 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Row(
                 children: [
-                  const Icon(
-                    Icons.home_rounded,
+                  Icon(
+                    search.type == BuildingType.house
+                        ? Icons.home_rounded
+                        : (search.type == BuildingType.apartment
+                            ? Icons.apartment
+                            : Icons.store),
                     color: Color.fromARGB(255, 0, 0, 0),
                     size: 35,
                   ),
@@ -232,8 +272,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       Text(
-                        '${researchName}',
+                      Text(
+                        '${search.name}',
                         style: TextStyle(
                           color: Color(0xFF31546B),
                           fontSize: 14.37,
@@ -242,18 +282,14 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 0,
                         ),
                       ),
-                      SizedBox(
-                        width: 81.60,
-                        height: 8,
-                        child: Text(
-                          'Casa - Sacramento',
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(0.5),
-                            fontSize: 6.66,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w200,
-                            height: 0,
-                          ),
+                      Text(
+                        "${search.type.name[0].toUpperCase()}${search.type.name.substring(1).toLowerCase()}- ${search.region}",
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.5),
+                          fontSize: 12,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w200,
+                          height: 0,
                         ),
                       ),
                     ],
@@ -267,14 +303,21 @@ class _ProfilePageState extends State<ProfilePage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    _editBtn(() => print("Botão de Edição Pressionado"), 18)
+                    _editBtn(() {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SearchPage(id: id, search: search)));
+                      setState(() {});
+                    }, 18)
                   ],
                 ),
               ),
             ]));
   }
 
-  Widget buildPredefinedSearches() {
+  Widget buildPredefinedSearches(List searches) {
     return Flexible(
       child: SizedBox(
         width: 304,
@@ -285,29 +328,34 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(
               width: double.infinity,
               height: 24,
-              child: Text(
-                'Predefined Searches:',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w400,
-                  height: 0,
-                ),
-              ),
+            ),
+            Container(
+              height: 8,
             ),
             Expanded(
               child: Container(
                 width: double.infinity,
-                child: ListView(
-                  children: [
-                    buildPredefinedSearchItem('Name of the Research 1'),
-                    const SizedBox(height: 32),
-                    buildPredefinedSearchItem('Name of the Research 2'),
-                    const SizedBox(height: 32),
-                    buildPredefinedSearchItem('Name of the Research 3'),
-                  ],
-                ),
+                child: ListView.builder(
+                    itemCount: searches.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: FutureBuilder<PredefinedSearch?>(
+                              future: _searchService.getSearch(searches[index]),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                } else if (snapshot.hasError ||
+                                    snapshot.data == null) {
+                                  return Text(
+                                      'Error: ${snapshot.error ?? "No user data available"}');
+                                } else {
+                                  return buildPredefinedSearchItem(
+                                      searches[index], snapshot.data!);
+                                }
+                              }));
+                    }),
               ),
             ),
           ],
@@ -371,6 +419,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
 class PasswordConfirmationModal extends StatelessWidget {
   final _userService = UserService();
+  final _searchService = SearchService();
   var pswd = '';
 
   @override
@@ -407,11 +456,13 @@ class PasswordConfirmationModal extends StatelessWidget {
               try {
                 await user.reauthenticateWithCredential(credential);
 
+                Account? acc = await _userService.getCurrentUser();
+                List idList = acc!.getSearches();
+                idList.forEach((element) async =>
+                    await _searchService.deleteSearch(element));
                 await _userService.deleteUser(user.uid);
                 await FirebaseAuth.instance.signOut();
-                Navigator.of(context).pop();
-                Navigator.pop(context);
-                Navigator.pop(context);
+                Navigator.of(context).popUntil((route) => route.isFirst);
               } catch (e) {
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(

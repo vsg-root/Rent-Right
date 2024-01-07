@@ -6,18 +6,21 @@ class Account {
   String? _email;
   String _urlImage;
   String? _pswd;
+  List<dynamic> _predefSearchs;
 
   Account(
       {String? id,
       required String userName,
       String? email,
       required String urlImage,
-      String? pswd})
+      String? pswd,
+      List<dynamic>? predefSearchs})
       : _id = id,
         _pswd = pswd,
         _userName = userName,
         _email = email,
-        _urlImage = urlImage;
+        _urlImage = urlImage,
+        _predefSearchs = predefSearchs ?? [];
 
   String? getId() => _id;
 
@@ -36,4 +39,14 @@ class Account {
   String? getPswd() => _pswd;
 
   void setPswd(String value) => {_pswd = value};
+
+  List<dynamic> getSearches() => _predefSearchs;
+
+  void addSearch(String value) {
+    _predefSearchs.add(value);
+  }
+
+  bool removeSearch(String value) {
+    return _predefSearchs.remove(value);
+  }
 }
