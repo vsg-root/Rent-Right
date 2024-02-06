@@ -88,7 +88,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 _buildInputField(
                                   _emailController,
                                   'Email',
-                                  'assets/img/email.svg',
+                                  'assets/email.svg',
                                   TextInputType.emailAddress,
                                   (value) {
                                     if (value == null || value.isEmpty) {
@@ -101,7 +101,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 _buildInputField(
                                   _usernameController,
                                   'Username',
-                                  'assets/img/user.svg',
+                                  'assets/user.svg',
                                   TextInputType.text,
                                   (value) {
                                     if (value == null || value.isEmpty) {
@@ -114,7 +114,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                 _buildInputField(
                                   _passwordController,
                                   'Password',
-                                  'assets/img/pswd.svg',
+                                  'assets/pswd.svg',
                                   TextInputType.visiblePassword,
                                   (value) {
                                     if (value == null || value.isEmpty) {
@@ -176,7 +176,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           Align(
             alignment: Alignment.center,
             child: SvgPicture.asset(
-              'assets/img/login.svg',
+              'assets/login.svg',
               width: 100,
               height: 100,
             ),

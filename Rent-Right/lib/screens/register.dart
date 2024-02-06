@@ -80,7 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   children: <Widget>[
                                     const SizedBox(height: 50),
                                     _buildInputField(
-                                      'assets/img/email.svg',
+                                      'assets/email.svg',
                                       'Email',
                                       TextInputType.emailAddress,
                                       (value) {
@@ -90,7 +90,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                     const SizedBox(height: 20),
                                     _buildInputField(
-                                      'assets/img/user.svg',
+                                      'assets/user.svg',
                                       'Username',
                                       TextInputType.text,
                                       (value) {
@@ -100,7 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                     const SizedBox(height: 20),
                                     _buildInputField(
-                                      'assets/img/pswd.svg',
+                                      'assets/pswd.svg',
                                       'Password',
                                       TextInputType.visiblePassword,
                                       (value) {
@@ -111,7 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                     const SizedBox(height: 20),
                                     _buildInputField(
-                                      'assets/img/pswd.svg',
+                                      'assets/pswd.svg',
                                       'Confirm Password',
                                       TextInputType.visiblePassword,
                                       (value) {
@@ -270,7 +270,7 @@ class _RegisterPageState extends State<RegisterPage> {
           Align(
             alignment: AlignmentDirectional.center,
             child: SvgPicture.asset(
-              'assets/img/signup.svg',
+              'assets/signup.svg',
               width: 62.0,
               height: 45.16,
             ),

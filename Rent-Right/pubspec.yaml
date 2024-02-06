@@ -45,7 +45,7 @@ dependencies:
 
 flutter_native_splash:
   color: "#213644"
-  image: "assets/img/logo_rentright.png"
+  image: "assets/logo_rentright.png"
   android: true
   android12: true
   ios:  true
@@ -84,28 +84,28 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/img/login.svg
-    - assets/img/user.svg
-    - assets/img/pswd.svg
-    - assets/img/signup.svg
-    - assets/img/email.svg
-    - assets/img/retrieve.svg
-    - assets/img/logout.svg
-    - assets/img/cog.svg
-    - assets/img/eyeball.svg
-    - assets/img/dollar-coin.svg
-    - assets/img/edit.svg
-    - assets/img/home-page.svg
-    - assets/img/magnifying-glass.svg
-    - assets/img/arrow-expand.svg
-    - assets/img/bed.svg
-    - assets/img/shower.svg
-    - assets/img/cat.svg
-    - assets/img/bone.svg
-    - assets/img/smoking.svg
-    - assets/img/car.svg
-    - assets/img/wheelchair.svg
-    - assets/img/furniture.svg
+    - assets/login.svg
+    - assets/user.svg
+    - assets/pswd.svg
+    - assets/signup.svg
+    - assets/email.svg
+    - assets/retrieve.svg
+    - assets/logout.svg
+    - assets/cog.svg
+    - assets/eyeball.svg
+    - assets/dollar-coin.svg
+    - assets/edit.svg
+    - assets/home-page.svg
+    - assets/magnifying-glass.svg
+    - assets/arrow-expand.svg
+    - assets/bed.svg
+    - assets/shower.svg
+    - assets/cat.svg
+    - assets/bone.svg
+    - assets/smoking.svg
+    - assets/car.svg
+    - assets/wheelchair.svg
+    - assets/furniture.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

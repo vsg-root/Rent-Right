@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                                     _buildInputField(
                                       _usernameController,
                                       'Email',
-                                      'assets/img/email.svg',
+                                      'assets/email.svg',
                                       TextInputType.emailAddress,
                                       (value) {
                                         if (value == null || value.isEmpty) {
@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                                     _buildInputField(
                                       _passwordController,
                                       'Password',
-                                      'assets/img/pswd.svg',
+                                      'assets/pswd.svg',
                                       TextInputType.visiblePassword,
                                       (value) {
                                         if (value == null || value.isEmpty) {
@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
           Align(
             alignment: Alignment.center,
             child: SvgPicture.asset(
-              'assets/img/login.svg',
+              'assets/login.svg',
               width: 100,
               height: 100,
             ),

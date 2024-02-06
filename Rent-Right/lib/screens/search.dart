@@ -118,7 +118,7 @@ class _SearchPageState extends State<SearchPage> {
                         _buildInputField(
                           _regionController,
                           'Insert the Region',
-                          'assets/img/magnifying-glass.svg',
+                          'assets/magnifying-glass.svg',
                           TextInputType.text,
                           (value) {
                             if (value == null || value.isEmpty) {
@@ -215,7 +215,7 @@ class _SearchPageState extends State<SearchPage> {
                             },
                             'Size',
                             105,
-                            'assets/img/arrow-expand.svg',
+                            'assets/arrow-expand.svg',
                             0,
                             1000,
                             'ft²',
@@ -225,14 +225,13 @@ class _SearchPageState extends State<SearchPage> {
                             setState(() {
                               _nBedroomsValues = values;
                             });
-                          }, 'Bedrooms', 105, 'assets/img/bed.svg', 0, 10, ''),
+                          }, 'Bedrooms', 105, 'assets/bed.svg', 0, 10, ''),
                           _buildSliderWidget(_nBathroomsValues,
                               (RangeValues values) {
                             setState(() {
                               _nBathroomsValues = values;
                             });
-                          }, 'Bathrooms', 105, 'assets/img/shower.svg', 0, 10,
-                              ''),
+                          }, 'Bathrooms', 105, 'assets/shower.svg', 0, 10, ''),
                         ],
                       ),
                       SizedBox(height: 25),
@@ -246,7 +245,7 @@ class _SearchPageState extends State<SearchPage> {
                             children: [
                               _buildCheckBox(
                                 _allowCatsValue,
-                                'assets/img/cat.svg',
+                                'assets/cat.svg',
                                 (bool? value) {
                                   setState(() {
                                     _allowCatsValue = value!;
@@ -256,7 +255,7 @@ class _SearchPageState extends State<SearchPage> {
                               SizedBox(width: 50),
                               _buildCheckBox(
                                 _allowDogsValue,
-                                'assets/img/bone.svg',
+                                'assets/bone.svg',
                                 (bool? value) {
                                   setState(() {
                                     _allowDogsValue = value!;
@@ -266,7 +265,7 @@ class _SearchPageState extends State<SearchPage> {
                               SizedBox(width: 50),
                               _buildCheckBox(
                                 _allowSmokingValue,
-                                'assets/img/smoking.svg',
+                                'assets/smoking.svg',
                                 (bool? value) {
                                   setState(() {
                                     _allowSmokingValue = value!;
@@ -282,7 +281,7 @@ class _SearchPageState extends State<SearchPage> {
                             children: [
                               _buildCheckBox(
                                 _hasWheelchairAccessValue,
-                                'assets/img/wheelchair.svg',
+                                'assets/wheelchair.svg',
                                 (bool? value) {
                                   setState(() {
                                     _hasWheelchairAccessValue = value!;
@@ -292,7 +291,7 @@ class _SearchPageState extends State<SearchPage> {
                               SizedBox(width: 50),
                               _buildCheckBox(
                                 _hasElectricVehicleChargeValue,
-                                'assets/img/car.svg',
+                                'assets/car.svg',
                                 (bool? value) {
                                   setState(() {
                                     _hasElectricVehicleChargeValue = value!;
@@ -302,7 +301,7 @@ class _SearchPageState extends State<SearchPage> {
                               SizedBox(width: 50),
                               _buildCheckBox(
                                 _comesFurnishedValue,
-                                'assets/img/furniture.svg',
+                                'assets/furniture.svg',
                                 (bool? value) {
                                   setState(() {
                                     _comesFurnishedValue = value!;

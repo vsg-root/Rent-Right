@@ -86,7 +86,7 @@ class _ChangePswdPageState extends State<ChangePswdPage> {
                                 _buildInputField(
                                   _passwordController,
                                   'Current Password',
-                                  'assets/img/pswd.svg',
+                                  'assets/pswd.svg',
                                   TextInputType.visiblePassword,
                                   (value) {
                                     if (value == null || value.isEmpty) {
@@ -100,7 +100,7 @@ class _ChangePswdPageState extends State<ChangePswdPage> {
                                 _buildInputField(
                                   _newPasswordController,
                                   'new Password',
-                                  'assets/img/pswd.svg',
+                                  'assets/pswd.svg',
                                   TextInputType.visiblePassword,
                                   (value) {
                                     if (value == null || value.isEmpty) {
@@ -154,7 +154,7 @@ class _ChangePswdPageState extends State<ChangePswdPage> {
           Align(
             alignment: Alignment.center,
             child: SvgPicture.asset(
-              'assets/img/login.svg',
+              'assets/login.svg',
               width: 100,
               height: 100,
             ),

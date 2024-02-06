@@ -65,14 +65,14 @@ class _RetrievePage extends State<RetrievePage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     _buildInputField(
-                                      'assets/img/email.svg',
+                                      'assets/email.svg',
                                       'Email',
                                       TextInputType.emailAddress,
                                       _emailController,
                                     ),
                                     const SizedBox(height: 20),
                                     _buildInputField(
-                                      'assets/img/user.svg',
+                                      'assets/user.svg',
                                       'Username',
                                       TextInputType.text,
                                       _usernameController,
@@ -210,7 +210,7 @@ class _RetrievePage extends State<RetrievePage> {
           Align(
             alignment: Alignment.center,
             child: SvgPicture.asset(
-              'assets/img/retrieve.svg',
+              'assets/retrieve.svg',
               width: 49.21,
               height: 41.64,
             ),

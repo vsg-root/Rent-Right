@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ProfilePage())),
                 icon: SvgPicture.asset(
-                  'assets/img/user.svg',
+                  'assets/user.svg',
                   width: 100,
                   height: 100,
                 )),
@@ -132,14 +132,14 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-              _buildOption('Search', 'assets/img/dollar-coin.svg', () {
+              _buildOption('Search', 'assets/dollar-coin.svg', () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const SearchPage()),
                 );
               }),
               const SizedBox(width: 32),
-              _buildOption('Suggestions', 'assets/img/eyeball.svg', () {}),
+              _buildOption('Suggestions', 'assets/eyeball.svg', () {}),
             ])),
         const SizedBox(height: 32),
         Expanded(
@@ -148,10 +148,9 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-              _buildOption('Settings', 'assets/img/cog.svg', () {}),
+              _buildOption('Settings', 'assets/cog.svg', () {}),
               const SizedBox(width: 32),
-              _buildOption(
-                  'Exit', 'assets/img/logout.svg', () => _logoutUser()),
+              _buildOption('Exit', 'assets/logout.svg', () => _logoutUser()),
             ])),
       ],
     );

@@ -12,11 +12,13 @@ class ResultsPage extends StatefulWidget {
   final PredefinedSearch result;
   final bool? isSaved;
   final String? id;
-  const ResultsPage({Key? key, required this.result, this.isSaved, this.id}) : super(key: key);
+  const ResultsPage({Key? key, required this.result, this.isSaved, this.id})
+      : super(key: key);
 
   @override
   // ignore: no_logic_in_create_state
-  State<ResultsPage> createState() => _ResultsPageState(result: result, isSaved: isSaved, id: id);
+  State<ResultsPage> createState() =>
+      _ResultsPageState(result: result, isSaved: isSaved, id: id);
 }
 
 class _ResultsPageState extends State<ResultsPage> {
@@ -105,7 +107,7 @@ class _ResultsPageState extends State<ResultsPage> {
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: SvgPicture.asset(
-                  'assets/img/user.svg',
+                  'assets/user.svg',
                   width: 50,
                   height: 50,
                 ),
@@ -158,7 +160,7 @@ class _ResultsPageState extends State<ResultsPage> {
                 width: 70,
                 height: 70,
                 child: SvgPicture.asset(
-                  'assets/img/dollar-coin.svg',
+                  'assets/dollar-coin.svg',
                   width: 70,
                   height: 70.0,
                 ),
@@ -279,7 +281,7 @@ class _ResultsPageState extends State<ResultsPage> {
               Row(
                 children: [
                   SvgPicture.asset(
-                    'assets/img/dollar-coin.svg',
+                    'assets/dollar-coin.svg',
                     width: 35.0,
                     height: 35.0,
                   ),
