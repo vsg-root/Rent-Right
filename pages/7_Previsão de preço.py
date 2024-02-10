@@ -89,16 +89,10 @@ def price_prediction(analysis_df):
     if st.button("Gerar previsão!"):
         prediction = model.predict([user_inputs])
 
-        
-        tensor_model = load_model('model/NN_model_mae_203.h5')
-        prediction_tensor = tensor_model.predict([user_inputs])
-
         print(f"predição 1: {prediction}")
         print(f"data_1: {user_inputs}")
-        print(f"predição Tensor: {prediction_tensor}")
 
-        st.write(f'''<h5>Previsão de preço 1: ${prediction[0]:.2f} </h5>''', unsafe_allow_html= True)
-        st.write(f'''<h5>Previsão de preço (mae_203.h5): ${prediction_tensor[0][0]:.2f} </h5>''', unsafe_allow_html= True)
+        st.write(f'''<h5>Previsão de preço: ${prediction[0]:.2f} </h5>''', unsafe_allow_html= True)
         
 
     if old_UI:
