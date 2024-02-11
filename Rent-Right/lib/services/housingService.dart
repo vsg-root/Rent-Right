@@ -10,6 +10,7 @@ class HousingService {
   Future<String> addBuilding(Building building) async {
     try {
       DocumentReference newBuildinghRef = await _housingCollection.add({
+        'region': building.region,
         'baths': building.nBathrooms,
         'beds': building.nBedrooms,
         'cats_allowed': building.getPermissions()['cats'] == true ? 1 : 0,
@@ -42,7 +43,10 @@ class HousingService {
       List<Building> buildings =
           querySnapshot.docs.map((DocumentSnapshot document) {
         return Building(
-          type: BuildingType.values.contains(document['type'])
+          type: BuildingType.values
+                  .map((e) => e.name)
+                  .toList()
+                  .contains(document['type'])
               ? BuildingType.values.byName(document['type'])
               : BuildingType.other,
           region: document['region'],
@@ -69,12 +73,16 @@ class HousingService {
 
   Future<Building?> getBuilding(String buildingId) async {
     try {
+      print(buildingId);
       DocumentSnapshot buildingSnapshot =
           await _housingCollection.doc(buildingId).get();
-
+      print(buildingSnapshot.exists);
       if (buildingSnapshot.exists) {
         return Building(
-          type: BuildingType.values.contains(buildingSnapshot['type'])
+          type: BuildingType.values
+                  .map((e) => e.name)
+                  .toList()
+                  .contains(buildingSnapshot['type'])
               ? BuildingType.values.byName(buildingSnapshot['type'])
               : BuildingType.other,
           region: buildingSnapshot['region'],
@@ -102,6 +110,7 @@ class HousingService {
   Future<void> updateBuilding(String buildingId, Building building) async {
     try {
       await _housingCollection.doc(buildingId).update({
+        'region': building.region,
         'baths': building.nBathrooms,
         'beds': building.nBedrooms,
         'cats_allowed': building.getPermissions()['cats'] == true ? 1 : 0,

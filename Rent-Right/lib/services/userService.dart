@@ -9,16 +9,17 @@ class UserService {
 
   Future<void> addUser(Account acc) async {
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-      email: acc.getEmail() ?? '',
-      password: acc.getPswd() ?? '',
+      email: acc.email ?? '',
+      password: acc.pswd ?? '',
     );
 
     String userId = userCredential.user?.uid ?? '';
 
     await _firestore.collection('users').doc(userId).set({
-      'username': acc.getUsername(),
-      'profile_image': acc.getUrlImage(),
-      'searches': acc.getSearches(),
+      'username': acc.userName,
+      'profile_image': acc.urlImage,
+      'searches': acc.searches,
+      'properties': acc.properties
     });
   }
 
@@ -27,15 +28,16 @@ class UserService {
     if (currentUser != null) {
       String userId = currentUser.uid;
 
-      await currentUser.updateEmail(acc.getEmail()!);
-      if (acc.getPswd() != null) {
-        await currentUser.updatePassword(acc.getPswd()!);
+      await currentUser.updateEmail(acc.email!);
+      if (acc.pswd != null) {
+        await currentUser.updatePassword(acc.pswd!);
       }
 
       await _firestore.collection('users').doc(userId).update({
-        'username': acc.getUsername(),
-        'profile_image': acc.getUrlImage(),
-        'searches': acc.getSearches()
+        'username': acc.userName,
+        'profile_image': acc.urlImage,
+        'searches': acc.searches,
+        'properties': acc.properties
       });
     } else {
       throw 'User not found';
@@ -61,12 +63,18 @@ class UserService {
 
     if (selectedUser != null && userSnapshot.exists) {
       Map<String, dynamic> data = userSnapshot.data() as Map<String, dynamic>;
+      final List<dynamic>? searchesDynamic = data['searches'];
+      final List<String>? searches = searchesDynamic?.cast<String>();
+
+      final List<dynamic>? propertiesDynamic = data['properties'];
+      final List<String>? properties = propertiesDynamic?.cast<String>();
       return Account(
           id: selectedUser.uid,
           email: selectedUser.email,
           userName: data['username'],
           urlImage: data['profile_image'],
-          predefSearchs: data['searches']);
+          predefSearchs: searches,
+          properties: properties);
     } else {
       throw 'User not found.';
     }
@@ -81,12 +89,16 @@ class UserService {
       Map<String, dynamic> data = userSnapshot.data() as Map<String, dynamic>;
       final List<dynamic>? searchesDynamic = data['searches'];
       final List<String>? searches = searchesDynamic?.cast<String>();
+
+      final List<dynamic>? propertiesDynamic = data['properties'];
+      final List<String>? properties = propertiesDynamic?.cast<String>();
       return Account(
           id: user.uid,
           email: user.email,
           userName: data['username'],
           urlImage: data['profile_image'],
-          predefSearchs: searches);
+          predefSearchs: searches,
+          properties: properties);
     } else {
       throw 'User not found.';
     }

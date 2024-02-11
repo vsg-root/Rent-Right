@@ -1,15 +1,13 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:login_interface/models/Account.dart';
 import 'package:login_interface/screens/search.dart';
 import 'package:login_interface/services/searchService.dart';
 import 'package:login_interface/services/userService.dart';
-import 'package:login_interface/models/predefinedSearch.dart';
-import 'package:login_interface/models/buildingType.dart';
 import 'package:login_interface/components/Observer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import 'editProfile.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -91,10 +89,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               return Text(
                   'Error: ${snapshot.error ?? "No user data available"}');
             } else {
-              final imageUrl = snapshot.data!.getUrlImage();
-              final userName = snapshot.data!.getUsername();
-              final email = snapshot.data!.getEmail() ?? 'email';
-              final searches = snapshot.data!.getSearches();
+              final imageUrl = snapshot.data!.urlImage;
+              final userName = snapshot.data!.userName;
+              final email = snapshot.data!.email ?? 'email';
+              final searches = snapshot.data!.searches;
 
               return Column(
                 mainAxisSize: MainAxisSize.min,
@@ -415,7 +413,7 @@ class UsernameChangeDialog extends StatelessWidget {
                 await user.reauthenticateWithCredential(credential);
 
                 Account? acc = await _userService.getCurrentUser();
-                acc!.setUsername(_usernameController.text);
+                acc!.userName = _usernameController.text;
                 _userService.updateUser(acc);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -512,7 +510,7 @@ class PasswordChangeDialog extends StatelessWidget {
                 await user.reauthenticateWithCredential(credential);
 
                 Account? acc = await _userService.getCurrentUser();
-                acc!.setPswd(_newPswdController.text);
+                acc!.pswd = _newPswdController.text;
                 _userService.updateUser(acc);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -583,7 +581,7 @@ class PasswordConfirmationModal extends StatelessWidget {
                 await user.reauthenticateWithCredential(credential);
 
                 Account? acc = await _userService.getCurrentUser();
-                List idList = acc!.getSearches();
+                List idList = acc!.searches;
                 idList.forEach((element) async =>
                     await _searchService.deleteSearch(element));
                 await _userService.deleteUser(user.uid);

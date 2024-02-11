@@ -10,6 +10,7 @@ class CustomCheckbox extends StatefulWidget {
     this.color,
     this.onChanged,
     this.checkedColor = const Color(0xFF31546B),
+    this.uncheckedColor = const Color(0xFFFFFFFF),
   }) : super(key: key);
 
   final String icon;
@@ -17,6 +18,7 @@ class CustomCheckbox extends StatefulWidget {
   final double size;
   final Color? color;
   final Color checkedColor;
+  final Color uncheckedColor;
   final ValueChanged<bool>? onChanged;
 
   @override
@@ -47,7 +49,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
           width: widget.size,
           height: widget.size,
           decoration: ShapeDecoration(
-            color: _value ? widget.checkedColor : Colors.white,
+            color: _value ? widget.checkedColor : widget.uncheckedColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),

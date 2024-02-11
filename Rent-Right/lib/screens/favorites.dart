@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_interface/screens/properties.dart';
 import 'package:sqflite/sqflite.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_svg/flutter_svg.dart';
@@ -90,7 +91,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           'Error: ${snapshot.error ?? "No user data available"}'));
                 } else {
                   return FutureBuilder<List<Map<String, PredefinedSearch?>>>(
-                    future: getAllSearches(snapshot.data!.getSearches()),
+                    future: getAllSearches(snapshot.data!.searches),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -422,7 +423,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     return Text(
                         'Error: ${snapshot.error ?? "No user data available"}');
                   } else {
-                    final userName = snapshot.data!.getUsername();
+                    final userName = snapshot.data!.userName;
 
                     return Text(
                       userName,
@@ -442,7 +443,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               width: 100.0,
               height: 100.0,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    settings: const RouteSettings(name: '/properties'),
+                    builder: (context) => const PropertiesScreen()),
+              );
+            },
             iconSize: 50,
             splashRadius: 35,
           ),

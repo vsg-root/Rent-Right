@@ -6,7 +6,7 @@ class Building {
   BuildingType _type;
   int _size;
   int _nBedrooms;
-  int _price;
+  double _price;
   double _nBathrooms;
   Map<String, bool> permissions = {};
   Map<String, bool> accommodations = {};
@@ -17,7 +17,7 @@ class Building {
     required BuildingType type,
     required int size,
     required int nBedrooms,
-    required int price,
+    required double price,
     required double nBathrooms,
     required USState state,
     bool? allowCats,
@@ -47,8 +47,8 @@ class Building {
     _state = value;
   }
 
-  int get price => _price;
-  set price(int value) {
+  double get price => _price;
+  set price(double value) {
     _price = value;
   }
 

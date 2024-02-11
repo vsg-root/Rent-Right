@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:login_interface/components/HistoryDatabase.dart';
+import 'package:login_interface/models/building.dart';
 
 import 'package:login_interface/models/predefinedSearch.dart';
 import 'package:login_interface/components/CustomCheckbox.dart';
 import 'package:login_interface/components/CustomRadio.dart';
 import 'package:login_interface/components/Observer.dart';
 import 'package:login_interface/components/NumericInput.dart';
+import 'package:login_interface/models/state.dart';
 import 'package:login_interface/screens/favorites.dart';
 import 'package:login_interface/screens/profile.dart';
+import 'package:login_interface/screens/search.dart';
+import 'package:login_interface/services/housingService.dart';
 import 'package:login_interface/services/searchService.dart';
 import 'package:login_interface/services/userService.dart';
 import 'package:login_interface/models/buildingType.dart';
@@ -16,50 +21,54 @@ import 'package:login_interface/models/Account.dart';
 
 import 'dart:math';
 
-class SearchScreen extends StatefulWidget {
+class CreatePropScreen extends StatefulWidget {
   final String? id;
   bool? isSaved;
   bool? editing;
-  final PredefinedSearch? search;
-  SearchScreen({Key? key, this.editing, this.isSaved, this.id, this.search})
+  final Building? prop;
+  CreatePropScreen({Key? key, this.editing, this.isSaved, this.id, this.prop})
       : super(key: key);
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  State<CreatePropScreen> createState() => _CreatePropScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
-  final SearchService searchService = SearchService();
+class _CreatePropScreenState extends State<CreatePropScreen> {
+  final HousingService housingService = HousingService();
   final UserService userService = UserService();
   late String _id = widget.id ?? "";
-  late PredefinedSearch? _search = widget.search;
+  late Building? _prop = widget.prop;
 
   late BuildingType _buildType =
-      _id.isNotEmpty ? _search!.type : BuildingType.house;
-  late int _sizeValue = _id.isNotEmpty ? _search!.size : 500;
-  late int _nBedroomsValue = _id.isNotEmpty ? _search!.nBedrooms : 1;
-  late int _nBathroomsValue = _id.isNotEmpty ? _search!.nBathrooms : 1;
+      _id.isNotEmpty ? _prop!.type : BuildingType.house;
+  late int _sizeValue = _id.isNotEmpty ? _prop!.size : 500;
+  late int _nBedroomsValue = _id.isNotEmpty ? _prop!.nBedrooms : 1;
+  late int _nBathroomsValue = _id.isNotEmpty ? _prop!.nBathrooms.floor() : 1;
 
   late bool _allowCatsValue =
-      _id.isNotEmpty ? _search!.permissions["cats"] ?? false : false;
+      _id.isNotEmpty ? _prop!.permissions["cats"] ?? false : false;
   late bool _allowDogsValue =
-      _id.isNotEmpty ? _search!.permissions["dogs"] ?? false : false;
+      _id.isNotEmpty ? _prop!.permissions["dogs"] ?? false : false;
   late bool _allowSmokingValue =
-      _id.isNotEmpty ? _search!.permissions["smoking"] ?? false : false;
+      _id.isNotEmpty ? _prop!.permissions["smoking"] ?? false : false;
   late bool _hasElectricVehicleChargeValue = _id.isNotEmpty
-      ? _search!.accommodations["electric-vehicle-charge"] ?? false
+      ? _prop!.accommodations["electric-vehicle-charge"] ?? false
       : false;
   late bool _hasWheelchairAccessValue = _id.isNotEmpty
-      ? _search!.accommodations["wheelchair-access"] ?? false
+      ? _prop!.accommodations["wheelchair-access"] ?? false
       : false;
   late bool _comesFurnishedValue = _id.isNotEmpty
-      ? _search!.accommodations["comes-furnished"] ?? false
+      ? _prop!.accommodations["comes-furnished"] ?? false
       : false;
 
   late final TextEditingController _regionController =
-      TextEditingController(text: _id.isNotEmpty ? _search!.region : "");
+      TextEditingController(text: _id.isNotEmpty ? _prop!.region : "");
 
-  double value = 0;
+  late double price = _id.isNotEmpty ? _prop!.price.toDouble() : 0;
+
+  late final TextEditingController _priceController =
+      TextEditingController(text: price.toString());
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -127,8 +136,9 @@ class _SearchScreenState extends State<SearchScreen> {
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text('Your prediction:',
+                          const Text('Your price:',
                               style: TextStyle(
                                 color: Color(0xFF161616),
                                 fontSize: 16,
@@ -136,59 +146,62 @@ class _SearchScreenState extends State<SearchScreen> {
                                 fontWeight: FontWeight.w400,
                                 height: 0,
                               )),
-                          Text('US\$ ${value.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 24,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700,
-                                height: 0,
-                              ))
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text('US\$',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 24,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w700,
+                                    height: 0,
+                                  )),
+                              Container(
+                                width: 200,
+                                child: TextField(
+                                  controller: _priceController,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 24,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w700,
+                                    height: 0,
+                                  ),
+                                  keyboardType: TextInputType.numberWithOptions(
+                                      decimal: true),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'^\d*\.?\d*$')),
+                                  ],
+                                  decoration: InputDecoration(
+                                    hintText: '0',
+                                    border: const OutlineInputBorder(),
+                                  ),
+                                  onSubmitted: (text) {
+                                    if (text.isEmpty) {
+                                      _priceController.text = '0.00';
+                                    }
+
+                                    price = double.parse(_priceController.text);
+                                  },
+                                ),
+                              )
+                            ],
+                          )
                         ],
                       ),
-                      _saveBtn(() {
-                        PredefinedSearch predefSearch = _search ??
-                            PredefinedSearch(
-                                region: _regionController.text,
-                                type: _buildType,
-                                size: _sizeValue,
-                                nBedrooms: _nBedroomsValue,
-                                nBathrooms: _nBathroomsValue,
-                                allowCats: _allowCatsValue,
-                                allowDogs: _allowDogsValue,
-                                allowSmoking: _allowSmokingValue,
-                                hasElectricVehicleCharge:
-                                    _hasElectricVehicleChargeValue,
-                                hasWheelchairAccess: _hasWheelchairAccessValue,
-                                comesFurnished: _comesFurnishedValue);
-
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return NameModal(
-                              search: predefSearch,
-                              searchService: searchService,
-                              userService: userService,
-                            );
-                          },
-                        ).then((value) {
-                          if (value != null) {
-                            setState(() {
-                              widget.isSaved = value.isNotEmpty;
-                              _id = value;
-                            });
-                          }
-                        });
-                      }, () async {
-                        await searchService.deleteSearch(_id);
-                        Account? acc = await userService.getCurrentUser();
-                        acc!.removeSearch(_id);
-                        await userService.updateUser(acc);
-                        setState(() {
-                          widget.isSaved = false;
-                          _id = '';
-                        });
-                      }, 36)
+                      if (widget.editing ?? false)
+                        IconButton(
+                            iconSize: 36,
+                            onPressed: () async {
+                              await housingService.deleteBuilding(_id);
+                              Account? acc = await userService.getCurrentUser();
+                              acc!.removePropertie(_id);
+                              await userService.updateUser(acc);
+                              Navigator.of(context).pop();
+                            },
+                            icon: Icon(Icons.favorite, color: Colors.red))
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -197,12 +210,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       children: [
                         ElevatedButton(
                           onPressed: () async {
-                            _search = PredefinedSearch(
+                            _prop = Building(
+                                price: price,
+                                state: USState.AL,
                                 region: _regionController.text,
                                 type: _buildType,
                                 size: _sizeValue,
                                 nBedrooms: _nBedroomsValue,
-                                nBathrooms: _nBathroomsValue,
+                                nBathrooms: _nBathroomsValue.toDouble(),
                                 allowCats: _allowCatsValue,
                                 allowDogs: _allowDogsValue,
                                 allowSmoking: _allowSmokingValue,
@@ -211,35 +226,37 @@ class _SearchScreenState extends State<SearchScreen> {
                                 hasWheelchairAccess: _hasWheelchairAccessValue,
                                 comesFurnished: _comesFurnishedValue);
 
-                            int min = 50000;
-                            int max = 220000;
-                            double result =
-                                (min + Random().nextInt((max + 1) - min)) / 100;
+                            if (widget.editing ?? false) {
+                              housingService.updateBuilding(_id, _prop!);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('Property updated successfully.'),
+                              ));
+                              Navigator.of(context).pop();
+                            } else {
+                              String id =
+                                  await housingService.addBuilding(_prop!);
+                              if (id.isNotEmpty) {
+                                Account? acc =
+                                    await userService.getCurrentUser();
+                                acc!.addPropertie(id);
+                                await userService.updateUser(acc);
 
-                            final db = HistoryDatabase.instance;
-                            await db.clearHistory();
-
-                            await db.insertHistory({
-                              'id': _id,
-                              'type': _buildType.name,
-                              'region': _regionController.text,
-                              'sqfeet': _sizeValue,
-                              'baths': _nBathroomsValue,
-                              'beds': _nBedroomsValue,
-                              'comes_furnished': _comesFurnishedValue ? 1 : 0,
-                              'wheelchair_access':
-                                  _hasWheelchairAccessValue ? 1 : 0,
-                              'electric_vehicle_charge':
-                                  _hasElectricVehicleChargeValue ? 1 : 0,
-                              'cats_allowed': _allowCatsValue ? 1 : 0,
-                              'dogs_allowed': _allowDogsValue ? 1 : 0,
-                              'smoking_allowed': _allowSmokingValue ? 1 : 0,
-                              'value': result
-                            });
-
-                            setState(() {
-                              value = result;
-                            });
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text('Property saved successfully.'),
+                                ));
+                                Navigator.of(context).pop();
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 255, 54, 54),
+                                    content: Text('Error saving Property.'),
+                                  ),
+                                );
+                              }
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.all(15),
@@ -248,8 +265,8 @@ class _SearchScreenState extends State<SearchScreen> {
                               borderRadius: BorderRadius.circular(16),
                             ),
                           ),
-                          child: const Text(
-                            'Generate!',
+                          child: Text(
+                            (widget.editing ?? false) ? 'Update' : 'Save',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
@@ -290,60 +307,6 @@ class _SearchScreenState extends State<SearchScreen> {
                         )
                       ])
                 ]))),
-        if (widget.editing ?? false)
-          Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () async {
-                _search = PredefinedSearch(
-                    region: _regionController.text,
-                    type: _buildType,
-                    size: _sizeValue,
-                    nBedrooms: _nBedroomsValue,
-                    nBathrooms: _nBathroomsValue,
-                    allowCats: _allowCatsValue,
-                    allowDogs: _allowDogsValue,
-                    allowSmoking: _allowSmokingValue,
-                    hasElectricVehicleCharge: _hasElectricVehicleChargeValue,
-                    hasWheelchairAccess: _hasWheelchairAccessValue,
-                    comesFurnished: _comesFurnishedValue);
-
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return NameModalUpdate(
-                        search: _search!,
-                        searchService: searchService,
-                        id: _id);
-                  },
-                ).then((value) {
-                  if (value != null) {
-                    setState(() {
-                      widget.isSaved = value.isNotEmpty;
-                      _id = value;
-                    });
-                  }
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(15),
-                backgroundColor: const Color(0xFF161616),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-              child: const Text(
-                'Update',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-            ),
-          ])
       ],
     );
   }
@@ -747,12 +710,28 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           Material(
             color: const Color(0xFF161616),
-            child: Container(
-              child: SvgPicture.asset(
-                'assets/coin-active.svg',
-                height: 64,
-                width: 64,
+            child: IconButton(
+              icon: SvgPicture.asset(
+                'assets/coin.svg',
+                height: 100,
+                width: 100,
               ),
+              color: const Color(0xFFADADAD),
+              onPressed: () {
+                if (Observer().pages.contains('/search')) {
+                  Navigator.of(context)
+                      .popUntil((route) => route.settings.name == '/search');
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        settings: const RouteSettings(name: '/search'),
+                        builder: (context) => SearchScreen()),
+                  );
+                }
+              },
+              iconSize: 32,
+              splashRadius: null,
             ),
           ),
         ]));

@@ -7,6 +7,7 @@ class Account {
   String _urlImage;
   String? _pswd;
   List<String> _predefSearchs;
+  List<String> _properties;
 
   Account(
       {String? id,
@@ -14,33 +15,39 @@ class Account {
       String? email,
       required String urlImage,
       String? pswd,
-      List<String>? predefSearchs})
+      List<String>? predefSearchs,
+      List<String>? properties})
       : _id = id,
         _pswd = pswd,
         _userName = userName,
         _email = email,
         _urlImage = urlImage,
-        _predefSearchs = predefSearchs ?? [];
+        _predefSearchs = predefSearchs ?? [],
+        _properties = properties ?? [];
 
-  String? getId() => _id;
+  String? get id => _id;
 
-  String getUsername() => _userName;
+  String get userName => _userName;
+  set userName(String value) {
+    _userName = value;
+  }
 
-  void setUsername(String value) => {_userName = value};
+  String? get email => _email;
+  set email(String? value) {
+    _email = value;
+  }
 
-  String? getEmail() => _email;
+  String get urlImage => _urlImage;
+  set urlImage(String value) {
+    _urlImage = value;
+  }
 
-  void setEmail(String value) => {_email = value};
+  String? get pswd => _pswd;
+  set pswd(String? value) {
+    _pswd = value;
+  }
 
-  String getUrlImage() => _urlImage;
-
-  void setUrlImage(String value) => {_urlImage = value};
-
-  String? getPswd() => _pswd;
-
-  void setPswd(String value) => {_pswd = value};
-
-  List<String> getSearches() => _predefSearchs;
+  List<String> get searches => _predefSearchs;
 
   void addSearch(String value) {
     _predefSearchs.add(value);
@@ -48,5 +55,15 @@ class Account {
 
   bool removeSearch(String value) {
     return _predefSearchs.remove(value);
+  }
+
+  List<String> get properties => _properties;
+
+  void addPropertie(String value) {
+    _properties.add(value);
+  }
+
+  bool removePropertie(String value) {
+    return _properties.remove(value);
   }
 }
