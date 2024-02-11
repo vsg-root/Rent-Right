@@ -41,6 +41,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   animate_do: ^3.1.2
   firebase_auth: ^4.15.3
+  sqflite: ^2.3.2
+  sqflite_common_ffi: ^2.3.0+4
 
 
 flutter_native_splash:
@@ -114,6 +116,12 @@ flutter:
     - assets/heart.svg
     - assets/home.svg
     - assets/cog-active.svg
+    - assets/coin-active.svg
+    - assets/house.svg
+    - assets/apartment.svg
+    - assets/other.svg
+    - assets/region.svg
+    - assets/list.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

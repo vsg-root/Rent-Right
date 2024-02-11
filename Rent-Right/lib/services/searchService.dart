@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:login_interface/models/predefinedSearch.dart';
-import 'package:login_interface/models/Range.dart';
 import 'package:login_interface/models/buildingType.dart';
 
 class SearchService {
@@ -12,17 +11,11 @@ class SearchService {
       DocumentReference newSearchRef = await _searchesCollection.add({
         'accommodations': search.accommodations,
         'name': search.name,
-        'num-of-bathrooms': {
-          'max': search.nBathrooms.end,
-          'min': search.nBathrooms.start
-        },
-        'num-of-bedrooms': {
-          'max': search.nBedrooms.end,
-          'min': search.nBedrooms.start
-        },
+        'num-of-bathrooms': search.nBathrooms,
+        'num-of-bedrooms': search.nBedrooms,
         'permissions': search.permissions,
         'region': search.region,
-        'size': {'max': search.size.end, 'min': search.size.start},
+        'size': search.size,
         'type': search.type.name
       });
       return newSearchRef.id;
@@ -42,18 +35,9 @@ class SearchService {
           name: searchSnapshot['name'],
           region: searchSnapshot['region'],
           type: BuildingType.values.byName(searchSnapshot['type']),
-          size: Range(
-            start: searchSnapshot['size']['min'],
-            end: searchSnapshot['size']['max'],
-          ),
-          nBedrooms: Range(
-            start: searchSnapshot['num-of-bedrooms']['min'],
-            end: searchSnapshot['num-of-bedrooms']['max'],
-          ),
-          nBathrooms: Range(
-            start: searchSnapshot['num-of-bathrooms']['min'],
-            end: searchSnapshot['num-of-bathrooms']['max'],
-          ),
+          size: searchSnapshot['size'],
+          nBedrooms: searchSnapshot['num-of-bedrooms'],
+          nBathrooms: searchSnapshot['num-of-bathrooms'],
           allowCats: searchSnapshot['permissions']['cats'],
           allowDogs: searchSnapshot['permissions']['dogs'],
           allowSmoking: searchSnapshot['permissions']['smoking'],
@@ -78,20 +62,11 @@ class SearchService {
       await _searchesCollection.doc(searchId).update({
         'accommodations': updatedSearch.accommodations,
         'name': updatedSearch.name,
-        'num-of-bathrooms': {
-          'max': updatedSearch.nBathrooms.end,
-          'min': updatedSearch.nBathrooms.start
-        },
-        'num-of-bedrooms': {
-          'max': updatedSearch.nBedrooms.end,
-          'min': updatedSearch.nBedrooms.start
-        },
+        'num-of-bathrooms': updatedSearch.nBathrooms,
+        'num-of-bedrooms': updatedSearch.nBedrooms,
         'permissions': updatedSearch.permissions,
         'region': updatedSearch.region,
-        'size': {
-          'max': updatedSearch.size.end,
-          'min': updatedSearch.size.start
-        },
+        'size': updatedSearch.size,
         'type': updatedSearch.type.name
       });
     } catch (e) {

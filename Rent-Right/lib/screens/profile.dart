@@ -6,28 +6,21 @@ import 'package:login_interface/services/searchService.dart';
 import 'package:login_interface/services/userService.dart';
 import 'package:login_interface/models/predefinedSearch.dart';
 import 'package:login_interface/models/buildingType.dart';
+import 'package:login_interface/components/Observer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'editProfile.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final Function() updateData;
-
-  const ProfileScreen({Key? key, required this.updateData}) : super(key: key);
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProfileScreen> createState() =>
-      _ProfileScreenState(updateData: updateData);
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _userService = UserService();
   final _searchService = SearchService();
-
-  final Function() _updateData;
-
-  _ProfileScreenState({required Function() updateData})
-      : _updateData = updateData;
 
   @override
   Widget build(BuildContext context) {
@@ -331,8 +324,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               color: const Color(0xFFADADAD),
               onPressed: () {
-                _updateData();
-                Navigator.pop(context);
+                Navigator.of(context)
+                    .popUntil((route) => route.settings.name == '/home');
               },
               iconSize: 32,
               splashRadius: null,
@@ -347,7 +340,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 width: 100,
               ),
               color: const Color(0xFFADADAD),
-              onPressed: () {},
+              onPressed: () {
+                if (Observer().pages.contains('/search')) {
+                  Navigator.of(context)
+                      .popUntil((route) => route.settings.name == '/search');
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        settings: const RouteSettings(name: '/search'),
+                        builder: (context) => SearchScreen()),
+                  );
+                }
+              },
               iconSize: 32,
               splashRadius: null,
             ),

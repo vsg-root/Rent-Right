@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomCheckbox extends StatefulWidget {
   const CustomCheckbox({
     Key? key,
+    required this.icon,
     this.value = false,
     this.size = 24.0,
     this.color,
@@ -10,6 +12,7 @@ class CustomCheckbox extends StatefulWidget {
     this.checkedColor = const Color(0xFF31546B),
   }) : super(key: key);
 
+  final String icon;
   final bool value; // Valor inicial da checkbox
   final double size;
   final Color? color;
@@ -32,25 +35,34 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        setState(() {
-          _value = !_value;
-        });
-        widget.onChanged?.call(_value);
-      },
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 200),
-        width: widget.size,
-        height: widget.size,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: widget.color ?? const Color(0xFF0E2433),
-            width: 2.0,
+        onTap: () {
+          setState(() {
+            _value = !_value;
+          });
+          widget.onChanged?.call(_value);
+        },
+        child: AnimatedContainer(
+          padding: const EdgeInsets.all(5),
+          duration: Duration(milliseconds: 200),
+          width: widget.size,
+          height: widget.size,
+          decoration: ShapeDecoration(
+            color: _value ? widget.checkedColor : Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            shadows: const [
+              BoxShadow(
+                color: Color(0x3F000000),
+                blurRadius: 4,
+                offset: Offset(0, 4),
+                spreadRadius: 0,
+              )
+            ],
           ),
-          shape: BoxShape.circle,
-          color: _value ? widget.checkedColor : Colors.transparent,
-        ),
-      ),
-    );
+          child: SvgPicture.asset(widget.icon,
+              colorFilter: ColorFilter.mode(
+                  _value ? Colors.white : Colors.black, BlendMode.srcIn)),
+        ));
   }
 }

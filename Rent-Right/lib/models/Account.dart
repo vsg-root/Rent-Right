@@ -6,7 +6,7 @@ class Account {
   String? _email;
   String _urlImage;
   String? _pswd;
-  List<dynamic> _predefSearchs;
+  List<String> _predefSearchs;
 
   Account(
       {String? id,
@@ -14,7 +14,7 @@ class Account {
       String? email,
       required String urlImage,
       String? pswd,
-      List<dynamic>? predefSearchs})
+      List<String>? predefSearchs})
       : _id = id,
         _pswd = pswd,
         _userName = userName,
@@ -40,7 +40,7 @@ class Account {
 
   void setPswd(String value) => {_pswd = value};
 
-  List<dynamic> getSearches() => _predefSearchs;
+  List<String> getSearches() => _predefSearchs;
 
   void addSearch(String value) {
     _predefSearchs.add(value);

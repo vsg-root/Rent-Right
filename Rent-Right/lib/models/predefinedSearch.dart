@@ -1,13 +1,12 @@
-import 'Range.dart';
 import 'buildingType.dart';
 
 class PredefinedSearch {
   String? _name;
   String _region;
   BuildingType _type;
-  Range _size;
-  Range _nBedrooms;
-  Range _nBathrooms;
+  int _size;
+  int _nBedrooms;
+  int _nBathrooms;
   Map<String, bool> permissions = {};
   Map<String, bool> accommodations = {};
 
@@ -15,9 +14,9 @@ class PredefinedSearch {
     String? name,
     required String region,
     required BuildingType type,
-    required Range size,
-    required Range nBedrooms,
-    required Range nBathrooms,
+    required int size,
+    required int nBedrooms,
+    required int nBathrooms,
     bool? allowCats,
     bool? allowDogs,
     bool? allowSmoking,
@@ -54,18 +53,18 @@ class PredefinedSearch {
     _type = value;
   }
 
-  Range get size => _size;
-  set size(Range value) {
+  int get size => _size;
+  set size(int value) {
     _size = value;
   }
 
-  Range get nBedrooms => _nBedrooms;
-  set nBedrooms(Range value) {
+  int get nBedrooms => _nBedrooms;
+  set nBedrooms(int value) {
     _nBedrooms = value;
   }
 
-  Range get nBathrooms => _nBathrooms;
-  set nBathrooms(Range value) {
+  int get nBathrooms => _nBathrooms;
+  set nBathrooms(int value) {
     _nBathrooms = value;
   }
 

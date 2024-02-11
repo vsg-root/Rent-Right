@@ -215,7 +215,9 @@ class LoginScreen extends StatelessWidget {
         // ignore: use_build_context_synchronously
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(
+              settings: const RouteSettings(name: '/home'),
+              builder: (context) => HomeScreen()),
         );
 
         // ignore: use_build_context_synchronously

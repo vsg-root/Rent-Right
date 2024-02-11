@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:login_interface/screens/favorites.dart';
+import 'package:sqflite/sqflite.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,6 +9,8 @@ import 'package:login_interface/models/building.dart';
 import 'package:login_interface/services/housingService.dart';
 import 'package:login_interface/services/userService.dart';
 import 'package:login_interface/components/DropDown.dart';
+import 'package:login_interface/components/Observer.dart';
+import 'package:login_interface/components/HistoryDatabase.dart';
 
 import 'search.dart';
 import 'profile.dart';
@@ -15,18 +19,16 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreen();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreen extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> {
+  late Database db;
+
   final _userService = UserService();
   final HousingService housingService = HousingService();
 
   String _selectedSortingOption = 'Prices';
-
-  void updateData() {
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,26 +114,132 @@ class _HomeScreen extends State<HomeScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    const titleStyle = TextStyle(
-        fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.w400);
     return Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            'Your last search:',
-            style: titleStyle,
-          ),
+          _buildHistory(context),
           const SizedBox(
             height: 30,
           ),
           const Text(
             'Recomendations:',
-            style: titleStyle,
+            style: TextStyle(
+                fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.w400),
           ),
           _buildRecomendations(context)
         ]);
+  }
+
+  Future<List<Map<String, dynamic>>> fetchHistory() async {
+    final db = HistoryDatabase.instance;
+    return db.queryAllHistory();
+  }
+
+  Widget _buildHistory(BuildContext context) {
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: fetchHistory(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          List<Map<String, dynamic>> data = snapshot.data ?? [];
+
+          if (data.isEmpty) {
+            return const SizedBox();
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Your last search:',
+                style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 15),
+                decoration: ShapeDecoration(
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  shadows: const [
+                    BoxShadow(
+                      color: Color(0x3F000000),
+                      blurRadius: 4,
+                      offset: Offset(0, 4),
+                      spreadRadius: 0,
+                    )
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(children: [
+                      SvgPicture.asset(
+                        'assets/${data[0]['type']}.svg',
+                        width: 32,
+                        height: 32,
+                        colorFilter: const ColorFilter.mode(
+                          Color(0xFF06AADD),
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                '${data[0]['type'][0].toUpperCase()}${data[0]['type'].substring(1).toLowerCase()} - ${data[0]['region']}',
+                                style: TextStyle(
+                                    color: Color(0xFF161616),
+                                    fontFamily: 'Inter',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400)),
+                            Text('US\$ ${data[0]['value'].toStringAsFixed(2)}',
+                                style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w800))
+                          ]),
+                    ]),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              settings: const RouteSettings(name: '/favorites'),
+                              builder: (context) => const FavoritesScreen()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 21),
+                        backgroundColor: const Color(0xFF161616),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: SvgPicture.asset(
+                        'assets/list.svg',
+                        height: 30,
+                        width: 30,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          );
+        }
+      },
+    );
   }
 
   Widget _buildRecomendations(BuildContext context) {
@@ -394,8 +502,8 @@ class _HomeScreen extends State<HomeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          ProfileScreen(updateData: updateData)),
+                      settings: const RouteSettings(name: '/profile'),
+                      builder: (context) => const ProfileScreen()),
                 );
               },
               iconSize: 32,
@@ -421,7 +529,14 @@ class _HomeScreen extends State<HomeScreen> {
                 width: 100,
               ),
               color: const Color(0xFFADADAD),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      settings: const RouteSettings(name: '/search'),
+                      builder: (context) => SearchScreen()),
+                );
+              },
               iconSize: 32,
               splashRadius: null,
             ),

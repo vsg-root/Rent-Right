@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'screens/login.dart';
+import 'components/HistoryDatabase.dart';
+import 'components/Observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -9,6 +11,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await HistoryDatabase.initialize();
   runApp(const MyApp());
 }
 
@@ -21,6 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Rent-Right',
       theme: ThemeData(primarySwatch: Colors.grey),
+      navigatorObservers: [Observer()],
       home: LoginScreen(),
     );
   }

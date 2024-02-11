@@ -79,12 +79,14 @@ class UserService {
 
     if (user != null && userSnapshot.exists) {
       Map<String, dynamic> data = userSnapshot.data() as Map<String, dynamic>;
+      final List<dynamic>? searchesDynamic = data['searches'];
+      final List<String>? searches = searchesDynamic?.cast<String>();
       return Account(
           id: user.uid,
           email: user.email,
           userName: data['username'],
           urlImage: data['profile_image'],
-          predefSearchs: data['searches']);
+          predefSearchs: searches);
     } else {
       throw 'User not found.';
     }
