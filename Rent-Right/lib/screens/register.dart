@@ -4,212 +4,70 @@ import 'package:login_interface/models/Account.dart';
 import 'package:login_interface/services/userService.dart';
 import 'login.dart';
 
-class RegisterPage extends StatefulWidget {
-  @override
-  _RegisterPageState createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
+class RegisterScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  final _userService = UserService(); // Instância do UserService
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _pswdController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _confPswdController = TextEditingController();
 
-  String _email = '';
-  String _username = '';
-  String _password = '';
-  String _confirmPassword = '';
+  final _userService = UserService();
+
+  RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: const Color(0XFF213644),
-      body: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 50,
-          horizontal: 50,
-        ),
-        clipBehavior: Clip.antiAlias,
-        decoration: const BoxDecoration(color: Color(0xFF213644)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Stack(
-                alignment: AlignmentDirectional.topCenter,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 50),
-                      Expanded(
-                        child: Container(
-                          constraints: const BoxConstraints(
-                            minWidth: 275,
-                            minHeight: 362,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              begin: Alignment(0.50, -0.87),
-                              end: Alignment(-0.5, 0.87),
-                              colors: [Color(0xBFBEBEBE), Color(0xFCD9D9D9)],
-                            ),
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(24),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0x1F000000),
-                                blurRadius: 6,
-                                offset: Offset(7.50, 8),
-                                spreadRadius: 0,
-                              ),
-                            ],
-                          ),
-                          child: Form(
-                            key: _formKey,
-                            child: Center(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    const SizedBox(height: 50),
-                                    _buildInputField(
-                                      'assets/email.svg',
-                                      'Email',
-                                      TextInputType.emailAddress,
-                                      (value) {
-                                        return _validateNotEmpty(
-                                            value, 'Please enter an email');
-                                      },
-                                    ),
-                                    const SizedBox(height: 20),
-                                    _buildInputField(
-                                      'assets/user.svg',
-                                      'Username',
-                                      TextInputType.text,
-                                      (value) {
-                                        return _validateNotEmpty(
-                                            value, 'Please enter a username');
-                                      },
-                                    ),
-                                    const SizedBox(height: 20),
-                                    _buildInputField(
-                                      'assets/pswd.svg',
-                                      'Password',
-                                      TextInputType.visiblePassword,
-                                      (value) {
-                                        return _validateNotEmpty(
-                                            value, 'Please enter a password');
-                                      },
-                                      obscureText: true,
-                                    ),
-                                    const SizedBox(height: 20),
-                                    _buildInputField(
-                                      'assets/pswd.svg',
-                                      'Confirm Password',
-                                      TextInputType.visiblePassword,
-                                      (value) {
-                                        return _validateNotEmpty(value,
-                                            'Please confirm your password');
-                                      },
-                                      obscureText: true,
-                                    ),
-                                    const SizedBox(height: 20),
-                                    _buildElevatedButton(
-                                        'Sign Up', _submitForm),
-                                    const SizedBox(height: 20),
-                                    _buildElevatedButton(
-                                        'Login', () => Navigator.pop(context)),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  // WHITE FRAME IMG
-                  _buildWhiteFrameImage()
-                ],
-              ),
+      backgroundColor:
+          const Color(0xFFE7EEF2), //Color.fromARGB(255, 163, 193, 208),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: _buildLoginForm(context),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildInputField(
-    String assetPath,
-    String hintText,
-    TextInputType keyboardType,
-    String? Function(String?) validator, {
-    bool obscureText = false,
-  }) {
-    return Container(
-      width: double.infinity,
-      height: 50,
-      decoration: const BoxDecoration(color: Color(0xFFD9D9D9)),
-      child: Row(
+  Widget _buildLoginForm(BuildContext context) {
+    const inputStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+    );
+
+    return Form(
+      key: _formKey,
+      child: Column(
         children: [
+          _buildLogo(),
+          const SizedBox(height: 50),
           Container(
-            width: 50,
-            height: double.infinity,
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(color: Color(0xFF0E2433)),
-            child: Align(
-              alignment: AlignmentDirectional.center,
-              child: SvgPicture.asset(
-                assetPath,
-                width: 30.98,
-                height: 31.0,
-              ),
+            padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
+            decoration: BoxDecoration(
+              color:
+                  const Color(0xFFEAFAFF), //Color.fromARGB(255, 203, 224, 231),
+              borderRadius: BorderRadius.circular(15),
             ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: TextFormField(
-              onChanged: (value) {
-                setState(() {
-                  // Atualiza o valor do campo correspondente conforme o usuário digita
-                  if (hintText == 'Email') {
-                    _email = value;
-                  } else if (hintText == 'Username') {
-                    _username = value;
-                  } else if (hintText == 'Password') {
-                    _password = value;
-                  } else if (hintText == 'Confirm Password') {
-                    _confirmPassword = value;
-                  }
-                });
-              },
-              validator: validator,
-              keyboardType: keyboardType,
-              obscureText: obscureText,
-              enableSuggestions: false,
-              autocorrect: false,
-              style: const TextStyle(
-                color: Color.fromARGB(192, 0, 0, 0),
-                fontSize: 16,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w200,
-              ),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: hintText,
-                hintStyle: TextStyle(
-                  color: Color.fromARGB(192, 0, 0, 0),
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w200,
-                ),
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildEmailField(inputStyle),
+                const SizedBox(height: 20),
+                _buildUsernameField(inputStyle),
+                const SizedBox(height: 20),
+                _buildPswdField(inputStyle),
+                const SizedBox(height: 20),
+                _buildConfPswdField(inputStyle),
+                const SizedBox(height: 30),
+                _buildLoginLink(context),
+                const SizedBox(height: 20),
+                _buildLoginButton(context),
+              ],
             ),
           ),
         ],
@@ -217,79 +75,163 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget _buildElevatedButton(String label, void Function() onPressed) {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(const Color(0xFF0E2433)),
-          overlayColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.pressed)) {
-                return const Color.fromARGB(255, 28, 71, 100);
-              }
-              return null;
-            },
+  Widget _buildLogo() {
+    return Center(
+      child: Container(
+        width: 156,
+        height: 96,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/logo.png'),
+            fit: BoxFit.fill,
           ),
         ),
-        onPressed: onPressed,
+      ),
+    );
+  }
+
+  Widget _buildEmailField(TextStyle inputStyle) {
+    return TextFormField(
+      controller: _emailController,
+      validator: (value) => _isEmpty(value, 'Please enter a email'),
+      keyboardType: TextInputType.text,
+      style: inputStyle,
+      decoration: _buildInputDeco(inputStyle, 'Email', 'assets/email.svg'),
+    );
+  }
+
+  Widget _buildUsernameField(TextStyle inputStyle) {
+    return TextFormField(
+      controller: _usernameController,
+      validator: (value) => _isEmpty(value, 'Please enter a username'),
+      keyboardType: TextInputType.text,
+      style: inputStyle,
+      decoration: _buildInputDeco(inputStyle, 'Username', 'assets/user.svg'),
+    );
+  }
+
+  Widget _buildPswdField(TextStyle inputStyle) {
+    return TextFormField(
+      obscureText: true,
+      controller: _pswdController,
+      validator: (value) => _isEmpty(value, 'Please enter a password'),
+      keyboardType: TextInputType.visiblePassword,
+      style: inputStyle,
+      decoration: _buildInputDeco(inputStyle, 'Password', 'assets/pswd.svg'),
+    );
+  }
+
+  Widget _buildConfPswdField(TextStyle inputStyle) {
+    return TextFormField(
+      obscureText: true,
+      controller: _confPswdController,
+      validator: (value) => _isEmpty(value, 'Please confirm your password'),
+      keyboardType: TextInputType.visiblePassword,
+      style: inputStyle,
+      decoration: _buildInputDeco(
+          inputStyle, 'Confirm Password', 'assets/conf-pswd.svg'),
+    );
+  }
+
+  Widget _buildLoginLink(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          "Already have an account?",
+          style: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 14,
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.w400,
+            color: Colors.grey,
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text(
+            "Login",
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 14,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLoginButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () => _submitForm(context),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      child: const Padding(
+        padding: EdgeInsets.fromLTRB(5, 15, 5, 15),
         child: Text(
-          label,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
+          'Sign Up',
+          style: TextStyle(
             fontSize: 20,
             fontFamily: 'Inter',
-            fontWeight: FontWeight.w200,
-            height: 0,
+            fontWeight: FontWeight.w400,
+            color: Colors.white,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildWhiteFrameImage() {
-    return Container(
-      width: 105,
-      height: 105,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(width: 2, color: Colors.white),
-      ),
-      child: Stack(
-        children: [
-          Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              color: const Color(0xFF0E2433),
-              shape: BoxShape.circle,
-            ),
-          ),
-          Align(
-            alignment: AlignmentDirectional.center,
-            child: SvgPicture.asset(
-              'assets/signup.svg',
-              width: 62.0,
-              height: 45.16,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String? _validateNotEmpty(String? value, String errorMessage) {
+  String? _isEmpty(String? value, String msg) {
     if (value == null || value.isEmpty) {
-      return errorMessage;
+      return msg;
     }
     return null;
   }
 
-  Future<void> _submitForm() async {
+  InputDecoration _buildInputDeco(
+      TextStyle? inputStyle, String hint, String iconPath) {
+    return InputDecoration(
+      hintStyle: inputStyle,
+      errorStyle: inputStyle,
+      labelStyle: inputStyle,
+      helperStyle: inputStyle,
+      suffixStyle: inputStyle,
+      prefixStyle: inputStyle,
+      counterStyle: inputStyle,
+      floatingLabelStyle: inputStyle,
+      contentPadding: const EdgeInsets.fromLTRB(0, 5, 8, 5),
+      filled: true,
+      fillColor: const Color.fromARGB(255, 255, 255, 255),
+      hintText: hint,
+      prefixIcon: Container(
+        width: 48.0,
+        height: 40.0,
+        margin: const EdgeInsets.fromLTRB(8, 5, 10, 5),
+        child: SvgPicture.asset(
+          iconPath,
+          width: 25.0,
+          height: 25.0,
+        ),
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide.none,
+      ),
+    );
+  }
+
+  Future<void> _submitForm(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      if (_password != _confirmPassword) {
+      if (_pswdController.text != _confPswdController.text) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Passwords do not match!'),
@@ -298,16 +240,12 @@ class _RegisterPageState extends State<RegisterPage> {
         return;
       }
 
-      print(_email);
-      print(_username);
-      print(_password);
-
       Account newUser = Account(
-        email: _email.trim(),
-        userName: _username,
+        email: _emailController.text.trim(),
+        userName: _usernameController.text,
         urlImage:
             'https://www.pngfind.com/pngs/m/664-6644794_png-file-windows-10-person-icon-transparent-png.png',
-        pswd: _password,
+        pswd: _pswdController.text,
       );
 
       try {

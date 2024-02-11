@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:login_interface/models/predefinedSearch.dart';
 import 'package:login_interface/components/CustomCheckbox.dart';
 import 'package:login_interface/services/searchService.dart';
+import 'package:login_interface/models/buildingType.dart';
 import '../models/Range.dart';
 import 'results.dart';
 

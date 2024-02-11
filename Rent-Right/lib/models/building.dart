@@ -1,30 +1,33 @@
-import 'Range.dart';
 import 'buildingType.dart';
+import 'state.dart';
 
-class PredefinedSearch {
-  String? _name;
+class Building {
   String _region;
   BuildingType _type;
-  Range _size;
-  Range _nBedrooms;
-  Range _nBathrooms;
+  int _size;
+  int _nBedrooms;
+  int _price;
+  double _nBathrooms;
   Map<String, bool> permissions = {};
   Map<String, bool> accommodations = {};
+  USState _state;
 
-  PredefinedSearch({
-    String? name,
+  Building({
     required String region,
     required BuildingType type,
-    required Range size,
-    required Range nBedrooms,
-    required Range nBathrooms,
+    required int size,
+    required int nBedrooms,
+    required int price,
+    required double nBathrooms,
+    required USState state,
     bool? allowCats,
     bool? allowDogs,
     bool? allowSmoking,
     bool? hasWheelchairAccess,
     bool? hasElectricVehicleCharge,
     bool? comesFurnished,
-  })  : _name = name,
+  })  : _state = state,
+        _price = price,
         _region = region,
         _type = type,
         _size = size,
@@ -39,9 +42,14 @@ class PredefinedSearch {
     accommodations['comes-furnished'] = comesFurnished ?? false;
   }
 
-  String? get name => _name;
-  set name(String? value) {
-    _name = value;
+  USState get state => _state;
+  set state(USState value) {
+    _state = value;
+  }
+
+  int get price => _price;
+  set price(int value) {
+    _price = value;
   }
 
   String get region => _region;
@@ -54,18 +62,18 @@ class PredefinedSearch {
     _type = value;
   }
 
-  Range get size => _size;
-  set size(Range value) {
+  int get size => _size;
+  set size(int value) {
     _size = value;
   }
 
-  Range get nBedrooms => _nBedrooms;
-  set nBedrooms(Range value) {
+  int get nBedrooms => _nBedrooms;
+  set nBedrooms(int value) {
     _nBedrooms = value;
   }
 
-  Range get nBathrooms => _nBathrooms;
-  set nBathrooms(Range value) {
+  double get nBathrooms => _nBathrooms;
+  set nBathrooms(double value) {
     _nBathrooms = value;
   }
 

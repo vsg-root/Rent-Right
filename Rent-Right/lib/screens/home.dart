@@ -1,162 +1,435 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:login_interface/models/Account.dart';
+import 'package:login_interface/models/building.dart';
+import 'package:login_interface/services/housingService.dart';
+import 'package:login_interface/services/userService.dart';
+import 'package:login_interface/components/DropDown.dart';
 
 import 'search.dart';
 import 'profile.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomeScreen> createState() => _HomeScreen();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeScreen extends State<HomeScreen> {
+  final _userService = UserService();
+  final HousingService housingService = HousingService();
+
+  String _selectedSortingOption = 'Prices';
+
+  void updateData() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0XFF213644),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 27, vertical: 45),
-        clipBehavior: Clip.antiAlias,
-        decoration: const BoxDecoration(color: Color(0xFF213644)),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildHeader(),
-            const SizedBox(height: 74),
-            Expanded(
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
-                child: _buildOptions(),
+      backgroundColor: const Color(0xFFE7EEF2),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  _buildHeader(context),
+                  const SizedBox(height: 30),
+                  _buildBody(context),
+                  const SizedBox(height: 30),
+                  Hero(
+                    tag: 'footer',
+                    child: _buildFooter(context),
+                  ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildHeader() {
-    return Container(
-      width: double.infinity,
-      clipBehavior: Clip.antiAlias,
-      decoration: const BoxDecoration(),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+  Widget _buildHeader(BuildContext context) {
+    return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Welcome to Rent Right,',
+                style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400),
+              ),
+              FutureBuilder<Account?>(
+                future: _userService.getCurrentUser(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError || snapshot.data == null) {
+                    return Text(
+                        'Error: ${snapshot.error ?? "No user data available"}');
+                  } else {
+                    final userName = snapshot.data!.getUsername();
+
+                    return Text(
+                      userName,
+                      style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 32,
+                          fontWeight: FontWeight.w800),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+          IconButton(
+            icon: SvgPicture.asset(
+              'assets/profile.svg',
+              width: 100.0,
+              height: 100.0,
+            ),
+            onPressed: () {},
+            iconSize: 50,
+            splashRadius: 30,
+          ),
+        ]);
+  }
+
+  Widget _buildBody(BuildContext context) {
+    const titleStyle = TextStyle(
+        fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.w400);
+    return Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Your last search:',
+            style: titleStyle,
+          ),
           const SizedBox(
-            width: 176,
-            height: 88,
-            child: Stack(
+            height: 30,
+          ),
+          const Text(
+            'Recomendations:',
+            style: titleStyle,
+          ),
+          _buildRecomendations(context)
+        ]);
+  }
+
+  Widget _buildRecomendations(BuildContext context) {
+    TextStyle base = TextStyle(
+        fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.w400);
+
+    TextStyle winnerName = TextStyle(
+        fontFamily: 'Inter', fontSize: 20, fontWeight: FontWeight.w800);
+
+    TextStyle winnerValue = TextStyle(
+        fontFamily: 'Inter', fontSize: 20, fontWeight: FontWeight.w400);
+
+    return Container(
+        padding: const EdgeInsets.only(left: 15, bottom: 5),
+        decoration: ShapeDecoration(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          shadows: const [
+            BoxShadow(
+              color: Color(0x3F000000),
+              blurRadius: 4,
+              offset: Offset(0, 4),
+              spreadRadius: 0,
+            )
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Positioned(
-                  left: 0,
-                  top: 0,
-                  child: Text(
-                    'Welcome',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 29.29,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w200,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 10,
                     ),
-                  ),
-                ),
-                Positioned(
-                  left: 0,
-                  top: 73,
-                  child: Text(
-                    'How can we help you today?',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12.20,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w200,
+                    Text(
+                      'Sorting by:',
+                      style: TextStyle(
+                        color: Color(0xFF161616),
+                        fontSize: 14,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w300,
+                      ),
                     ),
-                  ),
+                    CustomDropdown<int>(
+                      onChange: (String? newValue) {
+                        setState(() {
+                          _selectedSortingOption = newValue!;
+                        });
+                      },
+                      dropdownButtonStyle: DropdownButtonStyle(
+                        height: 49,
+                        elevation: 1,
+                        backgroundColor: Colors.white,
+                        primaryColor: Colors.black87,
+                      ),
+                      dropdownStyle: DropdownStyle(
+                          elevation: 1,
+                          padding: EdgeInsets.all(5),
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide.none,
+                              borderRadius: BorderRadius.circular(7))),
+                      items: [
+                        'Prices',
+                        'Sizes',
+                      ]
+                          .asMap()
+                          .entries
+                          .map(
+                            (item) => DropdownItem<int>(
+                              value: item.key + 1,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  item.value,
+                                  style: base,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      child: Text(
+                        _selectedSortingOption,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-                Positioned(
-                  left: 0,
-                  top: 28,
-                  child: Text(
-                    'Rent Right',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 35.15,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w400,
-                    ),
+                Container(
+                  decoration: const BoxDecoration(
+                      color: Color(0xFF161616),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          bottomLeft: Radius.circular(20))),
+                  padding: EdgeInsets.all(20),
+                  child: SvgPicture.asset(
+                    'assets/heart.svg',
+                    width: 32,
+                    height: 32,
                   ),
-                ),
+                )
               ],
             ),
-          ),
-          SizedBox(
-            width: 70,
-            height: 70,
-            child: IconButton(
-                iconSize: 60,
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                      const Color.fromARGB(0, 255, 255, 255)),
-                ),
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfilePage())),
-                icon: SvgPicture.asset(
-                  'assets/user.svg',
-                  width: 100,
-                  height: 100,
-                )),
-          ),
-        ],
-      ),
-    );
+            FutureBuilder<List<Building>>(
+              future: housingService.getAllBuildings(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else {
+                  List<Building> buildings = snapshot.data ?? [];
+                  Map<String, List<Building>> buildingsByState =
+                      _groupBuildingsByState(buildings);
+
+                  List<MapEntry<String, double>> sortedStates;
+                  if (_selectedSortingOption == 'Prices') {
+                    Map<String, double> averagePricesByState =
+                        _calculateAveragePricesByState(buildingsByState);
+                    sortedStates =
+                        _sortStatesByAveragePrice(averagePricesByState);
+                  } else {
+                    Map<String, double> averageSizesByState =
+                        _calculateAverageSizesByState(buildingsByState);
+                    sortedStates =
+                        _sortStatesByAverageSize(averageSizesByState);
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (int i = 0; i < 5 && i < sortedStates.length; i++)
+                          Column(
+                            children: [
+                              Row(children: [
+                                Expanded(
+                                  flex: 4,
+                                  child: Container(
+                                    child: Text(
+                                      sortedStates[i].key,
+                                      style: i == 0 ? winnerName : base,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    child: Text(
+                                      _selectedSortingOption == 'Prices'
+                                          ? 'US\$ ${sortedStates[i].value.toStringAsFixed(2)}'
+                                          : '${sortedStates[i].value.round()}ft²',
+                                      style: i == 0 ? winnerValue : base,
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                              if (i < 5 && i < sortedStates.length)
+                                const SizedBox(height: 10)
+                            ],
+                          )
+                      ],
+                    ),
+                  );
+                }
+              },
+            )
+          ],
+        ));
   }
 
-  Widget _buildOptions() {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-            child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-              _buildOption('Search', 'assets/dollar-coin.svg', () {
+  Map<String, List<Building>> _groupBuildingsByState(List<Building> buildings) {
+    Map<String, List<Building>> result = {};
+
+    for (var building in buildings) {
+      if (!result.containsKey(building.state.fullName)) {
+        result[building.state.fullName] = [];
+      }
+      result[building.state.fullName]!.add(building);
+    }
+
+    return result;
+  }
+
+  Map<String, double> _calculateAveragePricesByState(
+      Map<String, List<Building>> buildingsByState) {
+    Map<String, double> result = {};
+
+    for (var state in buildingsByState.keys) {
+      final buildings = buildingsByState[state]!;
+      final totalPrices = buildings
+          .map((building) => building.price)
+          .reduce((value, element) => value + element);
+      final averagePrice = totalPrices / buildings.length;
+      result[state] = averagePrice;
+    }
+
+    return result;
+  }
+
+  List<MapEntry<String, double>> _sortStatesByAveragePrice(
+      Map<String, double> averagePricesByState) {
+    List<MapEntry<String, double>> sortedStates =
+        averagePricesByState.entries.toList();
+    sortedStates.sort((a, b) => b.value.compareTo(a.value));
+    return sortedStates;
+  }
+
+  Map<String, double> _calculateAverageSizesByState(
+      Map<String, List<Building>> buildingsByState) {
+    Map<String, double> result = {};
+
+    for (var state in buildingsByState.keys) {
+      final buildings = buildingsByState[state]!;
+      final totalSizes = buildings
+          .map((building) => building.size)
+          .reduce((value, element) => value + element);
+      final averageSize = totalSizes / buildings.length;
+      result[state] = averageSize;
+    }
+
+    return result;
+  }
+
+  List<MapEntry<String, double>> _sortStatesByAverageSize(
+      Map<String, double> averageSizesByState) {
+    List<MapEntry<String, double>> sortedStates =
+        averageSizesByState.entries.toList();
+    sortedStates.sort((a, b) => b.value.compareTo(a.value));
+    return sortedStates;
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(
+            color: const Color(0xFF161616),
+            borderRadius: BorderRadius.circular(25)),
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          Material(
+            color: const Color(0xFF161616),
+            child: IconButton(
+              icon: SvgPicture.asset(
+                'assets/cog.svg',
+                height: 100,
+                width: 100,
+              ),
+              color: const Color(0xFFADADAD),
+              onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const SearchPage()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ProfileScreen(updateData: updateData)),
                 );
-              }),
-              const SizedBox(width: 32),
-              _buildOption('Suggestions', 'assets/eyeball.svg', () {}),
-            ])),
-        const SizedBox(height: 32),
-        Expanded(
-            child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-              _buildOption('Settings', 'assets/cog.svg', () {}),
-              const SizedBox(width: 32),
-              _buildOption('Exit', 'assets/logout.svg', () => _logoutUser()),
-            ])),
-      ],
-    );
+              },
+              iconSize: 32,
+              splashRadius: null,
+            ),
+          ),
+          Material(
+            color: const Color(0xFF161616),
+            child: Container(
+              child: SvgPicture.asset(
+                'assets/home-active.svg',
+                height: 64,
+                width: 64,
+              ),
+            ),
+          ),
+          Material(
+            color: const Color(0xFF161616),
+            child: IconButton(
+              icon: SvgPicture.asset(
+                'assets/coin.svg',
+                height: 100,
+                width: 100,
+              ),
+              color: const Color(0xFFADADAD),
+              onPressed: () {},
+              iconSize: 32,
+              splashRadius: null,
+            ),
+          ),
+        ]));
   }
 
-  void _logoutUser() async {
+  void _logoutUser(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut();
       // ignore: use_build_context_synchronously
@@ -164,43 +437,5 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       print('Erro ao fazer logout: $e');
     }
-  }
-
-  Widget _buildOption(String btnText, String svgAsset, void Function() onTap) {
-    return Expanded(
-        child: Container(
-      height: double.infinity,
-      clipBehavior: Clip.antiAlias,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        color: Color(0xFFD9D9D9),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              svgAsset,
-              width: 50,
-              height: 50,
-            ),
-            const SizedBox(height: 15),
-            Text(
-              btnText,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Color(0xFF0E2433),
-                fontSize: 14,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w200,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ));
   }
 }

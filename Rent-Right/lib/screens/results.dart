@@ -98,12 +98,7 @@ class _ResultsPageState extends State<ResultsPage> {
                 padding: EdgeInsets.zero,
                 shape: const CircleBorder(),
               ),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ProfilePage(),
-                ),
-              ),
+              onPressed: () {},
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: SvgPicture.asset(

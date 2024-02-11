@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:login_interface/models/predefinedSearch.dart';
 import 'package:login_interface/models/Range.dart';
+import 'package:login_interface/models/buildingType.dart';
 
 class SearchService {
   final CollectionReference _searchesCollection =
@@ -59,7 +60,7 @@ class SearchService {
           hasElectricVehicleCharge: searchSnapshot['accommodations']
               ['electric-vehicle-charge'],
           hasWheelchairAccess: searchSnapshot['accommodations']
-              ['comes-furnished'],
+              ['wheelchair-access'],
           comesFurnished: searchSnapshot['accommodations']['comes-furnished'],
         );
       } else {

@@ -9,11 +9,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const Myapp());
+  runApp(const MyApp());
 }
 
-class Myapp extends StatelessWidget {
-  const Myapp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class Myapp extends StatelessWidget {
     return MaterialApp(
       title: 'Rent-Right',
       theme: ThemeData(primarySwatch: Colors.grey),
-      home: const LoginPage(),
+      home: LoginScreen(),
     );
   }
 }

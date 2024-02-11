@@ -106,6 +106,14 @@ flutter:
     - assets/car.svg
     - assets/wheelchair.svg
     - assets/furniture.svg
+    - assets/logo.png
+    - assets/conf-pswd.svg
+    - assets/profile.svg
+    - assets/coin.svg
+    - assets/home-active.svg
+    - assets/heart.svg
+    - assets/home.svg
+    - assets/cog-active.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

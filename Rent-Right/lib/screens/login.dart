@@ -1,242 +1,65 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'register.dart';
-import 'retrieve.dart';
 import 'home.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
+class LoginScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: const Color(0XFF213644),
-      body: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 50,
-          horizontal: 50,
-        ),
-        clipBehavior: Clip.antiAlias,
-        decoration: const BoxDecoration(color: Color(0xFF213644)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Stack(
-                alignment: AlignmentDirectional.topCenter,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 50),
-                      Expanded(
-                        child: Container(
-                          constraints: const BoxConstraints(
-                            minWidth: 275,
-                            minHeight: 362,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              begin: Alignment(0.50, -0.87),
-                              end: Alignment(-0.5, 0.87),
-                              colors: [Color(0xBFBEBEBE), Color(0xFCD9D9D9)],
-                            ),
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(24),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0x1F000000),
-                                blurRadius: 6,
-                                offset: Offset(7.50, 8),
-                                spreadRadius: 0,
-                              ),
-                            ],
-                          ),
-                          child: Form(
-                            key: _formKey,
-                            child: Center(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    const SizedBox(height: 50),
-                                    _buildInputField(
-                                      _usernameController,
-                                      'Email',
-                                      'assets/email.svg',
-                                      TextInputType.emailAddress,
-                                      (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter a username';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    const SizedBox(height: 20),
-                                    _buildInputField(
-                                      _passwordController,
-                                      'Password',
-                                      'assets/pswd.svg',
-                                      TextInputType.visiblePassword,
-                                      (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter a password';
-                                        }
-
-                                        return null;
-                                      },
-                                      obscureText: true,
-                                    ),
-                                    const SizedBox(height: 20),
-                                    _buildTextButton('Forgot your password?',
-                                        () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const RetrievePage()),
-                                      );
-                                    }),
-                                    const SizedBox(height: 20),
-                                    _buildElevatedButton('Login', () {
-                                      _submitForm(context);
-                                    }),
-                                    const SizedBox(height: 20),
-                                    _buildElevatedButton('Sign Up', () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                RegisterPage()),
-                                      );
-                                    }),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  // WHITE FRAME IMG
-                  _buildWhiteFrameImage()
-                ],
-              ),
+      backgroundColor: const Color(0xFFE7EEF2),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: _buildLoginForm(context),
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildWhiteFrameImage() {
-    return SizedBox(
-      width: 105,
-      height: 105,
-      child: Stack(
-        children: [
-          Align(
-            alignment: AlignmentDirectional.center,
-            child: Container(
-              width: 100,
-              height: 100,
-              decoration: const BoxDecoration(
-                  color: Color(0xFF0E2433), shape: BoxShape.circle),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: SvgPicture.asset(
-              'assets/login.svg',
-              width: 100,
-              height: 100,
-            ),
-          ),
-        ],
-      ),
+  Widget _buildLoginForm(BuildContext context) {
+    const inputStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
     );
-  }
 
-  Widget _buildInputField(
-      TextEditingController controller,
-      String hintText,
-      String svgAsset,
-      TextInputType inputType,
-      String? Function(String?) validator,
-      {bool obscureText = false}) {
-    return Container(
-      width: double.infinity,
-      height: 50,
-      clipBehavior: Clip.antiAlias,
-      decoration: const BoxDecoration(
-        color: Color(0xFFD9D9D9),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+    return Form(
+      key: _formKey,
+      child: Column(
         children: [
+          _buildLogo(),
+          const SizedBox(height: 50),
           Container(
-            width: 50,
-            height: double.infinity,
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Color(0xFF0E2433),
+            padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
+            decoration: BoxDecoration(
+              color: const Color(0xFFEAFAFF),
+              borderRadius: BorderRadius.circular(15),
             ),
-            child: Align(
-              alignment: AlignmentDirectional.center,
-              child: SvgPicture.asset(
-                svgAsset,
-                width: 100.0,
-                height: 100.0,
-              ),
-            ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: TextFormField(
-              controller: controller,
-              validator: validator,
-              keyboardType: inputType,
-              obscureText: obscureText,
-              enableSuggestions: false,
-              autocorrect: false,
-              style: const TextStyle(
-                color: Color.fromARGB(192, 0, 0, 0),
-                fontSize: 16,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w200,
-              ),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: hintText,
-                hintStyle: const TextStyle(
-                  color: Color.fromARGB(192, 0, 0, 0),
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w200,
-                ),
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildEmailField(inputStyle),
+                const SizedBox(height: 20),
+                _buildPasswordField(inputStyle),
+                const SizedBox(height: 30),
+                _buildSignUpLink(context),
+                const SizedBox(height: 20),
+                _buildLoginButton(context),
+              ],
             ),
           ),
         ],
@@ -244,81 +67,155 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildTextButton(String buttonText, void Function() onPressed) {
-    return Container(
-      width: double.infinity,
-      height: 50,
-      clipBehavior: Clip.antiAlias,
-      decoration: const BoxDecoration(),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          TextButton(
-            onPressed: onPressed,
-            child: Text(
-              buttonText,
-              textAlign: TextAlign.right,
-              style: const TextStyle(
-                color: Color.fromARGB(192, 0, 0, 0),
-                fontSize: 13,
-                fontStyle: FontStyle.italic,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w200,
-                height: 0,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildElevatedButton(String buttonText, void Function() onPressed) {
-    return SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: ElevatedButton(
-        clipBehavior: Clip.antiAlias,
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(const Color(0xFF0E2433)),
-          overlayColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.pressed)) {
-                return const Color.fromARGB(255, 28, 71, 100);
-              }
-              return null;
-            },
+  Widget _buildLogo() {
+    return Center(
+      child: Container(
+        width: 156,
+        height: 96,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/logo.png'),
+            fit: BoxFit.fill,
           ),
         ),
-        onPressed: onPressed,
+      ),
+    );
+  }
+
+  Widget _buildEmailField(TextStyle inputStyle) {
+    return TextFormField(
+      controller: _emailController,
+      validator: (value) => _isEmpty(value, 'Please enter a email'),
+      keyboardType: TextInputType.emailAddress,
+      style: inputStyle,
+      decoration: _buildInputDeco(inputStyle, 'Email', 'assets/email.svg'),
+    );
+  }
+
+  Widget _buildPasswordField(TextStyle inputStyle) {
+    return TextFormField(
+      obscureText: true,
+      controller: _passwordController,
+      validator: (value) => _isEmpty(value, 'Please enter a password'),
+      keyboardType: TextInputType.visiblePassword,
+      style: inputStyle,
+      decoration: _buildInputDeco(inputStyle, 'Password', 'assets/pswd.svg'),
+    );
+  }
+
+  Widget _buildSignUpLink(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          "Don't have an account?",
+          style: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 14,
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.w400,
+            color: Colors.grey,
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RegisterScreen()),
+            );
+          },
+          child: const Text(
+            "Sign up",
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 14,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLoginButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () => _submitForm(context),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      child: const Padding(
+        padding: EdgeInsets.fromLTRB(5, 15, 5, 15),
         child: Text(
-          buttonText,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
+          'Login',
+          style: TextStyle(
             fontSize: 20,
             fontFamily: 'Inter',
-            fontWeight: FontWeight.w200,
-            height: 0,
+            fontWeight: FontWeight.w400,
+            color: Colors.white,
           ),
         ),
+      ),
+    );
+  }
+
+  String? _isEmpty(String? value, String msg) {
+    if (value == null || value.isEmpty) {
+      return msg;
+    }
+    return null;
+  }
+
+  InputDecoration _buildInputDeco(
+      TextStyle? inputStyle, String hint, String iconPath) {
+    return InputDecoration(
+      hintStyle: inputStyle,
+      errorStyle: inputStyle,
+      labelStyle: inputStyle,
+      helperStyle: inputStyle,
+      suffixStyle: inputStyle,
+      prefixStyle: inputStyle,
+      counterStyle: inputStyle,
+      floatingLabelStyle: inputStyle,
+      contentPadding: const EdgeInsets.fromLTRB(0, 5, 8, 5),
+      filled: true,
+      fillColor: const Color.fromARGB(255, 255, 255, 255),
+      hintText: hint,
+      prefixIcon: Container(
+        width: 48.0,
+        height: 40.0,
+        margin: const EdgeInsets.fromLTRB(8, 5, 10, 5),
+        child: SvgPicture.asset(
+          iconPath,
+          width: 25.0,
+          height: 25.0,
+        ),
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide.none,
       ),
     );
   }
 
   Future<void> _submitForm(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
+      print(_emailController.text);
+      print(_passwordController.text);
       try {
         await _auth.signInWithEmailAndPassword(
-          email: _usernameController.text,
+          email: _emailController.text,
           password: _passwordController.text,
         );
 
         // ignore: use_build_context_synchronously
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => HomeScreen()),
         );
 
         // ignore: use_build_context_synchronously
@@ -328,9 +225,12 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Wrong username or password!'),
-        ));
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Wrong username or password!'),
+          ),
+        );
       }
     }
   }
