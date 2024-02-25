@@ -169,6 +169,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               search: predefSearch,
                               searchService: searchService,
                               userService: userService,
+                              price: value,
                             );
                           },
                         ).then((value) {
@@ -217,26 +218,48 @@ class _SearchScreenState extends State<SearchScreen> {
                                 (min + Random().nextInt((max + 1) - min)) / 100;
 
                             final db = HistoryDatabase.instance;
-                            await db.clearHistory();
                             Account? user = await userService.getCurrentUser();
-                            await db.insertHistory({
-                              'user': user!.email!,
-                              'id': _id,
-                              'type': _buildType.name,
-                              'region': _regionController.text,
-                              'sqfeet': _sizeValue,
-                              'baths': _nBathroomsValue,
-                              'beds': _nBedroomsValue,
-                              'comes_furnished': _comesFurnishedValue ? 1 : 0,
-                              'wheelchair_access':
-                                  _hasWheelchairAccessValue ? 1 : 0,
-                              'electric_vehicle_charge':
-                                  _hasElectricVehicleChargeValue ? 1 : 0,
-                              'cats_allowed': _allowCatsValue ? 1 : 0,
-                              'dogs_allowed': _allowDogsValue ? 1 : 0,
-                              'smoking_allowed': _allowSmokingValue ? 1 : 0,
-                              'value': result
-                            });
+                            List<Map<String, dynamic>> history =
+                                await db.queryHistory(user!.email!);
+                            if (history.isEmpty) {
+                              await db.insertHistory({
+                                'user': user.email!,
+                                'id': _id,
+                                'type': _buildType.name,
+                                'region': _regionController.text,
+                                'sqfeet': _sizeValue,
+                                'baths': _nBathroomsValue,
+                                'beds': _nBedroomsValue,
+                                'comes_furnished': _comesFurnishedValue ? 1 : 0,
+                                'wheelchair_access':
+                                    _hasWheelchairAccessValue ? 1 : 0,
+                                'electric_vehicle_charge':
+                                    _hasElectricVehicleChargeValue ? 1 : 0,
+                                'cats_allowed': _allowCatsValue ? 1 : 0,
+                                'dogs_allowed': _allowDogsValue ? 1 : 0,
+                                'smoking_allowed': _allowSmokingValue ? 1 : 0,
+                                'value': result
+                              });
+                            } else {
+                              await db.updateHistory(user.email!, {
+                                'user': user.email!,
+                                'id': _id,
+                                'type': _buildType.name,
+                                'region': _regionController.text,
+                                'sqfeet': _sizeValue,
+                                'baths': _nBathroomsValue,
+                                'beds': _nBedroomsValue,
+                                'comes_furnished': _comesFurnishedValue ? 1 : 0,
+                                'wheelchair_access':
+                                    _hasWheelchairAccessValue ? 1 : 0,
+                                'electric_vehicle_charge':
+                                    _hasElectricVehicleChargeValue ? 1 : 0,
+                                'cats_allowed': _allowCatsValue ? 1 : 0,
+                                'dogs_allowed': _allowDogsValue ? 1 : 0,
+                                'smoking_allowed': _allowSmokingValue ? 1 : 0,
+                                'value': result
+                              });
+                            }
 
                             setState(() {
                               value = result;
@@ -821,9 +844,11 @@ class NameModal extends StatelessWidget {
   PredefinedSearch _search;
   SearchService _searchService;
   UserService _userService;
+  double price;
 
   NameModal(
-      {required PredefinedSearch search,
+      {required this.price,
+      required PredefinedSearch search,
       required SearchService searchService,
       required UserService userService})
       : _search = search,
@@ -863,6 +888,58 @@ class NameModal extends StatelessWidget {
               Account? acc = await _userService.getCurrentUser();
               acc!.addSearch(id);
               await _userService.updateUser(acc);
+
+              final db = HistoryDatabase.instance;
+              Account? user = await _userService.getCurrentUser();
+              List<Map<String, dynamic>> history =
+                  await db.queryHistory(user!.email!);
+              if (history.isEmpty) {
+                await db.insertHistory({
+                  'user': user.email!,
+                  'id': id,
+                  'type': _search.type.name,
+                  'region': _search.region,
+                  'sqfeet': _search.size,
+                  'baths': _search.nBathrooms,
+                  'beds': _search.nBedrooms,
+                  'comes_furnished':
+                      _search.getAccommodations()['comes-furnished']! ? 1 : 0,
+                  'wheelchair_access':
+                      _search.getAccommodations()['wheelchair-access']! ? 1 : 0,
+                  'electric_vehicle_charge':
+                      _search.getAccommodations()['electric-vehicle-charge']!
+                          ? 1
+                          : 0,
+                  'cats_allowed': _search.getPermissions()['cats']! ? 1 : 0,
+                  'dogs_allowed': _search.getPermissions()['dogs']! ? 1 : 0,
+                  'smoking_allowed':
+                      _search.getPermissions()['smoking']! ? 1 : 0,
+                  'value': price
+                });
+              } else {
+                await db.updateHistory(user.email!, {
+                  'user': user.email!,
+                  'id': id,
+                  'type': _search.type.name,
+                  'region': _search.region,
+                  'sqfeet': _search.size,
+                  'baths': _search.nBathrooms,
+                  'beds': _search.nBedrooms,
+                  'comes_furnished':
+                      _search.getAccommodations()['comes-furnished']! ? 1 : 0,
+                  'wheelchair_access':
+                      _search.getAccommodations()['wheelchair-access']! ? 1 : 0,
+                  'electric_vehicle_charge':
+                      _search.getAccommodations()['electric-vehicle-charge']!
+                          ? 1
+                          : 0,
+                  'cats_allowed': _search.getPermissions()['cats']! ? 1 : 0,
+                  'dogs_allowed': _search.getPermissions()['dogs']! ? 1 : 0,
+                  'smoking_allowed':
+                      _search.getPermissions()['smoking']! ? 1 : 0,
+                  'value': price
+                });
+              }
             }
             Navigator.of(context).pop(id);
 
