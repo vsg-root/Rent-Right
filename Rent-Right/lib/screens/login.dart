@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'register.dart';
 import 'home.dart';
+import 'retrieve_pswd.dart';
 
 class LoginScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -57,6 +58,7 @@ class LoginScreen extends StatelessWidget {
                 _buildPasswordField(inputStyle),
                 const SizedBox(height: 30),
                 _buildSignUpLink(context),
+                _buildRetrieveLink(context),
                 const SizedBox(height: 20),
                 _buildLoginButton(context),
               ],
@@ -100,6 +102,42 @@ class LoginScreen extends StatelessWidget {
       keyboardType: TextInputType.visiblePassword,
       style: inputStyle,
       decoration: _buildInputDeco(inputStyle, 'Password', 'assets/pswd.svg'),
+    );
+  }
+
+  Widget _buildRetrieveLink(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          "Forgot your password?",
+          style: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 14,
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.w400,
+            color: Colors.grey,
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RecoverScreen()),
+            );
+          },
+          child: const Text(
+            "Recover",
+            style: TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 14,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
