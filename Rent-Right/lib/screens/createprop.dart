@@ -182,8 +182,13 @@ class _CreatePropScreenState extends State<CreatePropScreen> {
                                     if (text.isEmpty) {
                                       _priceController.text = '0.00';
                                     }
-
-                                    price = double.parse(_priceController.text);
+                                  },
+                                  onChanged: (text) {
+                                    if (text.isNotEmpty) {
+                                      price = double.parse(text);
+                                    } else {
+                                      price = 0;
+                                    }
                                   },
                                 ),
                               )
@@ -280,13 +285,13 @@ class _CreatePropScreenState extends State<CreatePropScreen> {
                           onPressed: () {
                             if (Observer().pages.contains('/searches')) {
                               Navigator.of(context).popUntil((route) =>
-                                  route.settings.name == '/favorites');
+                                  route.settings.name == '/properties');
                             } else {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    settings:
-                                        const RouteSettings(name: '/favorites'),
+                                    settings: const RouteSettings(
+                                        name: '/properties'),
                                     builder: (context) =>
                                         const FavoritesScreen()),
                               );

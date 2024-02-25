@@ -74,11 +74,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           const SizedBox(
             height: 50,
           ),
-          const Text(
-            'My saved searches:',
-            style: TextStyle(
-                fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.w400),
-          ),
           SingleChildScrollView(
             child: FutureBuilder<Account?>(
               future: userService.getCurrentUser(),
@@ -100,11 +95,38 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                       } else {
                         final searches = snapshot.data ?? [];
                         return Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: searches.map((search) {
-                            return _buildSearch(search.entries.first.value!,
-                                search.entries.first.key);
-                          }).toList(),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'My saved searches:',
+                              style: TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                            if (searches.isNotEmpty)
+                              SizedBox(
+                                  height: 300,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: searches.map((search) {
+                                        return _buildSearch(
+                                            search.entries.first.value!,
+                                            search.entries.first.key);
+                                      }).toList(),
+                                    ),
+                                  )),
+                            if (searches.isEmpty)
+                              const Text(
+                                'No searches saved',
+                                style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                          ],
                         );
                       }
                     },
@@ -182,17 +204,21 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           ),
                           IconButton(
                               iconSize: 25,
-                              onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        settings: const RouteSettings(
-                                            name: '/search'),
-                                        builder: (context) => SearchScreen(
-                                            editing: true,
-                                            isSaved: true,
-                                            id: id,
-                                            search: search)),
-                                  ),
+                              onPressed: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      settings:
+                                          const RouteSettings(name: '/search'),
+                                      builder: (context) => SearchScreen(
+                                          editing: true,
+                                          isSaved: true,
+                                          id: id,
+                                          search: search)),
+                                );
+
+                                setState(() {});
+                              },
                               icon: const Icon(Icons.create_rounded,
                                   color: Colors.black))
                         ])
@@ -236,7 +262,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   Future<List<Map<String, dynamic>>> fetchHistory() async {
     final db = HistoryDatabase.instance;
-    return db.queryAllHistory();
+    Account? user = await userService.getCurrentUser();
+    return db.queryHistory(user!.email!);
   }
 
   Widget _buildHistory(BuildContext context) {
@@ -345,7 +372,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       await userService.updateUser(acc);
 
       Map<String, dynamic> newSearch = Map.from(search)..['id'] = '';
-      await HistoryDatabase.instance.updateHistory(search['id'], newSearch);
+      Account? user = await userService.getCurrentUser();
+      await HistoryDatabase.instance.updateHistory(user!.email!, newSearch);
       setState(() {});
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Search removed from favorites.'),
@@ -385,7 +413,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
     if (id != null && id.isNotEmpty) {
       search = Map.from(search)..['id'] = id;
-      await HistoryDatabase.instance.updateHistory('', search);
+      Account? user = await userService.getCurrentUser();
+      await HistoryDatabase.instance.updateHistory(user!.email!, search);
       setState(() {});
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Search saved successfully.'),
@@ -443,13 +472,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               width: 100.0,
               height: 100.0,
             ),
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              await Navigator.push(
                 context,
                 MaterialPageRoute(
                     settings: const RouteSettings(name: '/properties'),
                     builder: (context) => const PropertiesScreen()),
               );
+              setState(() {});
             },
             iconSize: 50,
             splashRadius: 35,
@@ -473,17 +503,18 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 width: 100,
               ),
               color: const Color(0xFFADADAD),
-              onPressed: () {
+              onPressed: () async {
                 if (Observer().pages.contains('/profile')) {
                   Navigator.of(context)
                       .popUntil((route) => route.settings.name == '/profile');
                 } else {
-                  Navigator.push(
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                         settings: const RouteSettings(name: '/profile'),
                         builder: (context) => const ProfileScreen()),
                   );
+                  setState(() {});
                 }
               },
               iconSize: 32,
@@ -516,17 +547,18 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 width: 100,
               ),
               color: const Color(0xFFADADAD),
-              onPressed: () {
+              onPressed: () async {
                 if (Observer().pages.contains('/search')) {
                   Navigator.of(context)
                       .popUntil((route) => route.settings.name == '/search');
                 } else {
-                  Navigator.push(
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                         settings: const RouteSettings(name: '/search'),
                         builder: (context) => SearchScreen()),
                   );
+                  setState(() {});
                 }
               },
               iconSize: 32,

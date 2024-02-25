@@ -66,6 +66,4 @@ class Account {
   bool removePropertie(String value) {
     return _properties.remove(value);
   }
-
-  void setPswd(String text) {}
 }

@@ -71,12 +71,15 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ElevatedButton(
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  settings: const RouteSettings(name: '/crateprop'),
-                  builder: (context) => CreatePropScreen()),
-            ),
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    settings: const RouteSettings(name: '/crateprop'),
+                    builder: (context) => CreatePropScreen()),
+              );
+              setState(() {});
+            },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.all(15),
               backgroundColor: const Color(0xFF161616),
@@ -98,40 +101,65 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
           const SizedBox(
             height: 50,
           ),
-          SingleChildScrollView(
-            child: FutureBuilder<Account?>(
-              future: userService.getCurrentUser(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError || snapshot.data == null) {
-                  return Center(
-                      child: Text(
-                          'Error: ${snapshot.error ?? "No user data available"}'));
-                } else {
-                  return FutureBuilder<List<Map<String, Building?>>>(
-                    future: getAllProperties(snapshot.data!.properties),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else {
-                        final searches = snapshot.data ?? [];
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: searches.map((property) {
-                            return _buildPropertie(
-                                property.entries.first.value!,
-                                property.entries.first.key);
-                          }).toList(),
-                        );
-                      }
-                    },
-                  );
-                }
-              },
-            ),
+          FutureBuilder<Account?>(
+            future: userService.getCurrentUser(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError || snapshot.data == null) {
+                return Center(
+                    child: Text(
+                        'Error: ${snapshot.error ?? "No user data available"}'));
+              } else {
+                return FutureBuilder<List<Map<String, Building?>>>(
+                  future: getAllProperties(snapshot.data!.properties),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else {
+                      final searches = snapshot.data ?? [];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'My saved properties:',
+                            style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          if (searches.isNotEmpty)
+                            SizedBox(
+                              height: 300,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: searches.map((property) {
+                                    return _buildPropertie(
+                                        property.entries.first.value!,
+                                        property.entries.first.key);
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
+                          if (searches.isEmpty)
+                            const Text(
+                              'No properties saved',
+                              style: TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                        ],
+                      );
+                    }
+                  },
+                );
+              }
+            },
           ),
         ]);
   }
@@ -228,8 +256,8 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
                           ),
                           IconButton(
                               iconSize: 25,
-                              onPressed: () {
-                                Navigator.push(
+                              onPressed: () async {
+                                await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       settings: const RouteSettings(
@@ -240,6 +268,7 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
                                           id: id,
                                           prop: property)),
                                 );
+                                setState(() {});
                               },
                               icon: const Icon(Icons.create_rounded,
                                   color: Colors.white))
@@ -282,7 +311,8 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
 
   Future<List<Map<String, dynamic>>> fetchHistory() async {
     final db = HistoryDatabase.instance;
-    return db.queryAllHistory();
+    Account? user = await userService.getCurrentUser();
+    return db.queryHistory(user!.email!);
   }
 
   Widget _buildHistory(BuildContext context) {
@@ -367,17 +397,18 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
                 width: 100,
               ),
               color: const Color(0xFFADADAD),
-              onPressed: () {
+              onPressed: () async {
                 if (Observer().pages.contains('/profile')) {
                   Navigator.of(context)
                       .popUntil((route) => route.settings.name == '/profile');
                 } else {
-                  Navigator.push(
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                         settings: const RouteSettings(name: '/profile'),
                         builder: (context) => const ProfileScreen()),
                   );
+                  setState(() {});
                 }
               },
               iconSize: 32,
@@ -410,12 +441,12 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
                 width: 100,
               ),
               color: const Color(0xFFADADAD),
-              onPressed: () {
+              onPressed: () async {
                 if (Observer().pages.contains('/search')) {
                   Navigator.of(context)
                       .popUntil((route) => route.settings.name == '/search');
                 } else {
-                  Navigator.push(
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                         settings: const RouteSettings(name: '/search'),

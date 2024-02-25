@@ -39,7 +39,7 @@ class HousingService {
   Future<List<Building>> getAllBuildings() async {
     try {
       QuerySnapshot querySnapshot = await _housingCollection.get();
-
+      print(querySnapshot.size);
       List<Building> buildings =
           querySnapshot.docs.map((DocumentSnapshot document) {
         return Building(
@@ -51,7 +51,7 @@ class HousingService {
               : BuildingType.other,
           region: document['region'],
           state: USState.values.byName(document['state'].toUpperCase()),
-          price: document['price'],
+          price: document['price'].toDouble(),
           size: document['sqfeet'],
           nBedrooms: document['beds'],
           nBathrooms: document['baths'],
@@ -87,7 +87,7 @@ class HousingService {
               : BuildingType.other,
           region: buildingSnapshot['region'],
           state: USState.values.byName(buildingSnapshot['state'].toUpperCase()),
-          price: buildingSnapshot['price'],
+          price: buildingSnapshot['price'].toDouble(),
           size: buildingSnapshot['sqfeet'],
           nBedrooms: buildingSnapshot['beds'],
           nBathrooms: buildingSnapshot['baths'],

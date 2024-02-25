@@ -4,10 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:login_interface/models/Account.dart';
 import 'package:login_interface/screens/search.dart';
-import 'package:login_interface/services/searchService.dart';
-import 'package:login_interface/services/userService.dart';
 import 'package:login_interface/components/Observer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:login_interface/services/searchService.dart';
+import 'package:login_interface/services/userService.dart';
+import 'package:login_interface/services/housingService.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -17,8 +18,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final _userService = UserService();
-  final _searchService = SearchService();
+  final userService = UserService();
+  final searchService = SearchService();
+  final housingService = HousingService();
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: FutureBuilder<Account?>(
-          future: _userService.getCurrentUser(),
+          future: userService.getCurrentUser(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -238,11 +240,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildHeader(BuildContext context) {
     return Column(
       children: [
-        WhiteBtn('Clear favorites', () {}),
+        WhiteBtn('Clear favorites', () async {
+          Account? acc = await userService.getCurrentUser();
+          List<String> searches = acc!.searches;
+          searches.forEach((element) async {
+            await searchService.deleteSearch(element);
+            acc.removeSearch(element);
+          });
+          await userService.updateUser(acc);
+        }),
         SizedBox(
           height: 30,
         ),
-        WhiteBtn('Clear my properties', () {})
+        WhiteBtn('Clear my properties', () async {
+          Account? acc = await userService.getCurrentUser();
+          List<String> props = acc!.properties;
+          props.forEach((element) async {
+            await housingService.deleteBuilding(element);
+            acc.removePropertie(element);
+          });
+          await userService.updateUser(acc);
+        })
       ],
     );
   }

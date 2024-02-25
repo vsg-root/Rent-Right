@@ -107,13 +107,14 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 100.0,
               height: 100.0,
             ),
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              await Navigator.push(
                 context,
                 MaterialPageRoute(
                     settings: const RouteSettings(name: '/properties'),
                     builder: (context) => const PropertiesScreen()),
               );
+              setState(() {});
             },
             iconSize: 50,
             splashRadius: 30,
@@ -142,7 +143,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<List<Map<String, dynamic>>> fetchHistory() async {
     final db = HistoryDatabase.instance;
-    return db.queryAllHistory();
+    Account? user = await _userService.getCurrentUser();
+    return db.queryHistory(user!.email!);
   }
 
   Widget _buildHistory(BuildContext context) {
@@ -218,13 +220,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           ]),
                     ]),
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: () async {
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
                               settings: const RouteSettings(name: '/favorites'),
                               builder: (context) => const FavoritesScreen()),
                         );
+                        setState(() {});
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
@@ -385,6 +388,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     sortedStates =
                         _sortStatesByAverageSize(averageSizesByState);
                   }
+                  print(sortedStates);
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: Column(
@@ -506,13 +510,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 100,
               ),
               color: const Color(0xFFADADAD),
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
                       settings: const RouteSettings(name: '/profile'),
                       builder: (context) => const ProfileScreen()),
                 );
+                setState(() {});
               },
               iconSize: 32,
               splashRadius: null,
@@ -537,13 +542,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 100,
               ),
               color: const Color(0xFFADADAD),
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
                       settings: const RouteSettings(name: '/search'),
                       builder: (context) => SearchScreen()),
                 );
+                setState(() {});
               },
               iconSize: 32,
               splashRadius: null,

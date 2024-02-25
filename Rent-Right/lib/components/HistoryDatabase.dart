@@ -11,10 +11,11 @@ class HistoryDatabase {
 
   static Future<void> initialize() async {
     _database = await openDatabase(
-      join(await getDatabasesPath(), 'data.db'),
+      join(await getDatabasesPath(), 'historydata.db'),
       onCreate: (db, version) {
         return db.execute('''
           CREATE TABLE history(
+            user TEXT,
             id TEXT,
             type TEXT,
             region TEXT,
@@ -43,12 +44,20 @@ class HistoryDatabase {
     return await _database.query('history');
   }
 
-  Future<void> updateHistory(String id, Map<String, dynamic> row) async {
+  Future<List<Map<String, dynamic>>> queryHistory(String user) async {
+    return await _database.query(
+      'history',
+      where: 'user = ?',
+      whereArgs: [user],
+    );
+  }
+
+  Future<void> updateHistory(String user, Map<String, dynamic> row) async {
     await _database.update(
       'history',
       row,
-      where: 'id = ?',
-      whereArgs: [id],
+      where: 'user = ?',
+      whereArgs: [user],
     );
   }
 

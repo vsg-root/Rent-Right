@@ -218,8 +218,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
                             final db = HistoryDatabase.instance;
                             await db.clearHistory();
-
+                            Account? user = await userService.getCurrentUser();
                             await db.insertHistory({
+                              'user': user!.email!,
                               'id': _id,
                               'type': _buildType.name,
                               'region': _regionController.text,
