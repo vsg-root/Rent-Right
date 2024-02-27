@@ -3,4 +3,5 @@ __pycache__
 .history
 *.html
 venv
+env
 test
