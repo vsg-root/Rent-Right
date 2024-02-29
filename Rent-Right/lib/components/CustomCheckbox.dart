@@ -45,7 +45,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
         },
         child: AnimatedContainer(
           padding: const EdgeInsets.all(5),
-          duration: Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 200),
           width: widget.size,
           height: widget.size,
           decoration: ShapeDecoration(

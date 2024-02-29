@@ -1,6 +1,5 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'dart:io';
 
 class HistoryDatabase {
   static late Database _database; // Alteração aqui

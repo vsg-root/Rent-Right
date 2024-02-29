@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:login_interface/models/Account.dart';
 import 'package:login_interface/services/userService.dart';
-import 'login.dart';
 
 class RegisterScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -114,7 +113,13 @@ class RegisterScreen extends StatelessWidget {
     return TextFormField(
       obscureText: true,
       controller: _pswdController,
-      validator: (value) => _isEmpty(value, 'Please enter a password'),
+      validator: (value) {
+        String? ret = _isEmpty(value, 'Please enter a password');
+        if (ret == null && value!.length < 6) {
+          ret = 'Password must have at least 6 characters';
+        }
+        return ret;
+      },
       keyboardType: TextInputType.visiblePassword,
       style: inputStyle,
       decoration: _buildInputDeco(inputStyle, 'Password', 'assets/pswd.svg'),

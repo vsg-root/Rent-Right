@@ -31,7 +31,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   final HousingService housingService = HousingService();
 
-  String _selectedSortingOption = 'Prices';
+  final String _selectedSortingOption = 'Prices';
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +170,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w400,
                         )),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -235,7 +235,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       width: size,
       height: size,
       decoration: ShapeDecoration(
-        color: present ? Color(0xFF06AADD) : Color(0x1CADADAD),
+        color: present ? const Color(0xFF06AADD) : const Color(0x1CADADAD),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -322,19 +322,19 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           BlendMode.srcIn,
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                                 '${data[0]['type'][0].toUpperCase()}${data[0]['type'].substring(1).toLowerCase()} - ${data[0]['region']}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Color(0xFF161616),
                                     fontFamily: 'Inter',
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400)),
                             Text('US\$ ${data[0]['value'].toStringAsFixed(2)}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontFamily: 'Inter',
                                     fontSize: 24,
                                     fontWeight: FontWeight.w800))
@@ -469,8 +469,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           IconButton(
             icon: SvgPicture.asset(
               'assets/profile.svg',
-              width: 100.0,
-              height: 100.0,
+              width: 64.0,
+              height: 64.0,
             ),
             onPressed: () async {
               await Navigator.push(
@@ -499,8 +499,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             child: IconButton(
               icon: SvgPicture.asset(
                 'assets/cog.svg',
-                height: 100,
-                width: 100,
+                height: 32,
+                width: 32,
               ),
               color: const Color(0xFFADADAD),
               onPressed: () async {
@@ -526,8 +526,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             child: IconButton(
               icon: SvgPicture.asset(
                 'assets/home.svg',
-                height: 100,
-                width: 100,
+                height: 32,
+                width: 32,
               ),
               color: const Color(0xFFADADAD),
               onPressed: () {
@@ -543,8 +543,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             child: IconButton(
               icon: SvgPicture.asset(
                 'assets/coin.svg',
-                height: 100,
-                width: 100,
+                height: 32,
+                width: 32,
               ),
               color: const Color(0xFFADADAD),
               onPressed: () async {
@@ -572,12 +572,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 class NameModal extends StatelessWidget {
   var name = '';
 
-  PredefinedSearch _search;
-  SearchService _searchService;
-  UserService _userService;
+  final PredefinedSearch _search;
+  final SearchService _searchService;
+  final UserService _userService;
 
   NameModal(
-      {required PredefinedSearch search,
+      {super.key,
+      required PredefinedSearch search,
       required SearchService searchService,
       required UserService userService})
       : _search = search,
@@ -587,7 +588,7 @@ class NameModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Give your search a name'),
+      title: const Text('Give your search a name'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -608,7 +609,7 @@ class NameModal extends StatelessWidget {
           },
         ),
         ElevatedButton(
-          child: Text('Confirm'),
+          child: const Text('Confirm'),
           onPressed: () async {
             _search.name = name;
 

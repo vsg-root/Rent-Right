@@ -7,11 +7,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:login_interface/main.dart';
+import 'package:login_interface/components/HistoryDatabase.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:login_interface/firebase_options.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    await HistoryDatabase.initialize();
     await tester.pumpWidget(const MyApp());
 
     // Verify that our counter starts at 0.

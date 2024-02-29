@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/foundation.dart';
 
 class RadioItem<T> extends StatefulWidget {
   final String label;
@@ -14,8 +13,8 @@ class RadioItem<T> extends StatefulWidget {
   final ValueChanged<bool>? onChanged;
   final T value;
 
-  RadioItem({
-    Key? key,
+  const RadioItem({
+    super.key,
     required this.label,
     required this.icon,
     required this.unselectedColor,

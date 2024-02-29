@@ -316,7 +316,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ]))),
         if (widget.editing ?? false)
           Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () async {
                 _search = PredefinedSearch(
@@ -619,13 +619,13 @@ class _SearchScreenState extends State<SearchScreen> {
             padding: const EdgeInsets.all(10.0),
             child: Row(children: [
               RadioGroup<BuildingType>(
-                items: [
+                items: const [
                   RadioItem<BuildingType>(
                     value: BuildingType.house,
                     label: '',
                     icon: 'assets/house.svg',
-                    unselectedColor: const Color(0xFFADADAD),
-                    selectedColor: const Color(0xFF06AADD),
+                    unselectedColor: Color(0xFFADADAD),
+                    selectedColor: Color(0xFF06AADD),
                     unselectedHeight: unselectedSize,
                     unselectedWidth: unselectedSize,
                     selectedHeight: selectedSize,
@@ -635,8 +635,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     value: BuildingType.apartment,
                     label: '',
                     icon: 'assets/apartment.svg',
-                    unselectedColor: const Color(0xFFADADAD),
-                    selectedColor: const Color(0xFF06AADD),
+                    unselectedColor: Color(0xFFADADAD),
+                    selectedColor: Color(0xFF06AADD),
                     unselectedHeight: unselectedSize,
                     unselectedWidth: unselectedSize,
                     selectedHeight: selectedSize,
@@ -646,8 +646,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     value: BuildingType.other,
                     label: '',
                     icon: 'assets/other.svg',
-                    unselectedColor: const Color(0xFFADADAD),
-                    selectedColor: const Color(0xFF06AADD),
+                    unselectedColor: Color(0xFFADADAD),
+                    selectedColor: Color(0xFF06AADD),
                     unselectedHeight: unselectedSize,
                     unselectedWidth: unselectedSize,
                     selectedHeight: selectedSize,
@@ -731,8 +731,8 @@ class _SearchScreenState extends State<SearchScreen> {
             child: IconButton(
               icon: SvgPicture.asset(
                 'assets/cog.svg',
-                height: 100,
-                width: 100,
+                height: 32,
+                width: 32,
               ),
               color: const Color(0xFFADADAD),
               onPressed: () {
@@ -757,8 +757,8 @@ class _SearchScreenState extends State<SearchScreen> {
             child: IconButton(
               icon: SvgPicture.asset(
                 'assets/home.svg',
-                height: 100,
-                width: 100,
+                height: 32,
+                width: 32,
               ),
               color: const Color(0xFFADADAD),
               onPressed: () {
@@ -786,12 +786,12 @@ class _SearchScreenState extends State<SearchScreen> {
 class NameModalUpdate extends StatelessWidget {
   var name = '';
 
-  PredefinedSearch _search;
-  SearchService _searchService;
-  String _id;
+  final PredefinedSearch _search;
+  final SearchService _searchService;
+  final String _id;
 
   NameModalUpdate(
-      {required PredefinedSearch search,
+      {super.key, required PredefinedSearch search,
       required SearchService searchService,
       required String id})
       : _search = search,
@@ -841,13 +841,13 @@ class NameModalUpdate extends StatelessWidget {
 class NameModal extends StatelessWidget {
   var name = '';
 
-  PredefinedSearch _search;
-  SearchService _searchService;
-  UserService _userService;
+  final PredefinedSearch _search;
+  final SearchService _searchService;
+  final UserService _userService;
   double price;
 
   NameModal(
-      {required this.price,
+      {super.key, required this.price,
       required PredefinedSearch search,
       required SearchService searchService,
       required UserService userService})
@@ -858,7 +858,7 @@ class NameModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Give your search a name'),
+      title: const Text('Give your search a name'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -879,7 +879,7 @@ class NameModal extends StatelessWidget {
           },
         ),
         ElevatedButton(
-          child: Text('Confirm'),
+          child: const Text('Confirm'),
           onPressed: () async {
             _search.name = name;
 

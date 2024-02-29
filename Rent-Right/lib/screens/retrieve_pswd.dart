@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'register.dart';
-import 'home.dart';
 
 class RecoverScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();

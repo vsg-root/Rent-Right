@@ -10,7 +10,6 @@ import 'package:login_interface/models/building.dart';
 import 'package:login_interface/services/housingService.dart';
 import 'package:login_interface/services/userService.dart';
 import 'package:login_interface/components/DropDown.dart';
-import 'package:login_interface/components/Observer.dart';
 import 'package:login_interface/components/HistoryDatabase.dart';
 
 import 'search.dart';
@@ -104,8 +103,8 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: SvgPicture.asset(
               'assets/profile.svg',
-              width: 100.0,
-              height: 100.0,
+              width: 64.0,
+              height: 64.0,
             ),
             onPressed: () async {
               await Navigator.push(
@@ -201,19 +200,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           BlendMode.srcIn,
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                                 '${data[0]['type'][0].toUpperCase()}${data[0]['type'].substring(1).toLowerCase()} - ${data[0]['region']}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Color(0xFF161616),
                                     fontFamily: 'Inter',
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400)),
                             Text('US\$ ${data[0]['value'].toStringAsFixed(2)}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontFamily: 'Inter',
                                     fontSize: 24,
                                     fontWeight: FontWeight.w800))
@@ -254,13 +253,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildRecomendations(BuildContext context) {
-    TextStyle base = TextStyle(
+    TextStyle base = const TextStyle(
         fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.w400);
 
-    TextStyle winnerName = TextStyle(
+    TextStyle winnerName = const TextStyle(
         fontFamily: 'Inter', fontSize: 20, fontWeight: FontWeight.w800);
 
-    TextStyle winnerValue = TextStyle(
+    TextStyle winnerValue = const TextStyle(
         fontFamily: 'Inter', fontSize: 20, fontWeight: FontWeight.w400);
 
     return Container(
@@ -289,10 +288,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Text(
+                    const Text(
                       'Sorting by:',
                       style: TextStyle(
                         color: Color(0xFF161616),
@@ -307,7 +306,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           _selectedSortingOption = newValue!;
                         });
                       },
-                      dropdownButtonStyle: DropdownButtonStyle(
+                      dropdownButtonStyle: const DropdownButtonStyle(
                         height: 49,
                         elevation: 1,
                         backgroundColor: Colors.white,
@@ -315,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       dropdownStyle: DropdownStyle(
                           elevation: 1,
-                          padding: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
                           shape: RoundedRectangleBorder(
                               side: BorderSide.none,
                               borderRadius: BorderRadius.circular(7))),
@@ -355,7 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.only(
                           topRight: Radius.circular(20),
                           bottomLeft: Radius.circular(20))),
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: SvgPicture.asset(
                     'assets/heart.svg',
                     width: 32,
@@ -368,7 +367,7 @@ class _HomeScreenState extends State<HomeScreen> {
               future: housingService.getAllBuildings(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else {
@@ -506,8 +505,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: IconButton(
               icon: SvgPicture.asset(
                 'assets/cog.svg',
-                height: 100,
-                width: 100,
+                height: 32,
+                width: 32,
               ),
               color: const Color(0xFFADADAD),
               onPressed: () async {
@@ -538,8 +537,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: IconButton(
               icon: SvgPicture.asset(
                 'assets/coin.svg',
-                height: 100,
-                width: 100,
+                height: 32,
+                width: 32,
               ),
               color: const Color(0xFFADADAD),
               onPressed: () async {

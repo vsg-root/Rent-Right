@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:login_interface/components/HistoryDatabase.dart';
 import 'package:login_interface/models/building.dart';
 
 import 'package:login_interface/models/predefinedSearch.dart';
@@ -19,7 +18,6 @@ import 'package:login_interface/services/userService.dart';
 import 'package:login_interface/models/buildingType.dart';
 import 'package:login_interface/models/Account.dart';
 
-import 'dart:math';
 
 class CreatePropScreen extends StatefulWidget {
   final String? id;
@@ -36,7 +34,7 @@ class CreatePropScreen extends StatefulWidget {
 class _CreatePropScreenState extends State<CreatePropScreen> {
   final HousingService housingService = HousingService();
   final UserService userService = UserService();
-  late String _id = widget.id ?? "";
+  late final String _id = widget.id ?? "";
   late Building? _prop = widget.prop;
 
   late BuildingType _buildType =
@@ -149,15 +147,15 @@ class _CreatePropScreenState extends State<CreatePropScreen> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text('US\$',
-                                  style: const TextStyle(
+                              const Text('US\$',
+                                  style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 24,
                                     fontFamily: 'Inter',
                                     fontWeight: FontWeight.w700,
                                     height: 0,
                                   )),
-                              Container(
+                              SizedBox(
                                 width: 200,
                                 child: TextField(
                                   controller: _priceController,
@@ -168,15 +166,15 @@ class _CreatePropScreenState extends State<CreatePropScreen> {
                                     fontWeight: FontWeight.w700,
                                     height: 0,
                                   ),
-                                  keyboardType: TextInputType.numberWithOptions(
+                                  keyboardType: const TextInputType.numberWithOptions(
                                       decimal: true),
                                   inputFormatters: [
                                     FilteringTextInputFormatter.allow(
                                         RegExp(r'^\d*\.?\d*$')),
                                   ],
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     hintText: '0',
-                                    border: const OutlineInputBorder(),
+                                    border: OutlineInputBorder(),
                                   ),
                                   onSubmitted: (text) {
                                     if (text.isEmpty) {
@@ -206,7 +204,7 @@ class _CreatePropScreenState extends State<CreatePropScreen> {
                               await userService.updateUser(acc);
                               Navigator.of(context).pop();
                             },
-                            icon: Icon(Icons.favorite, color: Colors.red))
+                            icon: const Icon(Icons.favorite, color: Colors.red))
                     ],
                   ),
                   const SizedBox(height: 10),
@@ -273,7 +271,7 @@ class _CreatePropScreenState extends State<CreatePropScreen> {
                           child: Text(
                             (widget.editing ?? false) ? 'Update' : 'Save',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18,
                               fontFamily: 'Inter',
@@ -563,13 +561,13 @@ class _CreatePropScreenState extends State<CreatePropScreen> {
             padding: const EdgeInsets.all(10.0),
             child: Row(children: [
               RadioGroup<BuildingType>(
-                items: [
+                items: const [
                   RadioItem<BuildingType>(
                     value: BuildingType.house,
                     label: '',
                     icon: 'assets/house.svg',
-                    unselectedColor: const Color(0xFFADADAD),
-                    selectedColor: const Color(0xFF06AADD),
+                    unselectedColor: Color(0xFFADADAD),
+                    selectedColor: Color(0xFF06AADD),
                     unselectedHeight: unselectedSize,
                     unselectedWidth: unselectedSize,
                     selectedHeight: selectedSize,
@@ -579,8 +577,8 @@ class _CreatePropScreenState extends State<CreatePropScreen> {
                     value: BuildingType.apartment,
                     label: '',
                     icon: 'assets/apartment.svg',
-                    unselectedColor: const Color(0xFFADADAD),
-                    selectedColor: const Color(0xFF06AADD),
+                    unselectedColor: Color(0xFFADADAD),
+                    selectedColor: Color(0xFF06AADD),
                     unselectedHeight: unselectedSize,
                     unselectedWidth: unselectedSize,
                     selectedHeight: selectedSize,
@@ -590,8 +588,8 @@ class _CreatePropScreenState extends State<CreatePropScreen> {
                     value: BuildingType.other,
                     label: '',
                     icon: 'assets/other.svg',
-                    unselectedColor: const Color(0xFFADADAD),
-                    selectedColor: const Color(0xFF06AADD),
+                    unselectedColor: Color(0xFFADADAD),
+                    selectedColor: Color(0xFF06AADD),
                     unselectedHeight: unselectedSize,
                     unselectedWidth: unselectedSize,
                     selectedHeight: selectedSize,
@@ -746,12 +744,12 @@ class _CreatePropScreenState extends State<CreatePropScreen> {
 class NameModalUpdate extends StatelessWidget {
   var name = '';
 
-  PredefinedSearch _search;
-  SearchService _searchService;
-  String _id;
+  final PredefinedSearch _search;
+  final SearchService _searchService;
+  final String _id;
 
   NameModalUpdate(
-      {required PredefinedSearch search,
+      {super.key, required PredefinedSearch search,
       required SearchService searchService,
       required String id})
       : _search = search,
@@ -801,12 +799,12 @@ class NameModalUpdate extends StatelessWidget {
 class NameModal extends StatelessWidget {
   var name = '';
 
-  PredefinedSearch _search;
-  SearchService _searchService;
-  UserService _userService;
+  final PredefinedSearch _search;
+  final SearchService _searchService;
+  final UserService _userService;
 
   NameModal(
-      {required PredefinedSearch search,
+      {super.key, required PredefinedSearch search,
       required SearchService searchService,
       required UserService userService})
       : _search = search,
@@ -816,7 +814,7 @@ class NameModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Give your search a name'),
+      title: const Text('Give your search a name'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -837,7 +835,7 @@ class NameModal extends StatelessWidget {
           },
         ),
         ElevatedButton(
-          child: Text('Confirm'),
+          child: const Text('Confirm'),
           onPressed: () async {
             _search.name = name;
 

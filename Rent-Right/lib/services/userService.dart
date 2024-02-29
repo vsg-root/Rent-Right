@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:login_interface/models/Account.dart';
@@ -45,7 +44,7 @@ class UserService {
   }
 
   Future<void> deleteUser(String userId) async {
-    User? user = await _auth.currentUser;
+    User? user = _auth.currentUser;
     if (user != null && user.uid == userId) {
       await _firestore.collection('users').doc(userId).delete();
       await user.delete();
@@ -81,7 +80,7 @@ class UserService {
   }
 
   Future<Account?> getCurrentUser() async {
-    User? user = await _auth.currentUser;
+    User? user = _auth.currentUser;
     DocumentSnapshot userSnapshot =
         await _firestore.collection('users').doc(user?.uid).get();
 

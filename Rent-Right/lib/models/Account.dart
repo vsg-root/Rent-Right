@@ -1,13 +1,12 @@
-import 'dart:ffi';
 
 class Account {
-  String? _id;
+  final String? _id;
   String _userName;
   String? _email;
   String _urlImage;
   String? _pswd;
-  List<String> _predefSearchs;
-  List<String> _properties;
+  final List<String> _predefSearchs;
+  final List<String> _properties;
 
   Account(
       {String? id,

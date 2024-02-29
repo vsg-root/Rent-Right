@@ -9,11 +9,8 @@ import 'package:login_interface/services/userService.dart';
 import 'package:login_interface/components/Observer.dart';
 import 'package:login_interface/components/HistoryDatabase.dart';
 
-import 'package:login_interface/models/predefinedSearch.dart';
 import 'package:login_interface/screens/profile.dart';
 import 'package:login_interface/screens/createprop.dart';
-import 'package:login_interface/services/searchService.dart';
-import 'package:login_interface/models/buildingType.dart';
 
 import 'search.dart';
 
@@ -173,7 +170,7 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
           child: Container(
               padding: const EdgeInsets.all(15),
               decoration: ShapeDecoration(
-                color: Color(0xFF161616),
+                color: const Color(0xFF161616),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
@@ -292,7 +289,7 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
         ),
       ),
       child: SvgPicture.asset(icon,
-          colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn)),
+          colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn)),
     );
   }
 
@@ -345,7 +342,7 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
               Container(
                   padding: const EdgeInsets.all(15),
                   decoration: ShapeDecoration(
-                    color: Color(0xFF161616),
+                    color: const Color(0xFF161616),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -358,7 +355,7 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
                       )
                     ],
                   ),
-                  child: Column(
+                  child: const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [])),
             ],
@@ -369,13 +366,13 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
   }
 
   Widget _buildHeader(BuildContext context) {
-    return Row(
+    return const Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             'My properties',
-            style: const TextStyle(
+            style: TextStyle(
                 fontFamily: 'Inter', fontSize: 32, fontWeight: FontWeight.w800),
           )
         ]);
@@ -393,8 +390,8 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
             child: IconButton(
               icon: SvgPicture.asset(
                 'assets/cog.svg',
-                height: 100,
-                width: 100,
+                height: 32,
+                width: 32,
               ),
               color: const Color(0xFFADADAD),
               onPressed: () async {
@@ -420,8 +417,8 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
             child: IconButton(
               icon: SvgPicture.asset(
                 'assets/home.svg',
-                height: 100,
-                width: 100,
+                height: 32,
+                width: 32,
               ),
               color: const Color(0xFFADADAD),
               onPressed: () {
@@ -437,8 +434,8 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
             child: IconButton(
               icon: SvgPicture.asset(
                 'assets/coin.svg',
-                height: 100,
-                width: 100,
+                height: 32,
+                width: 32,
               ),
               color: const Color(0xFFADADAD),
               onPressed: () async {

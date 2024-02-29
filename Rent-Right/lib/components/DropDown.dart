@@ -209,7 +209,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
       });
     } else {
       _overlayEntry = _createOverlayEntry();
-      Overlay.of(context)?.insert(_overlayEntry);
+      Overlay.of(context).insert(_overlayEntry);
       setState(() => _isOpen = true);
       _animationController.forward();
     }

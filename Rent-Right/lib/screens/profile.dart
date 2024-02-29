@@ -53,13 +53,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    TextStyle title = TextStyle(
+    TextStyle title = const TextStyle(
       fontSize: 18,
       fontFamily: 'Inter',
       fontWeight: FontWeight.w600,
     );
 
-    TextStyle basic = TextStyle(
+    TextStyle basic = const TextStyle(
       fontSize: 18,
       fontFamily: 'Inter',
       fontWeight: FontWeight.w400,
@@ -145,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           return UsernameChangeDialog();
                         },
                       );
-                      await Future.delayed(Duration(milliseconds: 1000));
+                      await Future.delayed(const Duration(milliseconds: 1000));
                       setState(() {});
                     },
                     child: const Text(
@@ -249,7 +249,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           });
           await userService.updateUser(acc);
         }),
-        SizedBox(
+        const SizedBox(
           height: 30,
         ),
         WhiteBtn('Clear my properties', () async {
@@ -287,7 +287,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Text(
                   text,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 20,
                     fontFamily: 'Inter',
@@ -298,7 +298,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
-          RotatedBox(
+          const RotatedBox(
             quarterTurns: 2,
             child: Icon(
               Icons.arrow_back_ios_rounded,
@@ -335,8 +335,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: IconButton(
               icon: SvgPicture.asset(
                 'assets/home.svg',
-                height: 100,
-                width: 100,
+                height: 32,
+                width: 32,
               ),
               color: const Color(0xFFADADAD),
               onPressed: () {
@@ -352,8 +352,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: IconButton(
               icon: SvgPicture.asset(
                 'assets/coin.svg',
-                height: 100,
-                width: 100,
+                height: 32,
+                width: 32,
               ),
               color: const Color(0xFFADADAD),
               onPressed: () {
@@ -383,24 +383,26 @@ class UsernameChangeDialog extends StatelessWidget {
   final _userService = UserService();
   final _searchService = SearchService();
 
+  UsernameChangeDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Change Username'),
+      title: const Text('Change Username'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextField(
             controller: _pswdController,
             obscureText: true,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Current Password',
             ),
           ),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           TextField(
             controller: _usernameController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'New Username',
             ),
           ),
@@ -449,13 +451,13 @@ class UsernameChangeDialog extends StatelessWidget {
               Navigator.of(context).pop();
             }
           },
-          child: Text('Confirm'),
+          child: const Text('Confirm'),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
       ],
     );
@@ -468,25 +470,27 @@ class PasswordChangeDialog extends StatelessWidget {
   final _userService = UserService();
   final _searchService = SearchService();
 
+  PasswordChangeDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Change Password'),
+      title: const Text('Change Password'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextField(
             controller: _pswdController,
             obscureText: true,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Current Password',
             ),
           ),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           TextField(
             controller: _newPswdController,
             obscureText: true,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'New Password',
             ),
           ),
@@ -546,13 +550,13 @@ class PasswordChangeDialog extends StatelessWidget {
               Navigator.of(context).pop();
             }
           },
-          child: Text('Confirm'),
+          child: const Text('Confirm'),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
       ],
     );
@@ -564,15 +568,17 @@ class PasswordConfirmationModal extends StatelessWidget {
   final _searchService = SearchService();
   var pswd = '';
 
+  PasswordConfirmationModal({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Confirm your password'),
+      title: const Text('Confirm your password'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextFormField(
-            decoration: InputDecoration(labelText: 'Password'),
+            decoration: const InputDecoration(labelText: 'Password'),
             obscureText: true,
             onChanged: (value) {
               pswd = value;
@@ -582,13 +588,13 @@ class PasswordConfirmationModal extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         ElevatedButton(
-          child: Text('Confirm'),
+          child: const Text('Confirm'),
           onPressed: () async {
             User? user = FirebaseAuth.instance.currentUser;
             if (user != null) {
